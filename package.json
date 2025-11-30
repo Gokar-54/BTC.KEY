@@ -1,0 +1,16 @@
+{
+  "name": "bitcoin-key-finder",
+  "version": "1.0.0",
+  "description": "Bitcoin Key Finder - Advanced Bitcoin Key Search Tool",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve -s .",
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "serve": "^14.0.0"
+  },
+  "keywords": ["bitcoin", "crypto", "key", "finder"],
+  "author": "Your Name",
+  "license": "MIT"
+}
