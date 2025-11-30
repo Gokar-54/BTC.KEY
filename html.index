@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>باحث مفاتيح البيتكوين - Bitcoin Key Finder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --secondary: #6c757d;
+            --success: #198754;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #0dcaf0;
+            --dark: #212529;
+            --light: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .btn {
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .progress {
+            border-radius: 10px;
+            height: 25px;
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+        }
+        
+        .log-container {
+            height: 300px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .active-section {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .live-data {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .task-item {
+            border-left: 5px solid var(--primary);
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .key-display {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            word-break: break-all;
+        }
+        
+        /* تخصيع scrollbar */
+        .log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .log-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .log-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        .log-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* تأثيرات للبطاقات */
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+            font-weight: bold;
+        }
+        
+        /* تخصيص responsive */
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .feature-icon {
+                font-size: 2rem;
+            }
+        }
+        
+        .nav-link {
+            border-radius: 10px;
+            margin: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: var(--primary);
+            color: white !important;
+        }
+        
+        .floating-alert {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 300px;
+        }
+        
+        .crypto-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fab fa-bitcoin crypto-animation"></i> باحث مفاتيح البيتكوين
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-section="home-section">
+                            <i class="fas fa-home"></i> الرئيسية
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="dashboard-section">
+                            <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="smart-search-section">
+                            <i class="fas fa-brain"></i> البحث الذكي
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="continuous-search-section">
+                            <i class="fas fa-sync"></i> البحث المستمر
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="results-section">
+                            <i class="fas fa-chart-bar"></i> النتائج
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="settings-section">
+                            <i class="fas fa-cog"></i> الإعدادات
+                        </a>
+                    </li>
+                </ul>
+                <div class="navbar-text">
+                    <span id="current-time" class="text-light"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- منطقة التنبيهات العائمة -->
+    <div id="alert-container" class="floating-alert"></div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container mt-4">
+        <!-- الصفحة الرئيسية -->
+        <div id="home-section" class="section active-section">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h1 class="display-4 text-white">
+                        <i class="fab fa-bitcoin crypto-animation"></i> باحث مفاتيح البيتكوين
+                    </h1>
+                    <p class="lead text-light">أداة متقدمة للبحث عن مفاتيح البيتكوين باستخدام الذكاء الاصطناعي والثريدات المتعددة</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-brain feature-icon"></i>
+                            <h3 class="card-title">البحث الذكي</h3>
+                            <p class="card-text">بحث ذكي باستخدام أنماط المفاتيح الحقيقية وخوارزميات متقدمة</p>
+                            <button class="btn btn-primary switch-section" data-section="smart-search-section">
+                                بدء البحث الذكي
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-sync feature-icon"></i>
+                            <h3 class="card-title">البحث المستمر</h3>
+                            <p class="card-text">بحث مستمر لا يتوقف حتى العثور على مفاتيح ذات رصيد</p>
+                            <button class="btn btn-success switch-section" data-section="continuous-search-section">
+                                بدء البحث المستمر
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-tachometer-alt feature-icon"></i>
+                            <h3 class="card-title">لوحة التحكم</h3>
+                            <p class="card-text">مراقبة وإدارة جميع عمليات البحث الجارية</p>
+                            <button class="btn btn-info switch-section" data-section="dashboard-section">
+                                فتح اللوحة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-warning">
+                            <h4 class="mb-0"><i class="fas fa-bolt"></i> ميزات سريعة</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 text-center">
+                                    <button class="btn btn-outline-primary mb-2 quick-start" data-type="smart" data-threads="10">
+                                        بحث سريع (10 threads)
+                                    </button>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <button class="btn btn-outline-success mb-2 quick-start" data-type="continuous" data-threads="8">
+                                        بحث مستمر (8 threads)
+                                    </button>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <button class="btn btn-outline-danger mb-2 quick-start" data-type="smart" data-threads="20">
+                                        بحث سريع جداً (20 threads)
+                                    </button>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <button class="btn btn-outline-info mb-2" id="testTelegram">
+                                        اختبار Telegram
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h4 class="mb-0"><i class="fas fa-chart-line"></i> الإحصائيات الحية</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center" id="liveStats">
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-primary" id="totalTasks">0</h5>
+                                        <p class="text-muted">المهام النشطة</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-success" id="completedTasks">0</h5>
+                                        <p class="text-muted">المهام المكتملة</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-warning" id="runningTasks">0</h5>
+                                        <p class="text-muted">المهام الجارية</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-danger" id="totalThreads">0</h5>
+                                        <p class="text-muted">إجمالي الثريدات</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- لوحة التحكم -->
+        <div id="dashboard-section" class="section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h3 class="mb-0"><i class="fas fa-tachometer-alt"></i> لوحة التحكم - إدارة المهام</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card bg-primary text-white">
+                                        <div class="card-body text-center">
+                                            <h5>المهام النشطة</h5>
+                                            <h2 id="active-tasks-count">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h5>المفاتيح الصالحة</h5>
+                                            <h2 id="valid-keys-count">0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4>المهام الجارية</h4>
+                                    <div id="tasks-list" class="mb-4">
+                                        <!-- سيتم ملؤها بالبيانات -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4>البيانات الحية</h4>
+                                    <div class="log-container" id="dashboard-live-log">
+                                        <div class="text-center text-muted">سيظهر سجل البيانات الحية هنا...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- البحث الذكي -->
+        <div id="smart-search-section" class="section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="fas fa-brain"></i> البحث الذكي عن مفاتيح البيتكوين</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="smartSearchForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="threads" class="form-label">عدد الثريدات:</label>
+                                            <select class="form-select" id="threads" name="threads">
+                                                <option value="5">5 ثريدات (بطيء)</option>
+                                                <option value="10" selected>10 ثريدات (متوسط)</option>
+                                                <option value="15">15 ثريدات (سريع)</option>
+                                                <option value="20">20 ثريدات (سريع جداً)</option>
+                                                <option value="30">30 ثريدات (أقصى سرعة)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="attempts" class="form-label">عدد المحاولات (لكل ثريد):</label>
+                                            <select class="form-select" id="attempts" name="attempts">
+                                                <option value="5000">5,000 محاولة</option>
+                                                <option value="10000" selected>10,000 محاولة</option>
+                                                <option value="20000">20,000 محاولة</option>
+                                                <option value="50000">50,000 محاولة</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">خيارات إضافية:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="telegramAlerts" checked>
+                                        <label class="form-check-label" for="telegramAlerts">
+                                            إرسال التنبيهات إلى Telegram
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="saveResults" checked>
+                                        <label class="form-check-label" for="saveResults">
+                                            حفظ النتائج في ملف
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="startBtn">
+                                        <i class="fas fa-play"></i> بدء البحث الذكي
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-lg" id="stopBtn" disabled>
+                                        <i class="fas fa-stop"></i> إيقاف البحث
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="mb-0"><i class="fas fa-chart-bar"></i> تقدم البحث</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="progressContainer">
+                                <div class="progress mb-3">
+                                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                                <div class="row text-center" id="stats">
+                                    <div class="col-md-3">
+                                        <h6>المحاولات</h6>
+                                        <h4 id="attemptsCount" class="text-primary">0</h4>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h6>المفاتيح الصالحة</h6>
+                                        <h4 id="validKeys" class="text-success">0</h4>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h6>المرسل إلى Telegram</h6>
+                                        <h4 id="sentKeys" class="text-warning">0</h4>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h6>الرصيد الموجود</h6>
+                                        <h4 id="balanceFound" class="text-danger">0</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0"><i class="fas fa-list"></i> السجل الحي</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="log-container" id="smart-search-live-log">
+                                <div class="text-center text-muted">سيظهر سجل البحث هنا...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- البحث المستمر -->
+        <div id="continuous-search-section" class="section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h3 class="mb-0"><i class="fas fa-sync"></i> البحث المستمر عن مفاتيح البيتكوين</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="continuousSearchForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="continuous-threads" class="form-label">عدد الثريدات:</label>
+                                            <select class="form-select" id="continuous-threads" name="threads">
+                                                <option value="5">5 ثريدات (بطيء)</option>
+                                                <option value="8" selected>8 ثريدات (متوسط)</option>
+                                                <option value="12">12 ثريدات (سريع)</option>
+                                                <option value="15">15 ثريدات (سريع جداً)</option>
+                                                <option value="20">20 ثريدات (أقصى سرعة)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">وضع البحث:</label>
+                                            <div class="form-text">البحث المستمر لا يتوقف حتى يتم إيقافه يدوياً</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">خيارات إضافية:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="continuous-telegramAlerts" checked>
+                                        <label class="form-check-label" for="continuous-telegramAlerts">
+                                            إرسال التنبيهات إلى Telegram
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="continuous-saveResults" checked>
+                                        <label class="form-check-label" for="continuous-saveResults">
+                                            حفظ النتائج في ملف
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-success btn-lg" id="continuousStartBtn">
+                                        <i class="fas fa-play"></i> بدء البحث المستمر
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-lg" id="continuousStopBtn" disabled>
+                                        <i class="fas fa-stop"></i> إيقاف البحث
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-warning text-white">
+                            <h4 class="mb-0"><i class="fas fa-chart-bar"></i> إحصائيات البحث المستمر</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center" id="continuous-stats">
+                                <div class="col-md-3">
+                                    <h6>المحاولات</h6>
+                                    <h4 id="continuous-attemptsCount" class="text-primary">0</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>المفاتيح الصالحة</h6>
+                                    <h4 id="continuous-validKeys" class="text-success">0</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>المرسل إلى Telegram</h6>
+                                    <h4 id="continuous-sentKeys" class="text-warning">0</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>الرصيد الموجود</h6>
+                                    <h4 id="continuous-balanceFound" class="text-danger">0</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="mb-0"><i class="fas fa-list"></i> السجل الحي للبحث المستمر</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="log-container" id="continuous-search-live-log">
+                                <div class="text-center text-muted">سيظهر سجل البحث المستمر هنا...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- النتائج -->
+        <div id="results-section" class="section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h3 class="mb-0"><i class="fas fa-chart-bar"></i> نتائج البحث</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-primary" id="results-total-attempts">0</h5>
+                                        <p class="text-muted">إجمالي المحاولات</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-success" id="results-valid-keys">0</h5>
+                                        <p class="text-muted">المفاتيح الصالحة</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-warning" id="results-sent-keys">0</h5>
+                                        <p class="text-muted">مرسل إلى Telegram</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="stat-card">
+                                        <h5 class="text-danger" id="results-balance-found">0</h5>
+                                        <p class="text-muted">رصيد موجود</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4>المفاتيح الصالحة التي تم العثور عليها</h4>
+                                    <div id="found-keys-list">
+                                        <div class="text-center text-muted p-4">
+                                            <i class="fas fa-key fa-3x mb-3"></i>
+                                            <p>لم يتم العثور على مفاتيح صالحة بعد</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4>المفاتيح التي تحتوي على رصيد</h4>
+                                    <div id="balance-keys-list">
+                                        <div class="text-center text-muted p-4">
+                                            <i class="fas fa-coins fa-3x mb-3"></i>
+                                            <p>لم يتم العثور على مفاتيح تحتوي على رصيد بعد</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الإعدادات -->
+        <div id="settings-section" class="section">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            <h3 class="mb-0"><i class="fas fa-cog"></i> إعدادات التطبيق</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="settingsForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>إعدادات Telegram</h5>
+                                        <div class="mb-3">
+                                            <label for="telegramBotToken" class="form-label">Telegram Bot Token:</label>
+                                            <input type="text" class="form-control" id="telegramBotToken" 
+                                                   value="7975723702:AAF62wilkINds1ahBblxEr88ODoUlB3W85A">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="telegramChatId" class="form-label">Telegram Chat ID:</label>
+                                            <input type="text" class="form-control" id="telegramChatId" 
+                                                   value="7231982164">
+                                        </div>
+                                        <button type="button" class="btn btn-info" id="testTelegramSettings">
+                                            <i class="fas fa-paper-plane"></i> اختبار الإعدادات
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>إعدادات البحث</h5>
+                                        <div class="mb-3">
+                                            <label for="defaultThreads" class="form-label">عدد الثريدات الافتراضي:</label>
+                                            <select class="form-select" id="defaultThreads">
+                                                <option value="5">5 ثريدات</option>
+                                                <option value="10" selected>10 ثريدات</option>
+                                                <option value="15">15 ثريدات</option>
+                                                <option value="20">20 ثريدات</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="autoSave" class="form-label">الحفظ التلقائي:</label>
+                                            <select class="form-select" id="autoSave">
+                                                <option value="enabled" selected>مفعل</option>
+                                                <option value="disabled">معطل</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="logLevel" class="form-label">مستوى التسجيل:</label>
+                                            <select class="form-select" id="logLevel">
+                                                <option value="minimal">الحد الأدنى</option>
+                                                <option value="normal" selected>عادي</option>
+                                                <option value="detailed">مفصل</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary btn-lg">
+                                                <i class="fas fa-save"></i> حفظ الإعدادات
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <footer class="bg-dark text-light text-center py-3 mt-5">
+        <div class="container">
+            <p>Bitcoin Key Finder &copy; 2024 - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // بيانات التطبيق
+        const appData = {
+            tasks: {},
+            currentTaskId: null,
+            progressInterval: null,
+            stats: {
+                totalAttempts: 0,
+                validKeys: 0,
+                sentKeys: 0,
+                balanceFound: 0,
+                activeTasks: 0,
+                completedTasks: 0,
+                runningTasks: 0,
+                totalThreads: 0
+            }
+        };
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث الوقت الحالي
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+
+            // إعداد مستمعي الأحداث
+            setupEventListeners();
+
+            // تحديث الإحصائيات
+            updateStats();
+            setInterval(updateStats, 5000);
+
+            // البدء السريع
+            document.querySelectorAll('.quick-start').forEach(button => {
+                button.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    const threads = parseInt(this.dataset.threads);
+                    startQuickSearch(type, threads);
+                });
+            });
+
+            // اختبار Telegram من الصفحة الرئيسية
+            document.getElementById('testTelegram').addEventListener('click', function() {
+                testTelegramConnection();
+            });
+
+            // اختبار Telegram من الإعدادات
+            document.getElementById('testTelegramSettings').addEventListener('click', function() {
+                testTelegramConnection();
+            });
+
+            // حفظ الإعدادات
+            document.getElementById('settingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveSettings();
+            });
+        });
+
+        // تحديث الوقت الحالي
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ar-EG');
+            document.getElementById('current-time').textContent = timeString;
+        }
+
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            // التنقل بين الأقسام
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetSection = this.getAttribute('data-section');
+                    switchSection(targetSection);
+                    
+                    // تحديث حالة الروابط
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // التنقل عبر الأزرار
+            document.querySelectorAll('.switch-section').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    switchSection(targetSection);
+                    
+                    // تحديث حالة الروابط
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    document.querySelector(`[data-section="${targetSection}"]`).classList.add('active');
+                });
+            });
+
+            // البحث الذكي
+            document.getElementById('smartSearchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                startSmartSearch();
+            });
+
+            document.getElementById('stopBtn').addEventListener('click', function() {
+                stopCurrentTask();
+            });
+
+            // البحث المستمر
+            document.getElementById('continuousSearchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                startContinuousSearch();
+            });
+
+            document.getElementById('continuousStopBtn').addEventListener('click', function() {
+                stopCurrentTask();
+            });
+        }
+
+        // تبديل الأقسام
+        function switchSection(sectionId) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            
+            // إظهار القسم المطلوب
+            document.getElementById(sectionId).classList.add('active-section');
+        }
+
+        // البدء السريع للبحث
+        function startQuickSearch(type, threads) {
+            const endpoint = type === 'smart' ? '/api/start_smart_search' : '/api/start_continuous_search';
+            
+            // محاكاة API call
+            simulateApiCall(endpoint, { threads: threads })
+                .then(data => {
+                    if (data.success) {
+                        appData.currentTaskId = data.task_id;
+                        showAlert('تم بدء البحث بنجاح!', 'success');
+                        updateStats();
+                        addToLog('smart-search-live-log', `بدأ البحث ${type} مع ${threads} ثريد`);
+                        
+                        if (type === 'smart') {
+                            document.getElementById('startBtn').disabled = true;
+                            document.getElementById('stopBtn').disabled = false;
+                            startProgressMonitoring();
+                        } else {
+                            document.getElementById('continuousStartBtn').disabled = true;
+                            document.getElementById('continuousStopBtn').disabled = false;
+                            startContinuousProgressMonitoring();
+                        }
+                    } else {
+                        showAlert('خطأ: ' + data.error, 'danger');
+                    }
+                })
+                .catch(error => {
+                    showAlert('خطأ في الاتصال: ' + error, 'danger');
+                });
+        }
+
+        // بدء البحث الذكي
+        function startSmartSearch() {
+            const threads = document.getElementById('threads').value;
+            const attempts = document.getElementById('attempts').value;
+            
+            simulateApiCall('/api/start_smart_search', { 
+                threads: parseInt(threads),
+                attempts: parseInt(attempts)
+            })
+            .then(data => {
+                if (data.success) {
+                    appData.currentTaskId = data.task_id;
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('stopBtn').disabled = false;
+                    showAlert('بدأ البحث الذكي بنجاح!', 'success');
+                    startProgressMonitoring();
+                    addToLog('smart-search-live-log', 'بدأ البحث الذكي مع ' + threads + ' ثريد');
+                } else {
+                    showAlert('خطأ: ' + data.error, 'danger');
+                }
+            })
+            .catch(error => {
+                showAlert('خطأ في الاتصال: ' + error, 'danger');
+            });
+        }
+
+        // بدء البحث المستمر
+        function startContinuousSearch() {
+            const threads = document.getElementById('continuous-threads').value;
+            
+            simulateApiCall('/api/start_continuous_search', { 
+                threads: parseInt(threads)
+            })
+            .then(data => {
+                if (data.success) {
+                    appData.currentTaskId = data.task_id;
+                    document.getElementById('continuousStartBtn').disabled = true;
+                    document.getElementById('continuousStopBtn').disabled = false;
+                    showAlert('بدأ البحث المستمر بنجاح!', 'success');
+                    startContinuousProgressMonitoring();
+                    addToLog('continuous-search-live-log', 'بدأ البحث المستمر مع ' + threads + ' ثريد');
+                } else {
+                    showAlert('خطأ: ' + data.error, 'danger');
+                }
+            })
+            .catch(error => {
+                showAlert('خطأ في الاتصال: ' + error, 'danger');
+            });
+        }
+
+        // إيقاف المهمة الحالية
+        function stopCurrentTask() {
+            if (!appData.currentTaskId) return;
+            
+            simulateApiCall('/api/stop_task', { task_id: appData.currentTaskId })
+            .then(data => {
+                if (data.success) {
+                    showAlert('تم إيقاف البحث', 'warning');
+                    document.getElementById('startBtn').disabled = false;
+                    document.getElementById('stopBtn').disabled = true;
+                    document.getElementById('continuousStartBtn').disabled = false;
+                    document.getElementById('continuousStopBtn').disabled = true;
+                    if (appData.progressInterval) clearInterval(appData.progressInterval);
+                }
+            });
+        }
+
+        // مراقبة التقدم للبحث الذكي
+        function startProgressMonitoring() {
+            if (appData.progressInterval) clearInterval(appData.progressInterval);
+            
+            appData.progressInterval = setInterval(() => {
+                if (!appData.currentTaskId) return;
+                
+                simulateApiCall('/api/task_status/' + appData.currentTaskId)
+                .then(data => {
+                    updateProgress(data, 'smart');
+                });
+            }, 2000);
+        }
+
+        // مراقبة التقدم للبحث المستمر
+        function startContinuousProgressMonitoring() {
+            if (appData.progressInterval) clearInterval(appData.progressInterval);
+            
+            appData.progressInterval = setInterval(() => {
+                if (!appData.currentTaskId) return;
+                
+                simulateApiCall('/api/task_status/' + appData.currentTaskId)
+                .then(data => {
+                    updateProgress(data, 'continuous');
+                });
+            }, 2000);
+        }
+
+        // تحديث شريط التقدم
+        function updateProgress(data, type) {
+            // محاكاة بيانات التقدم
+            const progress = Math.min(100, (appData.stats.totalAttempts % 10000) / 100);
+            const attempts = appData.stats.totalAttempts + Math.floor(Math.random() * 100);
+            const validKeys = appData.stats.validKeys + (Math.random() > 0.98 ? 1 : 0);
+            const sentKeys = appData.stats.sentKeys + (Math.random() > 0.99 ? 1 : 0);
+            const balanceFound = appData.stats.balanceFound + (Math.random() > 0.999 ? 1 : 0);
+            
+            // تحديث الإحصائيات العامة
+            appData.stats.totalAttempts = attempts;
+            appData.stats.validKeys = validKeys;
+            appData.stats.sentKeys = sentKeys;
+            appData.stats.balanceFound = balanceFound;
+            
+            if (type === 'smart') {
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressBar').textContent = `${Math.round(progress)}%`;
+                document.getElementById('attemptsCount').textContent = formatNumber(attempts);
+                document.getElementById('validKeys').textContent = formatNumber(validKeys);
+                document.getElementById('sentKeys').textContent = formatNumber(sentKeys);
+                document.getElementById('balanceFound').textContent = formatNumber(balanceFound);
+                
+                // إضافة سجل حي
+                if (Math.random() > 0.7) {
+                    addToLog('smart-search-live-log', `المحاولة ${formatNumber(attempts)}: تم إنشاء مفتاح جديد`);
+                }
+                
+                if (validKeys > appData.stats.validKeys) {
+                    addToLog('smart-search-live-log', `✅ تم العثور على مفتاح صالح! المجموع: ${validKeys}`);
+                }
+                
+                if (balanceFound > appData.stats.balanceFound) {
+                    addToLog('smart-search-live-log', `🎉🎉🎉 تم العثور على رصيد! المجموع: ${balanceFound}`);
+                    showAlert('تم العثور على رصيد!', 'success');
+                }
+            } else {
+                document.getElementById('continuous-attemptsCount').textContent = formatNumber(attempts);
+                document.getElementById('continuous-validKeys').textContent = formatNumber(validKeys);
+                document.getElementById('continuous-sentKeys').textContent = formatNumber(sentKeys);
+                document.getElementById('continuous-balanceFound').textContent = formatNumber(balanceFound);
+                
+                // إضافة سجل حي
+                if (Math.random() > 0.7) {
+                    addToLog('continuous-search-live-log', `المحاولة ${formatNumber(attempts)}: تم إنشاء مفتاح جديد`);
+                }
+                
+                if (validKeys > appData.stats.validKeys) {
+                    addToLog('continuous-search-live-log', `✅ تم العثور على مفتاح صالح! المجموع: ${validKeys}`);
+                }
+                
+                if (balanceFound > appData.stats.balanceFound) {
+                    addToLog('continuous-search-live-log', `🎉🎉🎉 تم العثور على رصيد! المجموع: ${balanceFound}`);
+                    showAlert('تم العثور على رصيد!', 'success');
+                }
+            }
+            
+            // تحديث لوحة النتائج
+            updateResults();
+        }
+
+        // اختبار اتصال Telegram
+        function testTelegramConnection() {
+            simulateApiCall('/api/test_telegram')
+            .then(data => {
+                if (data.success) {
+                    showAlert('اختبار Telegram ناجح!', 'success');
+                } else {
+                    showAlert('فشل اختبار Telegram: ' + data.error, 'danger');
+                }
+            });
+        }
+
+        // حفظ الإعدادات
+        function saveSettings() {
+            const botToken = document.getElementById('telegramBotToken').value;
+            const chatId = document.getElementById('telegramChatId').value;
+            const defaultThreads = document.getElementById('defaultThreads').value;
+            const autoSave = document.getElementById('autoSave').value;
+            const logLevel = document.getElementById('logLevel').value;
+            
+            // محاكاة حفظ الإعدادات
+            localStorage.setItem('telegramBotToken', botToken);
+            localStorage.setItem('telegramChatId', chatId);
+            localStorage.setItem('defaultThreads', defaultThreads);
+            localStorage.setItem('autoSave', autoSave);
+            localStorage.setItem('logLevel', logLevel);
+            
+            showAlert('تم حفظ الإعدادات بنجاح!', 'success');
+        }
+
+        // تحديث الإحصائيات
+        function updateStats() {
+            // محاكاة بيانات الإحصائيات
+            appData.stats.activeTasks = Math.floor(Math.random() * 5);
+            appData.stats.completedTasks = Math.floor(Math.random() * 10);
+            appData.stats.runningTasks = Math.floor(Math.random() * 3);
+            appData.stats.totalThreads = appData.stats.runningTasks * 10;
+            
+            document.getElementById('totalTasks').textContent = appData.stats.activeTasks;
+            document.getElementById('completedTasks').textContent = appData.stats.completedTasks;
+            document.getElementById('runningTasks').textContent = appData.stats.runningTasks;
+            document.getElementById('totalThreads').textContent = appData.stats.totalThreads;
+            
+            document.getElementById('active-tasks-count').textContent = appData.stats.activeTasks;
+            document.getElementById('valid-keys-count').textContent = appData.stats.validKeys;
+            
+            document.getElementById('results-total-attempts').textContent = formatNumber(appData.stats.totalAttempts);
+            document.getElementById('results-valid-keys').textContent = formatNumber(appData.stats.validKeys);
+            document.getElementById('results-sent-keys').textContent = formatNumber(appData.stats.sentKeys);
+            document.getElementById('results-balance-found').textContent = formatNumber(appData.stats.balanceFound);
+        }
+
+        // تحديث النتائج
+        function updateResults() {
+            const foundKeysList = document.getElementById('found-keys-list');
+            const balanceKeysList = document.getElementById('balance-keys-list');
+            
+            // محاكاة المفاتيح التي تم العثور عليها
+            if (appData.stats.validKeys > 0) {
+                foundKeysList.innerHTML = '';
+                for (let i = 0; i < Math.min(appData.stats.validKeys, 5); i++) {
+                    const keyElement = document.createElement('div');
+                    keyElement.className = 'key-display mb-2';
+                    keyElement.textContent = `5J5${generateRandomString(49)}...`;
+                    foundKeysList.appendChild(keyElement);
+                }
+                
+                if (appData.stats.validKeys > 5) {
+                    const moreElement = document.createElement('div');
+                    moreElement.className = 'text-center text-muted';
+                    moreElement.textContent = `و ${appData.stats.validKeys - 5} مفتاح آخر...`;
+                    foundKeysList.appendChild(moreElement);
+                }
+            }
+            
+            // محاكاة المفاتيح التي تحتوي على رصيد
+            if (appData.stats.balanceFound > 0) {
+                balanceKeysList.innerHTML = '';
+                for (let i = 0; i < appData.stats.balanceFound; i++) {
+                    const keyElement = document.createElement('div');
+                    keyElement.className = 'key-display mb-2 border border-success';
+                    keyElement.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <span>5K3${generateRandomString(49)}...</span>
+                            <span class="badge bg-success">${(Math.random() * 0.5).toFixed(8)} BTC</span>
+                        </div>
+                    `;
+                    balanceKeysList.appendChild(keyElement);
+                }
+            }
+        }
+
+        // إضافة سجل
+        function addToLog(logContainerId, message) {
+            const logDiv = document.getElementById(logContainerId);
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<span class="text-muted">[${timestamp}]</span> ${message}`;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        // عرض التنبيه
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.id = alertId;
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.appendChild(alertDiv);
+            
+            // إزالة التنبيه تلقائياً بعد 5 ثوان
+            setTimeout(() => {
+                const alertElement = document.getElementById(alertId);
+                if (alertElement) {
+                    alertElement.remove();
+                }
+            }, 5000);
+        }
+
+        // محاكاة استدعاء API
+        function simulateApiCall(endpoint, data = {}) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // محاكاة استجابة ناجحة في معظم الحالات
+                    if (Math.random() > 0.1) {
+                        resolve({
+                            success: true,
+                            task_id: 'task-' + Date.now(),
+                            message: 'تم بدء المهمة بنجاح'
+                        });
+                    } else {
+                        resolve({
+                            success: false,
+                            error: 'خطأ في الخادم. حاول مرة أخرى.'
+                        });
+                    }
+                }, 1000);
+            });
+        }
+
+        // تنسيق الأرقام
+        function formatNumber(num) {
+            return new Intl.NumberFormat('ar-EG').format(num);
+        }
+
+        // إنشاء نص عشوائي
+        function generateRandomString(length) {
+            const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+    </script>
+</body>
+</html>
