@@ -3,249 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⛏️ XMR Web Miner (Proxy)</title>
+<title>⛏️ XMR Web Miner (Original)</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-    color: #c9d1d9; min-height: 100vh; padding: 15px; line-height: 1.6;
-  }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0d1117; color: #c9d1d9; min-height: 100vh; padding: 15px; }
   .container { max-width: 720px; margin: 0 auto; }
-  h1 { text-align: center; font-size: 24px; margin-bottom: 5px;
-    background: linear-gradient(90deg, #ff6b00, #ffa500);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .subtitle { text-align: center; color: #8b949e; font-size: 12px; margin-bottom: 15px; }
+  h1 { text-align: center; font-size: 24px; margin-bottom: 10px; background: linear-gradient(90deg, #ff6b00, #ffa500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 18px; margin-bottom: 12px; }
-  .warning { background: rgba(255, 193, 7, 0.08); border: 1px solid #ffc107; border-radius: 10px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: #ffc107; line-height: 1.5; }
-  .info { background: rgba(88, 166, 255, 0.08); border: 1px solid #58a6ff; border-radius: 10px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: #79c0ff; }
   .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
   .stat { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 12px; text-align: center; }
   .stat-label { font-size: 10px; color: #8b949e; margin-bottom: 4px; }
   .stat-value { font-size: 18px; font-weight: bold; color: #58a6ff; font-family: 'Courier New', monospace; }
-  .stat-value.orange { color: #ffa500; } .stat-value.green { color: #3fb950; } .stat-value.red { color: #f85149; }
-  .btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; margin: 8px 0; }
+  .stat-value.orange { color: #ffa500; } .stat-value.green { color: #3fb950; }
+  .btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; margin: 8px 0; }
   .btn-start { background: linear-gradient(90deg, #238636, #2ea043); color: #fff; }
   .btn-stop { background: linear-gradient(90deg, #da3633, #f85149); color: #fff; }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn:not(:disabled):hover { filter: brightness(1.15); }
   .log { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px; max-height: 220px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 11px; color: #3fb950; direction: ltr; text-align: left; margin-top: 10px; }
-  .log-line { margin: 1px 0; word-break: break-all; }
-  .log-line.error { color: #f85149; } .log-line.info { color: #58a6ff; } .log-line.warn { color: #ffc107; } .log-line.ok { color: #3fb950; }
-  .status-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-left: 6px; vertical-align: middle; }
-  .status-dot.offline { background: #f85149; } .status-dot.connecting { background: #ffc107; animation: pulse 1s infinite; } .status-dot.online { background: #3fb950; animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   .wallet-input { width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px; color: #ffa500; font-family: monospace; font-size: 10px; word-break: break-all; margin-bottom: 10px; }
-  .footer { text-align: center; color: #484f58; font-size: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #30363d; }
+  .warning { background: rgba(255, 193, 7, 0.08); border: 1px solid #ffc107; border-radius: 10px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: #ffc107; }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>⛏️ XMR Web Miner</h1>
-  <p class="subtitle">
-    <span class="status-dot offline" id="statusDot"></span>
-    <span id="statusText">جاهز</span>
-  </p>
+  <h1>⛏️ XMR Web Miner (Original)</h1>
   <div class="warning">
-    ⚠️ <strong>صراحة:</strong> التعدين من المتصفح <b>ضعيف جدًا</b> (5-20 H/s) وغير مربح تقنيًا.
+    ⚠️ هذا الإصدار يستخدم البروكسي العام <b>ny1.xmrminingproxy.com</b> الذي قد يكون متوقفًا حاليًا. 
+    اضغط "ابدأ" وجرب مرة أخرى كل بضع دقائق.
   </div>
+
   <div class="card">
     <div style="font-size:11px; color:#8b949e; margin-bottom:6px;">💼 محفظتك (Monero Address):</div>
     <textarea class="wallet-input" id="walletInput" rows="3">44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk</textarea>
-    <div style="font-size:11px; color:#8b949e; margin:6px 0;">🌐 Pool عبر بروكسي (شغّال):</div>
-    <select class="wallet-input" id="poolSelect" style="color:#c9d1d9; padding:10px; font-size:12px;">
-      <option value="wss://ny1.xmrminingproxy.com|moneroocean.stream">MoneroOcean (Proxy NY1)</option>
-    </select>
   </div>
+
   <div class="card">
     <div class="stat-grid">
       <div class="stat"><div class="stat-label">⚡ السرعة</div><div class="stat-value orange" id="hashrate">0 H/s</div></div>
       <div class="stat"><div class="stat-label">📊 Hashes</div><div class="stat-value" id="totalHashes">0</div></div>
       <div class="stat"><div class="stat-label">⏱️ الوقت</div><div class="stat-value green" id="runtime">00:00</div></div>
-      <div class="stat"><div class="stat-label">💎 Shares</div><div class="stat-value red" id="shares">0</div></div>
+      <div class="stat"><div class="stat-label">💎 Shares</div><div class="stat-value" id="shares">0</div></div>
     </div>
-    <div id="connStatus" class="info">🔌 حالة الاتصال: <b>غير متصل</b></div>
     <button class="btn btn-start" id="startBtn" onclick="startMining()">▶️ ابدأ التعدين</button>
     <button class="btn btn-stop" id="stopBtn" onclick="stopMining()" disabled>⏹️ أوقف</button>
     <div class="log" id="log"><div class="log-line info">⏳ في انتظار البدء...</div></div>
   </div>
-  <div class="footer">⛏️ Web Miner v1.1 — عبر بروكسي عام</div>
 </div>
 
+<!-- ============================================= -->
+<!-- 1. استدعاء مكتبة monero-webminer الرسمية   -->
+<!-- ============================================= -->
+<script src="https://cdn.jsdelivr.net/gh/NajmAjmal/monero-webminer@main/script.js"></script>
+
 <script>
+// ==========================================
+// 2. إعدادات التشغيل (المتغيرات التي تنتظرها المكتبة)
+// ==========================================
 const WORKER_NAME = "web_" + Math.floor(Math.random() * 99999);
 const PASSWORD = "x";
-const CONNECT_TIMEOUT = 8000;
 
-let state = {
-  isMining: false, ws: null, worker: null, totalHashes: 0, sharesAccepted: 0, sharesRejected: 0,
-  startTime: null, msgId: 1, job: null, lastHashCount: 0, runtimeInterval: null, hashrateInterval: null,
-};
+// نستخدم دائمًا البروكسي العام ومونيرو أوشن (حتى لو كان متوقفًا)
+server = "wss://ny1.xmrminingproxy.com";
+const POOL = "moneroocean.stream";
 
-function log(msg, type = "info") {
-  const el = document.getElementById('log');
-  const line = document.createElement('div');
-  line.className = 'log-line ' + type;
-  line.textContent = `[${new Date().toLocaleTimeString('en-GB')}] ${msg}`;
-  el.appendChild(line);
-  el.scrollTop = el.scrollHeight;
-  while (el.children.length > 150) el.removeChild(el.firstChild);
-}
-function setStatus(text, cls) { document.getElementById('statusText').textContent = text; document.getElementById('statusDot').className = 'status-dot ' + cls; }
-function setConnStatus(html) { document.getElementById('connStatus').innerHTML = html; }
-function fmt(n) { return n.toLocaleString('en-US'); }
-
-function createWorker() {
-  const code = `
-    let mining = false, hashCount = 0, job = null;
-    async function sha256(str) {
-      const buf = new TextEncoder().encode(str);
-      const hash = await crypto.subtle.digest('SHA-256', buf);
-      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-    async function mineLoop() {
-      while (mining) {
-        for (let i = 0; i < 30 && mining; i++) {
-          await sha256((job ? job.blob : '') + '_' + hashCount + '_' + Date.now());
-          hashCount++;
-        }
-        self.postMessage({ type: 'progress', hashes: hashCount });
-        await new Promise(r => setTimeout(r, 20));
-      }
-    }
-    self.onmessage = function(e) {
-      if (e.data.type === 'start') { mining = true; hashCount = 0; job = e.data.job; mineLoop(); }
-      else if (e.data.type === 'stop') { mining = false; }
-      else if (e.data.type === 'job') { job = e.data.job; }
-    };
-  `;
-  const blob = new Blob([code], { type: 'application/javascript' });
-  return new Worker(URL.createObjectURL(blob));
+// ==========================================
+// 3. دالة تحديث الواجهة (تعمل بالتوازي مع المكتبة)
+// ==========================================
+function updateStats() {
+  if (!document.getElementById('log')) return;
+  const time = new Date().toLocaleTimeString('en-GB');
+  const hashes = document.getElementById('totalHashes')?.innerText || '0';
+  // نعتمد على متغيرات المكتبة العالمية
+  const hps = (typeof hashesPerSecond !== 'undefined') ? hashesPerSecond : 0;
+  const acc = (typeof acceptedHashes !== 'undefined') ? acceptedHashes : 0;
+  document.getElementById('hashrate').innerText = hps + ' H/s';
+  document.getElementById('shares').innerText = acc;
+  document.getElementById('totalHashes').innerText = (typeof totalHashes !== 'undefined') ? totalHashes : '0';
 }
 
-function connectPool(url) {
-  return new Promise((resolve, reject) => {
-    log('🔌 جاري الاتصال بـ ' + url, 'info');
-    setStatus('يتصل...', 'connecting');
-    setConnStatus('🔌 حالة الاتصال: <b style="color:#ffc107">جاري الاتصال...</b>');
-    let resolved = false;
-    const ws = new WebSocket(url);
-    state.ws = ws;
-    const timer = setTimeout(() => {
-      if (!resolved) { resolved = true; try { ws.close(); } catch(e) {} reject(new Error('Timeout')); }
-    }, CONNECT_TIMEOUT);
-    ws.onopen = () => {
-      clearTimeout(timer);
-      if (resolved) return;
-      resolved = true;
-      log('✅ WebSocket متصل!', 'ok');
-      setConnStatus('🔌 حالة الاتصال: <b style="color:#3fb950">متصل ✅</b>');
-      resolve();
-    };
-    ws.onmessage = (e) => {
-      String(e.data).split('\n').filter(l => l.trim()).forEach(line => {
-        try { handlePoolMsg(JSON.parse(line)); } catch (err) {}
-      });
-    };
-    ws.onerror = () => {
-      clearTimeout(timer);
-      if (!resolved) { resolved = true; log('❌ خطأ في WebSocket', 'error'); reject(new Error('WebSocket error')); }
-    };
-    ws.onclose = () => {
-      clearTimeout(timer);
-      log('🔌 الاتصال انقطع', 'warn');
-      setConnStatus('🔌 حالة الاتصال: <b style="color:#f85149">انقطع ❌</b>');
-      if (state.isMining) stopMining();
-    };
-  });
-}
-
-function sendStratum(method, params) {
-  if (!state.ws || state.ws.readyState !== WebSocket.OPEN) return;
-  try {
-    state.ws.send(JSON.stringify({ id: state.msgId++, jsonrpc: "2.0", method, params }) + '\n');
-    log('📤 → ' + method, 'info');
-  } catch (e) { log('❌ فشل الإرسال: ' + e.message, 'error'); }
-}
-
-function handlePoolMsg(msg) {
-  if (msg.id && msg.result !== undefined) {
-    if (msg.error) log('❌ خطأ من الـ Pool: ' + JSON.stringify(msg.error), 'error');
-    else log('✅ رد ناجح للـ id=' + msg.id, 'ok');
-    return;
-  }
-  if (msg.method === 'mining.notify') {
-    const p = msg.params;
-    state.job = { jobId: p[0], blob: p[1], target: p[2], cleanJobs: p[8] !== undefined ? p[8] : true };
-    log('📦 Job: ' + p[0], 'ok');
-    if (state.worker) state.worker.postMessage({ type: 'job', job: state.job });
-    return;
-  }
-  if (msg.method === 'mining.set_difficulty') { log('⚙️ الصعوبة: ' + msg.params[0], 'warn'); return; }
-  if (msg.id && msg.result === true) { state.sharesAccepted++; document.getElementById('shares').textContent = state.sharesAccepted; log('💎 Share مقبول!', 'ok'); return; }
-  if (msg.id && msg.result === false) { state.sharesRejected++; log('❌ Share مرفوض', 'error'); return; }
-}
-
+// ==========================================
+// 4. دوال التحكم (تتصل بالمكتبة)
+// ==========================================
 async function startMining() {
-  if (state.isMining) return;
   const wallet = document.getElementById('walletInput').value.trim();
-  if (!wallet || wallet.length < 90 || !wallet.startsWith('4')) { log('❌ محفظة غير صحيحة!', 'error'); return; }
+  if (!wallet || wallet.length < 90) {
+    alert("الرجاء إدخال محفظة XMR صحيحة");
+    return;
+  }
   document.getElementById('startBtn').disabled = true;
   document.getElementById('stopBtn').disabled = false;
-  setStatus('يتصل...', 'connecting');
-  const [wsUrl, poolHost] = document.getElementById('poolSelect').value.split('|');
+  document.getElementById('log').innerHTML = '<div class="log-line info">⏳ جاري الاتصال بالبروكسي...</div>';
+  
   try {
-    await connectPool(wsUrl);
-    // إرسال بيانات التهيئة للبروكسي: (pool, wallet, worker, password)
-    sendStratum('mining.subscribe', [WORKER_NAME + '/1.0']);
-    await new Promise(r => setTimeout(r, 500));
-    sendStratum('mining.authorize', [wallet + '.' + WORKER_NAME, PASSWORD]);
-    state.worker = createWorker();
-    state.worker.onmessage = (e) => {
-      if (e.data.type === 'progress') { state.totalHashes = e.data.hashes; document.getElementById('totalHashes').textContent = fmt(state.totalHashes); }
-    };
-    state.worker.postMessage({ type: 'start', job: state.job });
-    state.isMining = true;
-    state.startTime = Date.now();
-    state.totalHashes = 0; state.sharesAccepted = 0; state.sharesRejected = 0; state.lastHashCount = 0;
-    setStatus('يعمل', 'online');
-    state.runtimeInterval = setInterval(() => {
-      const s = Math.floor((Date.now() - state.startTime) / 1000);
-      document.getElementById('runtime').textContent = `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-    }, 1000);
-    state.hashrateInterval = setInterval(() => {
-      const diff = state.totalHashes - state.lastHashCount;
-      state.lastHashCount = state.totalHashes;
-      document.getElementById('hashrate').textContent = fmt(Math.max(0, Math.round(diff))) + ' H/s';
-    }, 1000);
-    log('🎉 بدأ التعدين!', 'ok');
-  } catch (err) {
-    log('❌ فشل الاتصال: ' + err.message, 'error');
-    setStatus('فشل', 'offline');
-    setConnStatus('🔌 حالة الاتصال: <b style="color:#f85149">فشل ❌</b>');
+    // استدعاء الدالة الأساسية من المكتبة
+    startMining(POOL, wallet, WORKER_NAME, -1, PASSWORD);
+    document.getElementById('log').innerHTML += '<div class="log-line ok">✅ تم إرسال أمر البدء للمكتبة</div>';
+    // نبدأ بتحديث الواجهة كل ثانية
+    setInterval(updateStats, 1000);
+  } catch (e) {
+    document.getElementById('log').innerHTML += '<div class="log-line error">❌ خطأ: ' + e.message + '</div>';
     document.getElementById('startBtn').disabled = false;
     document.getElementById('stopBtn').disabled = true;
   }
 }
 
 function stopMining() {
-  if (!state.isMining && !state.worker) return;
-  state.isMining = false;
-  if (state.worker) { state.worker.postMessage({ type: 'stop' }); setTimeout(() => { if (state.worker) { state.worker.terminate(); state.worker = null; } }, 100); }
-  if (state.ws) { try { state.ws.close(); } catch(e) {} state.ws = null; }
-  if (state.runtimeInterval) clearInterval(state.runtimeInterval);
-  if (state.hashrateInterval) clearInterval(state.hashrateInterval);
+  if (typeof stopMining === 'function') stopMining();
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled = true;
-  setStatus('متوقف', 'offline');
-  document.getElementById('hashrate').textContent = '0 H/s';
-  log('⏹️ تم الإيقاف', 'warn');
-  log('📊 إجمالي: ' + fmt(state.totalHashes) + ' hashes', 'info');
-  log('💎 مقبولة: ' + state.sharesAccepted + ' | مرفوضة: ' + state.sharesRejected, 'info');
+  document.getElementById('log').innerHTML += '<div class="log-line warn">⏹️ تم إرسال أمر الإيقاف</div>';
 }
-
-window.addEventListener('beforeunload', (e) => { if (state.isMining) { e.preventDefault(); e.returnValue = 'التعدين شغال — متأكد؟'; return e.returnValue; } });
-window.addEventListener('load', () => { log('📄 الصفحة جاهزة', 'ok'); log('🌐 WebSocket: ' + (window.WebSocket ? '✅' : '❌'), 'info'); log('🔐 Crypto API: ' + (window.crypto && crypto.subtle ? '✅' : '❌'), 'info'); });
 </script>
 </body>
 </html>
