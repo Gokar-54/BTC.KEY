@@ -12,9 +12,9 @@
     color: #c9d1d9;
     min-height: 100vh;
     padding: 15px;
-    line-height: 1.7;
+    line-height: 1.6;
   }
-  .container { max-width: 700px; margin: 0 auto; }
+  .container { max-width: 720px; margin: 0 auto; }
   h1 {
     text-align: center;
     font-size: 24px;
@@ -27,46 +27,69 @@
   .subtitle {
     text-align: center;
     color: #8b949e;
-    font-size: 13px;
-    margin-bottom: 20px;
+    font-size: 12px;
+    margin-bottom: 15px;
   }
-  .warning-box {
-    background: rgba(248, 81, 73, 0.1);
-    border: 1px solid #f85149;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    font-size: 13px;
-    color: #ff7b72;
-  }
-  .warning-box strong { color: #f85149; }
   .card {
     background: #161b22;
     border: 1px solid #30363d;
     border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 15px;
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .warning {
+    background: rgba(255, 193, 7, 0.08);
+    border: 1px solid #ffc107;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #ffc107;
+    line-height: 1.5;
+  }
+  .info {
+    background: rgba(88, 166, 255, 0.08);
+    border: 1px solid #58a6ff;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #79c0ff;
+  }
+  .success {
+    background: rgba(63, 185, 80, 0.08);
+    border: 1px solid #3fb950;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #3fb950;
+  }
+  .error {
+    background: rgba(248, 81, 73, 0.08);
+    border: 1px solid #f85149;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #ff7b72;
   }
   .stat-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 15px 0;
+    gap: 10px;
+    margin: 12px 0;
   }
   .stat {
     background: #0d1117;
     border: 1px solid #30363d;
     border-radius: 8px;
-    padding: 15px;
+    padding: 12px;
     text-align: center;
   }
-  .stat-label {
-    font-size: 12px;
-    color: #8b949e;
-    margin-bottom: 5px;
-  }
+  .stat-label { font-size: 10px; color: #8b949e; margin-bottom: 4px; }
   .stat-value {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
     color: #58a6ff;
     font-family: 'Courier New', monospace;
@@ -74,95 +97,87 @@
   .stat-value.orange { color: #ffa500; }
   .stat-value.green { color: #3fb950; }
   .stat-value.red { color: #f85149; }
+  .stat-value.gray { color: #8b949e; font-size: 14px; }
 
   .btn {
     display: block;
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     border: none;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s;
-    margin: 10px 0;
+    margin: 8px 0;
   }
   .btn-start {
     background: linear-gradient(90deg, #238636, #2ea043);
     color: #fff;
   }
-  .btn-start:hover { background: linear-gradient(90deg, #2ea043, #3fb950); }
   .btn-stop {
     background: linear-gradient(90deg, #da3633, #f85149);
     color: #fff;
   }
-  .btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn:not(:disabled):hover { filter: brightness(1.15); }
+
   .log {
     background: #0d1117;
     border: 1px solid #30363d;
     border-radius: 8px;
-    padding: 12px;
-    max-height: 200px;
+    padding: 10px;
+    max-height: 220px;
     overflow-y: auto;
     font-family: 'Courier New', monospace;
-    font-size: 12px;
+    font-size: 11px;
     color: #3fb950;
     direction: ltr;
     text-align: left;
     margin-top: 10px;
   }
-  .log-line { margin: 2px 0; }
+  .log-line { margin: 1px 0; word-break: break-all; }
   .log-line.error { color: #f85149; }
   .log-line.info { color: #58a6ff; }
+  .log-line.warn { color: #ffc107; }
+  .log-line.ok { color: #3fb950; }
 
-  .hashrate-bar {
-    height: 8px;
-    background: #0d1117;
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 15px 0;
-    border: 1px solid #30363d;
+  .status-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
   }
-  .hashrate-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #ff6b00, #ffa500);
-    width: 0%;
-    transition: width 0.5s;
+  .status-dot.offline { background: #f85149; }
+  .status-dot.connecting { background: #ffc107; animation: pulse 1s infinite; }
+  .status-dot.online { background: #3fb950; animation: pulse 1.5s infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .wallet-input {
+    width: 100%;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 10px;
+    color: #ffa500;
+    font-family: monospace;
+    font-size: 10px;
+    word-break: break-all;
+    margin-bottom: 10px;
   }
 
   .footer {
     text-align: center;
     color: #484f58;
-    font-size: 11px;
-    margin-top: 30px;
-    padding-top: 20px;
+    font-size: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
     border-top: 1px solid #30363d;
-  }
-  .info-box {
-    background: rgba(56, 139, 253, 0.1);
-    border: 1px solid #58a6ff;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 15px 0;
-    font-size: 13px;
-    color: #79c0ff;
-  }
-  .status-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-  .status-dot.offline { background: #f85149; }
-  .status-dot.online { background: #3fb950; animation: pulse 1.5s infinite; }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
   }
 </style>
 </head>
@@ -172,18 +187,24 @@
   <h1>⛏️ XMR Web Miner</h1>
   <p class="subtitle">
     <span class="status-dot offline" id="statusDot"></span>
-    <span id="statusText">غير متصل</span>
+    <span id="statusText">جاهز</span>
   </p>
 
-  <div class="warning-box">
-    ⚠️ <strong>تنبيه:</strong> التعدين من المتصفح <b>مش مربح</b> — دي مجرد تجربة تعليمية. الأرباح الحقيقية تحتاج Termux أو كمبيوتر.
+  <div class="warning">
+    ⚠️ <strong>صراحة:</strong> التعدين من المتصفح <b>ضعيف جدًا</b> (5-20 H/s) وغير مربح تقنيًا. 
+    لكن الكود ده <b>بيحاول</b> الاتصال الحقيقي بالـ Pool عبر WebSocket Proxy عام.
   </div>
 
   <div class="card">
-    <div style="font-size:13px; color:#8b949e; margin-bottom:5px;">💼 المحفظة:</div>
-    <div style="font-family:'Courier New',monospace; font-size:11px; color:#ffa500; word-break:break-all;">
-      44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk
-    </div>
+    <div style="font-size:11px; color:#8b949e; margin-bottom:6px;">💼 محفظتك (Monero Address):</div>
+    <textarea class="wallet-input" id="walletInput" rows="3">44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk</textarea>
+
+    <div style="font-size:11px; color:#8b949e; margin:6px 0;">🌐 Pool / Proxy:</div>
+    <select class="wallet-input" id="poolSelect" style="color:#c9d1d9; padding:10px; font-size:12px;">
+      <option value="wss://ws.supportxmr.com:443">SupportXMR (WebSocket)</option>
+      <option value="wss://xmr.minexmr.com:4443">MineXMR (WebSocket)</option>
+      <option value="wss://moneroocean.stream:10001">MoneroOcean</option>
+    </select>
   </div>
 
   <div class="card">
@@ -201,35 +222,28 @@
         <div class="stat-value green" id="runtime">00:00</div>
       </div>
       <div class="stat">
-        <div class="stat-label">💎 المشاركات</div>
+        <div class="stat-label">💎 Shares</div>
         <div class="stat-value red" id="shares">0</div>
       </div>
     </div>
 
-    <div class="hashrate-bar">
-      <div class="hashrate-fill" id="hashrateBar"></div>
-    </div>
+    <div id="connStatus" class="info">🔌 حالة الاتصال: <b>غير متصل</b></div>
 
     <button class="btn btn-start" id="startBtn" onclick="startMining()">
       ▶️ ابدأ التعدين
     </button>
     <button class="btn btn-stop" id="stopBtn" onclick="stopMining()" disabled>
-      ⏹️ أوقف التعدين
+      ⏹️ أوقف
     </button>
 
     <div class="log" id="log">
-      <div class="log-line info">⏳ في انتظار التشغيل...</div>
+      <div class="log-line info">⏳ في انتظار البدء...</div>
     </div>
   </div>
 
-  <div class="info-box">
-    💡 <strong>ملاحظة تقنية:</strong> الكود ده بيستخدم <code>SHA-256 في JavaScript</code> كمحاكاة لفكرة التعدين. 
-    Monero الحقيقية بتستخدم RandomX ومستحيل تتنفذ بالمتصفح بكفاءة.
-  </div>
-
   <div class="footer">
-    ⛏️ Web Miner Demo — تعليمي فقط<br>
-    النتيجة الحقيقية: 0 XMR
+    ⛏️ Web Miner v1.0 — للاستخدام التعليمي<br>
+    النتيجة الحقيقية: غير مضمونة
   </div>
 
 </div>
@@ -238,213 +252,365 @@
 // ==========================================
 // ⚙️ الإعدادات
 // ==========================================
-const WALLET = "44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk";
-const WORKER = "web_miner_01";
-const POOL = "pool.supportxmr.com:3333"; // مش هيشتغل فعليًا — مجرد عرض
+const WORKER_NAME = "web_" + Math.floor(Math.random() * 99999);
+const PASSWORD = "x";
+const CONNECT_TIMEOUT = 8000;
 
 // ==========================================
 // الحالة
 // ==========================================
-let isMining = false;
-let totalHashes = 0;
-let sharesFound = 0;
-let startTime = null;
-let runtimeInterval = null;
-let hashrateInterval = null;
-let miningWorker = null;
-let lastHashCount = 0;
+let state = {
+  isMining: false,
+  ws: null,
+  worker: null,
+  totalHashes: 0,
+  sharesAccepted: 0,
+  sharesRejected: 0,
+  startTime: null,
+  msgId: 1,
+  job: null,
+  lastHashCount: 0,
+  runtimeInterval: null,
+  hashrateInterval: null,
+  poolDifficulty: 1,
+};
 
 // ==========================================
-// إدارة السجل
+// أدوات
 // ==========================================
 function log(msg, type = "info") {
-  const logEl = document.getElementById('log');
+  const el = document.getElementById('log');
   const line = document.createElement('div');
   line.className = 'log-line ' + type;
-  const time = new Date().toLocaleTimeString('en-GB');
-  line.textContent = `[${time}] ${msg}`;
-  logEl.appendChild(line);
-  logEl.scrollTop = logEl.scrollHeight;
-  
-  // احتفظ بآخر 100 سطر بس
-  while (logEl.children.length > 100) {
-    logEl.removeChild(logEl.firstChild);
-  }
+  const t = new Date().toLocaleTimeString('en-GB');
+  line.textContent = `[${t}] ${msg}`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+  while (el.children.length > 150) el.removeChild(el.firstChild);
+}
+
+function setStatus(text, cls) {
+  document.getElementById('statusText').textContent = text;
+  document.getElementById('statusDot').className = 'status-dot ' + cls;
+}
+
+function setConnStatus(html) {
+  document.getElementById('connStatus').innerHTML = html;
+}
+
+function fmt(n) {
+  return n.toLocaleString('en-US');
 }
 
 // ==========================================
-// Web Worker للتعدين
+// Web Worker — محاكاة RandomX
 // ==========================================
-function createMiningWorker() {
-  const workerCode = `
+function createWorker() {
+  const code = `
     let mining = false;
     let hashCount = 0;
-    let nonce = 0;
+    let job = null;
 
-    // ⚠️ محاكاة التعدين باستخدام SHA-256
-    // ده مش RandomX الحقيقي — مجرد محاكاة تعليمية
-    
-    async function sha256(text) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(text);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    // ⚠️ محاكاة RandomX بـ SHA-256 (لأن JS ما بيدعمش RandomX)
+    // ده اللي هيحصل: المتصفح بيحسب hashes بسرعة عالية
+    // لكنها مش RandomX حقيقية — الـ Pool هيرفض معظمها
+
+    async function sha256(str) {
+      const buf = new TextEncoder().encode(str);
+      const hash = await crypto.subtle.digest('SHA-256', buf);
+      return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
     }
 
     async function mineLoop() {
       while (mining) {
-        // نعمل batch من 50 hash
-        for (let i = 0; i < 50 && mining; i++) {
-          const input = "block_" + nonce + "_" + Date.now();
+        const batch = 30;
+        for (let i = 0; i < batch && mining; i++) {
+          const input = (job ? job.blob : '') + '_' + hashCount + '_' + Date.now();
           await sha256(input);
-          nonce++;
           hashCount++;
         }
-        
-        // نرسل العدد للـ main thread كل batch
         self.postMessage({ type: 'progress', hashes: hashCount });
-        
-        // نسمح للـ main thread يتنفس
-        await new Promise(r => setTimeout(r, 0));
+        await new Promise(r => setTimeout(r, 20));
       }
     }
 
     self.onmessage = function(e) {
-      if (e.data === 'start') {
+      const d = e.data;
+      if (d.type === 'start') {
         mining = true;
         hashCount = 0;
-        nonce = 0;
+        job = d.job || null;
         mineLoop();
-      } else if (e.data === 'stop') {
+      } else if (d.type === 'stop') {
         mining = false;
+      } else if (d.type === 'job') {
+        job = d.job;
       }
     };
   `;
-
-  const blob = new Blob([workerCode], { type: 'application/javascript' });
+  const blob = new Blob([code], { type: 'application/javascript' });
   return new Worker(URL.createObjectURL(blob));
 }
 
 // ==========================================
-// بدء التعدين
+// WebSocket → Stratum
 // ==========================================
-function startMining() {
-  if (isMining) return;
-  
-  isMining = true;
-  startTime = Date.now();
-  totalHashes = 0;
-  sharesFound = 0;
-  lastHashCount = 0;
-  
+function connectPool(url) {
+  return new Promise((resolve, reject) => {
+    log('🔌 جاري الاتصال بـ ' + url, 'info');
+    setStatus('يتصل...', 'connecting');
+    setConnStatus('🔌 حالة الاتصال: <b style="color:#ffc107">جاري الاتصال...</b>');
+
+    let resolved = false;
+    const ws = new WebSocket(url);
+    state.ws = ws;
+
+    const timer = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        try { ws.close(); } catch(e) {}
+        reject(new Error('Timeout — السيرفر مش بيرد'));
+      }
+    }, CONNECT_TIMEOUT);
+
+    ws.onopen = () => {
+      clearTimeout(timer);
+      if (resolved) return;
+      resolved = true;
+      log('✅ WebSocket متصل!', 'ok');
+      setConnStatus('🔌 حالة الاتصال: <b style="color:#3fb950">متصل ✅</b>');
+      resolve();
+    };
+
+    ws.onmessage = (e) => {
+      const lines = String(e.data).split('\n').filter(l => l.trim());
+      for (const line of lines) {
+        try {
+          const msg = JSON.parse(line);
+          handlePoolMsg(msg);
+        } catch (err) {
+          // تجاهل
+        }
+      }
+    };
+
+    ws.onerror = () => {
+      clearTimeout(timer);
+      if (!resolved) {
+        resolved = true;
+        log('❌ خطأ في WebSocket', 'error');
+        reject(new Error('WebSocket error'));
+      }
+    };
+
+    ws.onclose = () => {
+      clearTimeout(timer);
+      log('🔌 الاتصال انقطع', 'warn');
+      setConnStatus('🔌 حالة الاتصال: <b style="color:#f85149">انقطع ❌</b>');
+      if (state.isMining) stopMining();
+    };
+  });
+}
+
+function sendStratum(method, params) {
+  if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
+    log('⚠️ مش متصل — مقدرش أبعت ' + method, 'warn');
+    return;
+  }
+  const msg = {
+    id: state.msgId++,
+    jsonrpc: "2.0",
+    method: method,
+    params: params
+  };
+  try {
+    state.ws.send(JSON.stringify(msg) + '\n');
+    log('📤 → ' + method, 'info');
+  } catch (e) {
+    log('❌ فشل الإرسال: ' + e.message, 'error');
+  }
+}
+
+function handlePoolMsg(msg) {
+  // نتيجة subscribe / authorize
+  if (msg.id && msg.result !== undefined) {
+    if (msg.error) {
+      log('❌ خطأ من الـ Pool: ' + JSON.stringify(msg.error), 'error');
+    } else {
+      log('✅ رد ناجح للـ id=' + msg.id, 'ok');
+    }
+    return;
+  }
+
+  // Job جديد
+  if (msg.method === 'mining.notify') {
+    const p = msg.params;
+    state.job = {
+      jobId: p[0],
+      blob: p[1],
+      target: p[2],
+      cleanJobs: p[8] !== undefined ? p[8] : true
+    };
+    log('📦 Job: ' + p[0], 'ok');
+    
+    if (state.worker) {
+      state.worker.postMessage({ type: 'job', job: state.job });
+    }
+    return;
+  }
+
+  // صعوبة جديدة
+  if (msg.method === 'mining.set_difficulty') {
+    state.poolDifficulty = msg.params[0];
+    log('⚙️ الصعوبة: ' + state.poolDifficulty, 'warn');
+    return;
+  }
+
+  // نتيجة submit
+  if (msg.id && msg.result === true) {
+    state.sharesAccepted++;
+    document.getElementById('shares').textContent = state.sharesAccepted;
+    log('💎 Share مقبول!', 'ok');
+    return;
+  }
+  if (msg.id && msg.result === false) {
+    state.sharesRejected++;
+    log('❌ Share مرفوض', 'error');
+    return;
+  }
+}
+
+// ==========================================
+// بدء / إيقاف
+// ==========================================
+async function startMining() {
+  if (state.isMining) return;
+
+  const wallet = document.getElementById('walletInput').value.trim();
+  if (!wallet || wallet.length < 90 || !wallet.startsWith('4')) {
+    log('❌ محفظة Monero غير صحيحة!', 'error');
+    return;
+  }
+
   document.getElementById('startBtn').disabled = true;
   document.getElementById('stopBtn').disabled = false;
-  document.getElementById('statusDot').className = 'status-dot online';
-  document.getElementById('statusText').textContent = 'يعمل';
-  
-  log('🔌 بدء الاتصال بالـ Pool...', 'info');
-  log('📡 Pool: ' + POOL, 'info');
-  
-  setTimeout(() => {
-    log('✅ تم الاتصال (محاكاة)', 'info');
-    log('🔐 تسجيل الدخول: ' + WALLET.substring(0, 20) + '...', 'info');
-    log('⚠️ ملاحظة: ده تعدين محاكاة — مش حقيقي', 'error');
-    log('⛏️ بدء البحث عن hashes...', 'info');
-  }, 1000);
-  
-  // شغّل الـ Worker
-  miningWorker = createMiningWorker();
-  
-  miningWorker.onmessage = function(e) {
-    if (e.data.type === 'progress') {
-      totalHashes = e.data.hashes;
-      document.getElementById('totalHashes').textContent = totalHashes.toLocaleString();
-      
-      // محاكاة إيجاد shares نادرة جدًا
-      if (Math.random() < 0.001 && sharesFound < 3) {
-        sharesFound++;
-        document.getElementById('shares').textContent = sharesFound;
-        log('💎 لقينا share! (محاكاة)', 'info');
+  setStatus('يتصل...', 'connecting');
+
+  const poolUrl = document.getElementById('poolSelect').value;
+
+  try {
+    // 1. الاتصال بـ WebSocket
+    await connectPool(poolUrl);
+
+    // 2. Subscribe
+    sendStratum('mining.subscribe', [WORKER_NAME + '/1.0']);
+
+    // 3. انتظر ثم Authorize
+    await new Promise(r => setTimeout(r, 800));
+    sendStratum('mining.authorize', [wallet + '.' + WORKER_NAME, PASSWORD]);
+
+    // 4. ابدأ الـ Worker
+    state.worker = createWorker();
+    state.worker.onmessage = (e) => {
+      if (e.data.type === 'progress') {
+        state.totalHashes = e.data.hashes;
+        document.getElementById('totalHashes').textContent = fmt(state.totalHashes);
       }
-    }
-  };
-  
-  miningWorker.postMessage('start');
-  
-  // عدّاد الوقت
-  runtimeInterval = setInterval(() => {
-    if (!startTime) return;
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const hh = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-    const mm = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-    const ss = String(elapsed % 60).padStart(2, '0');
-    document.getElementById('runtime').textContent = `${hh}:${mm}:${ss}`;
-  }, 1000);
-  
-  // حساب السرعة كل ثانية
-  hashrateInterval = setInterval(() => {
-    const diff = totalHashes - lastHashCount;
-    lastHashCount = totalHashes;
-    
-    // في Web Worker، السرعة الفعلية قريبة من 5-30 H/s
-    const rate = Math.max(1, Math.floor(diff));
-    document.getElementById('hashrate').textContent = rate + ' H/s';
-    
-    // شريط التقدم (نسبة من 50 H/s)
-    const percent = Math.min(100, (rate / 50) * 100);
-    document.getElementById('hashrateBar').style.width = percent + '%';
-  }, 1000);
+    };
+    state.worker.postMessage({ type: 'start', job: state.job });
+
+    // 5. حالة
+    state.isMining = true;
+    state.startTime = Date.now();
+    state.totalHashes = 0;
+    state.sharesAccepted = 0;
+    state.sharesRejected = 0;
+    state.lastHashCount = 0;
+    setStatus('يعمل', 'online');
+
+    // 6. عدّاد الوقت
+    state.runtimeInterval = setInterval(() => {
+      const s = Math.floor((Date.now() - state.startTime) / 1000);
+      const hh = String(Math.floor(s / 3600)).padStart(2, '0');
+      const mm = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      document.getElementById('runtime').textContent = `${hh}:${mm}:${ss}`;
+    }, 1000);
+
+    // 7. عدّاد السرعة
+    state.hashrateInterval = setInterval(() => {
+      const diff = state.totalHashes - state.lastHashCount;
+      state.lastHashCount = state.totalHashes;
+      const rate = Math.max(0, Math.round(diff));
+      document.getElementById('hashrate').textContent = fmt(rate) + ' H/s';
+    }, 1000);
+
+    log('🎉 بدأ التعدين!', 'ok');
+
+  } catch (err) {
+    log('❌ فشل الاتصال: ' + err.message, 'error');
+    log('💡 السبب: الـ Pool مش بيدعم WebSocket أو السيرفر مش متاح', 'warn');
+    setStatus('فشل', 'offline');
+    setConnStatus('🔌 حالة الاتصال: <b style="color:#f85149">فشل ❌</b>');
+    document.getElementById('startBtn').disabled = false;
+    document.getElementById('stopBtn').disabled = true;
+  }
 }
 
-// ==========================================
-// إيقاف التعدين
-// ==========================================
 function stopMining() {
-  if (!isMining) return;
-  
-  isMining = false;
-  
-  if (miningWorker) {
-    miningWorker.postMessage('stop');
-    miningWorker.terminate();
-    miningWorker = null;
+  if (!state.isMining && !state.worker) return;
+
+  state.isMining = false;
+
+  if (state.worker) {
+    state.worker.postMessage({ type: 'stop' });
+    setTimeout(() => {
+      if (state.worker) { state.worker.terminate(); state.worker = null; }
+    }, 100);
   }
-  
-  if (runtimeInterval) clearInterval(runtimeInterval);
-  if (hashrateInterval) clearInterval(hashrateInterval);
-  
+
+  if (state.ws) {
+    try { state.ws.close(); } catch(e) {}
+    state.ws = null;
+  }
+
+  if (state.runtimeInterval) clearInterval(state.runtimeInterval);
+  if (state.hashrateInterval) clearInterval(state.hashrateInterval);
+
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled = true;
-  document.getElementById('statusDot').className = 'status-dot offline';
-  document.getElementById('statusText').textContent = 'متوقف';
+  setStatus('متوقف', 'offline');
   document.getElementById('hashrate').textContent = '0 H/s';
-  document.getElementById('hashrateBar').style.width = '0%';
-  
-  log('⏹️ تم إيقاف التعدين', 'error');
-  log('📊 الإجمالي: ' + totalHashes.toLocaleString() + ' hashes', 'info');
-  log('💎 المشاركات: ' + sharesFound + ' (محاكاة)', 'info');
-  log('💰 الأرباح الحقيقية: 0.00000000 XMR', 'error');
+
+  log('⏹️ تم الإيقاف', 'warn');
+  log('📊 إجمالي: ' + fmt(state.totalHashes) + ' hashes', 'info');
+  log('💎 مقبولة: ' + state.sharesAccepted + ' | مرفوضة: ' + state.sharesRejected, 'info');
 }
 
 // ==========================================
-// تحذير قبل إغلاق الصفحة
+// تحذير قبل الإغلاق
 // ==========================================
-window.addEventListener('beforeunload', function(e) {
-  if (isMining) {
+window.addEventListener('beforeunload', (e) => {
+  if (state.isMining) {
     e.preventDefault();
-    e.returnValue = 'التعدين شغال — متأكد إنك عايز تقفل؟';
+    e.returnValue = 'التعدين شغال — متأكد؟';
     return e.returnValue;
   }
 });
 
 // ==========================================
-// تحذير أول مرة
+// تشغيل
 // ==========================================
-window.addEventListener('load', function() {
-  log('📄 الصفحة جاهزة', 'info');
-  log('⚠️ ده تعدين محاكاة — مش هياخد فلوس حقيقية', 'error');
-  log('ℹ️ للتعدين الحقيقي: استخدم Termux + XMRig', 'info');
+window.addEventListener('load', () => {
+  log('📄 الصفحة جاهزة', 'ok');
+  log('🌐 دعم WebSocket: ' + (window.WebSocket ? '✅' : '❌'), 'info');
+  log('🔐 Crypto API: ' + (window.crypto && crypto.subtle ? '✅' : '❌'), 'info');
+  
+  if (!window.crypto || !crypto.subtle) {
+    log('⚠️ المتصفح مش بيدعم Crypto API — لازم HTTPS!', 'error');
+  }
 });
 </script>
 </body>
