@@ -3,25 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⛏️ XMRig Installer - Termux</title>
+<title>⛏️ XMR Web Miner</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: #fff;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    color: #c9d1d9;
     min-height: 100vh;
     padding: 15px;
     line-height: 1.7;
   }
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-  }
+  .container { max-width: 700px; margin: 0 auto; }
   h1 {
     text-align: center;
-    font-size: 22px;
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 5px;
     background: linear-gradient(90deg, #ff6b00, #ffa500);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -29,347 +26,426 @@
   }
   .subtitle {
     text-align: center;
-    color: #aaa;
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
-  .wallet-box {
-    background: #0f0f1a;
-    border: 2px solid #ff6b00;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 20px;
-    word-break: break-all;
-    font-size: 12px;
-    color: #ffa500;
-    font-family: monospace;
-  }
-  .wallet-box strong {
-    display: block;
-    color: #fff;
-    margin-bottom: 5px;
+    color: #8b949e;
     font-size: 13px;
+    margin-bottom: 20px;
   }
-  .step {
-    background: rgba(255, 255, 255, 0.05);
-    border-right: 4px solid #ff6b00;
+  .warning-box {
+    background: rgba(248, 81, 73, 0.1);
+    border: 1px solid #f85149;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #ff7b72;
+  }
+  .warning-box strong { color: #f85149; }
+  .card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 15px 0;
+  }
+  .stat {
+    background: #0d1117;
+    border: 1px solid #30363d;
     border-radius: 8px;
     padding: 15px;
-    margin-bottom: 15px;
-    transition: all 0.3s;
+    text-align: center;
   }
-  .step:hover {
-    background: rgba(255, 255, 255, 0.08);
+  .stat-label {
+    font-size: 12px;
+    color: #8b949e;
+    margin-bottom: 5px;
   }
-  .step-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .step-num {
-    background: #ff6b00;
-    color: #fff;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .stat-value {
+    font-size: 22px;
     font-weight: bold;
-    margin-left: 10px;
-    flex-shrink: 0;
-  }
-  .step-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-  }
-  .step-desc {
-    color: #ccc;
-    font-size: 13px;
-    margin-bottom: 10px;
-  }
-  .cmd-box {
-    background: #000;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .cmd-text {
-    flex: 1;
+    color: #58a6ff;
     font-family: 'Courier New', monospace;
-    font-size: 12px;
-    color: #0f0;
-    word-break: break-all;
-    direction: ltr;
-    text-align: left;
   }
-  .copy-btn {
-    background: #ff6b00;
-    border: none;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-    flex-shrink: 0;
-    transition: all 0.2s;
-  }
-  .copy-btn:hover { background: #ff8c33; }
-  .copy-btn:active { transform: scale(0.95); }
-  .copy-btn.copied { background: #00c853; }
-  .termux-btn {
+  .stat-value.orange { color: #ffa500; }
+  .stat-value.green { color: #3fb950; }
+  .stat-value.red { color: #f85149; }
+
+  .btn {
     display: block;
     width: 100%;
-    background: linear-gradient(90deg, #00c853, #00e676);
-    color: #fff;
-    border: none;
     padding: 15px;
+    border: none;
     border-radius: 10px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    margin: 20px 0;
-    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
+    transition: all 0.2s;
+    margin: 10px 0;
   }
-  .warning {
-    background: rgba(255, 193, 7, 0.1);
-    border: 1px solid #ffc107;
+  .btn-start {
+    background: linear-gradient(90deg, #238636, #2ea043);
+    color: #fff;
+  }
+  .btn-start:hover { background: linear-gradient(90deg, #2ea043, #3fb950); }
+  .btn-stop {
+    background: linear-gradient(90deg, #da3633, #f85149);
+    color: #fff;
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .log {
+    background: #0d1117;
+    border: 1px solid #30363d;
     border-radius: 8px;
     padding: 12px;
-    margin: 15px 0;
-    font-size: 13px;
-    color: #ffc107;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #3fb950;
+    direction: ltr;
+    text-align: left;
+    margin-top: 10px;
   }
-  .info {
-    background: rgba(33, 150, 243, 0.1);
-    border: 1px solid #2196f3;
-    border-radius: 8px;
-    padding: 12px;
+  .log-line { margin: 2px 0; }
+  .log-line.error { color: #f85149; }
+  .log-line.info { color: #58a6ff; }
+
+  .hashrate-bar {
+    height: 8px;
+    background: #0d1117;
+    border-radius: 4px;
+    overflow: hidden;
     margin: 15px 0;
-    font-size: 13px;
-    color: #64b5f6;
+    border: 1px solid #30363d;
   }
+  .hashrate-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b00, #ffa500);
+    width: 0%;
+    transition: width 0.5s;
+  }
+
   .footer {
     text-align: center;
-    color: #666;
+    color: #484f58;
     font-size: 11px;
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px solid #333;
+    border-top: 1px solid #30363d;
   }
-  .toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: #00c853;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-weight: bold;
-    transition: transform 0.3s;
-    z-index: 1000;
+  .info-box {
+    background: rgba(56, 139, 253, 0.1);
+    border: 1px solid #58a6ff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    font-size: 13px;
+    color: #79c0ff;
   }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  .status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .status-dot.offline { background: #f85149; }
+  .status-dot.online { background: #3fb950; animation: pulse 1.5s infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
 </style>
 </head>
 <body>
 <div class="container">
 
-  <h1>⛏️ XMRig Installer</h1>
-  <p class="subtitle">دليل تثبيت Monero Miner على Termux</p>
+  <h1>⛏️ XMR Web Miner</h1>
+  <p class="subtitle">
+    <span class="status-dot offline" id="statusDot"></span>
+    <span id="statusText">غير متصل</span>
+  </p>
 
-  <div class="wallet-box">
-    <strong>💼 المحفظة المستخدمة:</strong>
-    44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk
+  <div class="warning-box">
+    ⚠️ <strong>تنبيه:</strong> التعدين من المتصفح <b>مش مربح</b> — دي مجرد تجربة تعليمية. الأرباح الحقيقية تحتاج Termux أو كمبيوتر.
   </div>
 
-  <a href="https://f-droid.org/packages/com.termux/" class="termux-btn" target="_blank">
-    📥 حمّل Termux من F-Droid
-  </a>
-
-  <div class="warning">
-    ⚠️ <strong>مهم:</strong> لازم تحمّل Termux من <b>F-Droid</b>، مش من Google Play (نسخة Play قديمة ومش هتشتغل).
-  </div>
-
-  <!-- Step 1 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">1</div>
-      <div class="step-title">تحديث الحزم</div>
-    </div>
-    <div class="step-desc">افتح Termux واكتب الأوامر دي:</div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd1">pkg update && pkg upgrade -y</span>
-      <button class="copy-btn" onclick="copyCmd('cmd1', this)">نسخ</button>
+  <div class="card">
+    <div style="font-size:13px; color:#8b949e; margin-bottom:5px;">💼 المحفظة:</div>
+    <div style="font-family:'Courier New',monospace; font-size:11px; color:#ffa500; word-break:break-all;">
+      44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk
     </div>
   </div>
 
-  <!-- Step 2 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">2</div>
-      <div class="step-title">تثبيت الأدوات المطلوبة</div>
+  <div class="card">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">⚡ السرعة</div>
+        <div class="stat-value orange" id="hashrate">0 H/s</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">📊 Hashes</div>
+        <div class="stat-value" id="totalHashes">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">⏱️ الوقت</div>
+        <div class="stat-value green" id="runtime">00:00</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">💎 المشاركات</div>
+        <div class="stat-value red" id="shares">0</div>
+      </div>
     </div>
-    <div class="step-desc">الأدوات دي ضرورية للبناء (بياخد 5-10 دقايق):</div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd2">pkg install git cmake build-essential -y</span>
-      <button class="copy-btn" onclick="copyCmd('cmd2', this)">نسخ</button>
+
+    <div class="hashrate-bar">
+      <div class="hashrate-fill" id="hashrateBar"></div>
+    </div>
+
+    <button class="btn btn-start" id="startBtn" onclick="startMining()">
+      ▶️ ابدأ التعدين
+    </button>
+    <button class="btn btn-stop" id="stopBtn" onclick="stopMining()" disabled>
+      ⏹️ أوقف التعدين
+    </button>
+
+    <div class="log" id="log">
+      <div class="log-line info">⏳ في انتظار التشغيل...</div>
     </div>
   </div>
 
-  <!-- Step 3 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">3</div>
-      <div class="step-title">تحميل XMRig</div>
-    </div>
-    <div class="step-desc">نسخ كود XMRig من GitHub:</div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd3">git clone https://github.com/xmrig/xmrig.git</span>
-      <button class="copy-btn" onclick="copyCmd('cmd3', this)">نسخ</button>
-    </div>
-  </div>
-
-  <!-- Step 4 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">4</div>
-      <div class="step-title">الدخول للمجلد</div>
-    </div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd4">cd xmrig</span>
-      <button class="copy-btn" onclick="copyCmd('cmd4', this)">نسخ</button>
-    </div>
-  </div>
-
-  <!-- Step 5 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">5</div>
-      <div class="step-title">إنشاء مجلد البناء</div>
-    </div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd5">mkdir build && cd build</span>
-      <button class="copy-btn" onclick="copyCmd('cmd5', this)">نسخ</button>
-    </div>
-  </div>
-
-  <!-- Step 6 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">6</div>
-      <div class="step-title">تهيئة CMake</div>
-    </div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd6">cmake .. -DWITH_HWLOC=OFF</span>
-      <button class="copy-btn" onclick="copyCmd('cmd6', this)">نسخ</button>
-    </div>
-    <div class="info">
-      💡 أضفنا <code>-DWITH_HWLOC=OFF</code> لأن Termux مش بيدعم hwloc بشكل كامل.
-    </div>
-  </div>
-
-  <!-- Step 7 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">7</div>
-      <div class="step-title">البناء (Compile)</div>
-    </div>
-    <div class="step-desc">⏳ ده هياخد 30-60 دقيقة على الموبايل، استحمل:</div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd7">make -j2</span>
-      <button class="copy-btn" onclick="copyCmd('cmd7', this)">نسخ</button>
-    </div>
-    <div class="info">
-      💡 <code>-j2</code> يعني استخدام نواتين. لو موبايلك ضعيف خليها <code>-j1</code>.
-    </div>
-  </div>
-
-  <!-- Step 8 -->
-  <div class="step">
-    <div class="step-header">
-      <div class="step-num">8</div>
-      <div class="step-title">تشغيل المُعدّن 🚀</div>
-    </div>
-    <div class="step-desc">الأمر النهائي لتشغيل التعدين:</div>
-    <div class="cmd-box">
-      <span class="cmd-text" id="cmd8">./xmrig -o pool.supportxmr.com:3333 -u 44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk -p x -k</span>
-      <button class="copy-btn" onclick="copyCmd('cmd8', this)">نسخ</button>
-    </div>
-  </div>
-
-  <div class="warning">
-    ⚠️ <strong>تنبيه:</strong> التعدين على الموبايل بيسخّنه جدًا وبيوّرم البطارية. لو هتسيبه شغال، حطه في مكان بارد وشيله من الشاحن لو سخن.
-  </div>
-
-  <div class="info">
-    💡 <strong>لفتح Termux بسرعة:</strong> اضغط على زر F-Droid فوق لتحميل التطبيق، وبعد التثبيت هتلاقي أيقونته في الموبايل.
+  <div class="info-box">
+    💡 <strong>ملاحظة تقنية:</strong> الكود ده بيستخدم <code>SHA-256 في JavaScript</code> كمحاكاة لفكرة التعدين. 
+    Monero الحقيقية بتستخدم RandomX ومستحيل تتنفذ بالمتصفح بكفاءة.
   </div>
 
   <div class="footer">
-    ⛏️ XMRig Installer - نسخة تعليمية<br>
-    استخدم على مسؤوليتك الشخصية
+    ⛏️ Web Miner Demo — تعليمي فقط<br>
+    النتيجة الحقيقية: 0 XMR
   </div>
 
 </div>
 
-<div class="toast" id="toast">✅ تم النسخ!</div>
-
 <script>
-function copyCmd(id, btn) {
-  const text = document.getElementById(id).innerText;
+// ==========================================
+// ⚙️ الإعدادات
+// ==========================================
+const WALLET = "44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk";
+const WORKER = "web_miner_01";
+const POOL = "pool.supportxmr.com:3333"; // مش هيشتغل فعليًا — مجرد عرض
+
+// ==========================================
+// الحالة
+// ==========================================
+let isMining = false;
+let totalHashes = 0;
+let sharesFound = 0;
+let startTime = null;
+let runtimeInterval = null;
+let hashrateInterval = null;
+let miningWorker = null;
+let lastHashCount = 0;
+
+// ==========================================
+// إدارة السجل
+// ==========================================
+function log(msg, type = "info") {
+  const logEl = document.getElementById('log');
+  const line = document.createElement('div');
+  line.className = 'log-line ' + type;
+  const time = new Date().toLocaleTimeString('en-GB');
+  line.textContent = `[${time}] ${msg}`;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
   
-  // Try clipboard API first
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => {
-      showCopied(btn);
-    }).catch(() => {
-      fallbackCopy(text, btn);
-    });
-  } else {
-    fallbackCopy(text, btn);
+  // احتفظ بآخر 100 سطر بس
+  while (logEl.children.length > 100) {
+    logEl.removeChild(logEl.firstChild);
   }
 }
 
-function fallbackCopy(text, btn) {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-  try {
-    document.execCommand('copy');
-    showCopied(btn);
-  } catch (e) {
-    alert('❌ متصفحك مش بيدعم النسخ التلقائي. انسخ يدويًا.');
-  }
-  document.body.removeChild(textarea);
+// ==========================================
+// Web Worker للتعدين
+// ==========================================
+function createMiningWorker() {
+  const workerCode = `
+    let mining = false;
+    let hashCount = 0;
+    let nonce = 0;
+
+    // ⚠️ محاكاة التعدين باستخدام SHA-256
+    // ده مش RandomX الحقيقي — مجرد محاكاة تعليمية
+    
+    async function sha256(text) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function mineLoop() {
+      while (mining) {
+        // نعمل batch من 50 hash
+        for (let i = 0; i < 50 && mining; i++) {
+          const input = "block_" + nonce + "_" + Date.now();
+          await sha256(input);
+          nonce++;
+          hashCount++;
+        }
+        
+        // نرسل العدد للـ main thread كل batch
+        self.postMessage({ type: 'progress', hashes: hashCount });
+        
+        // نسمح للـ main thread يتنفس
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+
+    self.onmessage = function(e) {
+      if (e.data === 'start') {
+        mining = true;
+        hashCount = 0;
+        nonce = 0;
+        mineLoop();
+      } else if (e.data === 'stop') {
+        mining = false;
+      }
+    };
+  `;
+
+  const blob = new Blob([workerCode], { type: 'application/javascript' });
+  return new Worker(URL.createObjectURL(blob));
 }
 
-function showCopied(btn) {
-  const original = btn.innerText;
-  btn.innerText = '✅ تم';
-  btn.classList.add('copied');
+// ==========================================
+// بدء التعدين
+// ==========================================
+function startMining() {
+  if (isMining) return;
   
-  const toast = document.getElementById('toast');
-  toast.classList.add('show');
+  isMining = true;
+  startTime = Date.now();
+  totalHashes = 0;
+  sharesFound = 0;
+  lastHashCount = 0;
+  
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('stopBtn').disabled = false;
+  document.getElementById('statusDot').className = 'status-dot online';
+  document.getElementById('statusText').textContent = 'يعمل';
+  
+  log('🔌 بدء الاتصال بالـ Pool...', 'info');
+  log('📡 Pool: ' + POOL, 'info');
   
   setTimeout(() => {
-    btn.innerText = original;
-    btn.classList.remove('copied');
-    toast.classList.remove('show');
-  }, 1500);
+    log('✅ تم الاتصال (محاكاة)', 'info');
+    log('🔐 تسجيل الدخول: ' + WALLET.substring(0, 20) + '...', 'info');
+    log('⚠️ ملاحظة: ده تعدين محاكاة — مش حقيقي', 'error');
+    log('⛏️ بدء البحث عن hashes...', 'info');
+  }, 1000);
+  
+  // شغّل الـ Worker
+  miningWorker = createMiningWorker();
+  
+  miningWorker.onmessage = function(e) {
+    if (e.data.type === 'progress') {
+      totalHashes = e.data.hashes;
+      document.getElementById('totalHashes').textContent = totalHashes.toLocaleString();
+      
+      // محاكاة إيجاد shares نادرة جدًا
+      if (Math.random() < 0.001 && sharesFound < 3) {
+        sharesFound++;
+        document.getElementById('shares').textContent = sharesFound;
+        log('💎 لقينا share! (محاكاة)', 'info');
+      }
+    }
+  };
+  
+  miningWorker.postMessage('start');
+  
+  // عدّاد الوقت
+  runtimeInterval = setInterval(() => {
+    if (!startTime) return;
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const hh = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+    const mm = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+    const ss = String(elapsed % 60).padStart(2, '0');
+    document.getElementById('runtime').textContent = `${hh}:${mm}:${ss}`;
+  }, 1000);
+  
+  // حساب السرعة كل ثانية
+  hashrateInterval = setInterval(() => {
+    const diff = totalHashes - lastHashCount;
+    lastHashCount = totalHashes;
+    
+    // في Web Worker، السرعة الفعلية قريبة من 5-30 H/s
+    const rate = Math.max(1, Math.floor(diff));
+    document.getElementById('hashrate').textContent = rate + ' H/s';
+    
+    // شريط التقدم (نسبة من 50 H/s)
+    const percent = Math.min(100, (rate / 50) * 100);
+    document.getElementById('hashrateBar').style.width = percent + '%';
+  }, 1000);
 }
+
+// ==========================================
+// إيقاف التعدين
+// ==========================================
+function stopMining() {
+  if (!isMining) return;
+  
+  isMining = false;
+  
+  if (miningWorker) {
+    miningWorker.postMessage('stop');
+    miningWorker.terminate();
+    miningWorker = null;
+  }
+  
+  if (runtimeInterval) clearInterval(runtimeInterval);
+  if (hashrateInterval) clearInterval(hashrateInterval);
+  
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = true;
+  document.getElementById('statusDot').className = 'status-dot offline';
+  document.getElementById('statusText').textContent = 'متوقف';
+  document.getElementById('hashrate').textContent = '0 H/s';
+  document.getElementById('hashrateBar').style.width = '0%';
+  
+  log('⏹️ تم إيقاف التعدين', 'error');
+  log('📊 الإجمالي: ' + totalHashes.toLocaleString() + ' hashes', 'info');
+  log('💎 المشاركات: ' + sharesFound + ' (محاكاة)', 'info');
+  log('💰 الأرباح الحقيقية: 0.00000000 XMR', 'error');
+}
+
+// ==========================================
+// تحذير قبل إغلاق الصفحة
+// ==========================================
+window.addEventListener('beforeunload', function(e) {
+  if (isMining) {
+    e.preventDefault();
+    e.returnValue = 'التعدين شغال — متأكد إنك عايز تقفل؟';
+    return e.returnValue;
+  }
+});
+
+// ==========================================
+// تحذير أول مرة
+// ==========================================
+window.addEventListener('load', function() {
+  log('📄 الصفحة جاهزة', 'info');
+  log('⚠️ ده تعدين محاكاة — مش هياخد فلوس حقيقية', 'error');
+  log('ℹ️ للتعدين الحقيقي: استخدم Termux + XMRig', 'info');
+});
 </script>
 </body>
 </html>
