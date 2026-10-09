@@ -2,928 +2,374 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>باحث مفاتيح البيتكوين — نسخة حقيقية مُحسّنة</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⛏️ XMRig Installer - Termux</title>
 <style>
-  body{font-family:'Segoe UI',Tahoma,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
-  .card{background:#1e293b;border:1px solid #334155;border-radius:14px;color:#e2e8f0}
-  .card-header{border-radius:14px 14px 0 0!important;font-weight:700}
-  .form-control,.form-select{background:#0f172a;border-color:#334155;color:#e2e8f0}
-  .form-control:focus,.form-select:focus{background:#0f172a;color:#e2e8f0;border-color:#0d6efd;box-shadow:none}
-  textarea.form-control{font-family:'Courier New',monospace;direction:ltr;text-align:left}
-  .log-box{height:340px;overflow-y:auto;background:#020617;border:1px solid #1e293b;border-radius:10px;
-           padding:10px;font-family:'Courier New',monospace;font-size:.82rem;direction:ltr;text-align:left}
-  .log-box .ok{color:#4ade80}.log-box .err{color:#f87171}.log-box .warn{color:#fbbf24}
-  .log-box .info{color:#93c5fd}.log-box .muted{color:#64748b}
-  .section{display:none}.section.active{display:block}
-  .stat{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:14px;text-align:center}
-  .stat h4{margin:0;font-weight:700}
-  .nav-link.active{background:#0d6efd;color:#fff!important;border-radius:8px}
-  .keybox{font-family:'Courier New',monospace;direction:ltr;text-align:left;background:#020617;
-          border:1px solid #334155;border-radius:8px;padding:8px;word-break:break-all;font-size:.82rem}
-  .warn-banner{background:#7c2d12;border:1px solid #ea580c;color:#fed7aa;border-radius:12px}
-  .navbar-brand{font-weight:700}
-  table{--bs-table-bg:transparent;--bs-table-color:#e2e8f0}
-  .mini{font-size:.78rem;color:#94a3b8}
-  .mode-card{cursor:pointer;transition:.2s;border:2px solid transparent}
-  .mode-card.active{border-color:#0d6efd;background:#0f172a}
-  .mode-card:hover{border-color:#475569}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    min-height: 100vh;
+    padding: 15px;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 10px;
+    background: linear-gradient(90deg, #ff6b00, #ffa500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .wallet-box {
+    background: #0f0f1a;
+    border: 2px solid #ff6b00;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 20px;
+    word-break: break-all;
+    font-size: 12px;
+    color: #ffa500;
+    font-family: monospace;
+  }
+  .wallet-box strong {
+    display: block;
+    color: #fff;
+    margin-bottom: 5px;
+    font-size: 13px;
+  }
+  .step {
+    background: rgba(255, 255, 255, 0.05);
+    border-right: 4px solid #ff6b00;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s;
+  }
+  .step:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .step-num {
+    background: #ff6b00;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-left: 10px;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+  }
+  .step-desc {
+    color: #ccc;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  .cmd-box {
+    background: #000;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .cmd-text {
+    flex: 1;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #0f0;
+    word-break: break-all;
+    direction: ltr;
+    text-align: left;
+  }
+  .copy-btn {
+    background: #ff6b00;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: #ff8c33; }
+  .copy-btn:active { transform: scale(0.95); }
+  .copy-btn.copied { background: #00c853; }
+  .termux-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(90deg, #00c853, #00e676);
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
+  }
+  .warning {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 13px;
+    color: #ffc107;
+  }
+  .info {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid #2196f3;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 13px;
+    color: #64b5f6;
+  }
+  .footer {
+    text-align: center;
+    color: #666;
+    font-size: 11px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+  }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #00c853;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: transform 0.3s;
+    z-index: 1000;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
+<div class="container">
 
-<nav class="navbar navbar-expand-lg navbar-dark" style="background:#020617;border-bottom:1px solid #1e293b">
-  <div class="container">
-    <a class="navbar-brand" href="#"><i class="fab fa-bitcoin text-warning"></i> باحث المفاتيح — Real Engine</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link active" href="#" data-section="home">الرئيسية</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="search">البحث</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="results">النتائج</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-section="settings">الإعدادات</a></li>
-      </ul>
-      <span class="navbar-text text-secondary" id="clock"></span>
-    </div>
-  </div>
-</nav>
+  <h1>⛏️ XMRig Installer</h1>
+  <p class="subtitle">دليل تثبيت Monero Miner على Termux</p>
 
-<div class="container my-4">
-
-  <div id="loadError" class="alert alert-danger d-none">
-    <i class="fas fa-triangle-exclamation"></i>
-    فشل تحميل مكتبات التشفير (esm.sh). تحقّق من اتصال الإنترنت، أو افتح الصفحة من خادم محلي (http:// وليس file://).
+  <div class="wallet-box">
+    <strong>💼 المحفظة المستخدمة:</strong>
+    44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk
   </div>
 
-  <!-- ================= الرئيسية ================= -->
-  <div id="home" class="section active">
-    <div class="warn-banner p-4 mb-4">
-      <h4 class="mb-2"><i class="fas fa-triangle-exclamation"></i> تنبيه صريح قبل البدء</h4>
-      <p class="mb-2">
-        هذا البرنامج <b>يُولّد مفاتيح بيتكوين حقيقية</b> (منحنى secp256k1)، ويشتقّ منها عناوين حقيقية
-        (P2PKH, P2WPKH, P2SH-P2WPKH)، ويسأل عقدة بيتكوين عامة عن رصيدها الفعلي. لا يوجد أي محاكاة.
-      </p>
-      <p class="mb-2">
-        <b>احتمال النجاح في الوضع العشوائي:</b> عدد المفاتيح الممكنة ≈ 2<sup>256</sup>.
-        حتى لو فحصت مليار عنوان في الثانية لاحتجت ملايين السنين. الحديث عن "رصيد مدفون" هو خرافة تسويقية.
-      </p>
-      <p class="mb-0">
-        <b>الوضع الحقيقي الوحيد:</b> <i>Brain Wallet</i> — بعض الناس (خاصة 2011–2014) صنعوا محافظ بكلمات ضعيفة
-        مثل "hello" ثم SHA256 → المفتاح. أغلبها نُهبت منذ سنوات، لكن لو تبقّى رصيد في واحدة فستجده.
-        هذه هي الطريقة التي يستخدمها الباحثون الحقيقيون.
-      </p>
-    </div>
+  <a href="https://f-droid.org/packages/com.termux/" class="termux-btn" target="_blank">
+    📥 حمّل Termux من F-Droid
+  </a>
 
-    <div class="row g-3 mb-4">
-      <div class="col-md-4">
-        <div class="card h-100"><div class="card-body text-center">
-          <i class="fas fa-dice fa-2x text-primary mb-2"></i>
-          <h5>توليد عشوائي حقيقي</h5>
-          <p class="mini">crypto.getRandomValues → 256-bit مفتاح → 3 عناوين لكل مفتاح.</p>
-        </div></div>
-      </div>
-      <div class="col-md-4">
-        <div class="card h-100"><div class="card-body text-center">
-          <i class="fas fa-brain fa-2x text-warning mb-2"></i>
-          <h5>Brain Wallet</h5>
-          <p class="mini">SHA256 لكلمات مخصّصة → مفتاح. الطريقة الوحيدة ذات الاحتمال الواقعي.</p>
-        </div></div>
-      </div>
-      <div class="col-md-4">
-        <div class="card h-100"><div class="card-body text-center">
-          <i class="fas fa-satellite-dish fa-2x text-success mb-2"></i>
-          <h5>فحص شبكة حقيقي</h5>
-          <p class="mini">mempool.space / blockstream.info — رصيد وعدد معاملات فعلي.</p>
-        </div></div>
-      </div>
-    </div>
+  <div class="warning">
+    ⚠️ <strong>مهم:</strong> لازم تحمّل Termux من <b>F-Droid</b>، مش من Google Play (نسخة Play قديمة ومش هتشتغل).
+  </div>
 
-    <div class="card">
-      <div class="card-header bg-primary text-white"><i class="fas fa-bolt"></i> بدء سريع</div>
-      <div class="card-body d-flex flex-wrap gap-2">
-        <button class="btn btn-primary quick" data-mode="random" data-workers="4" data-delay="250">
-          <i class="fas fa-dice"></i> عشوائي (4 عمال)
-        </button>
-        <button class="btn btn-warning quick" data-mode="brain" data-workers="3" data-delay="300">
-          <i class="fas fa-brain"></i> Brain Wallet
-        </button>
-        <button class="btn btn-outline-light" id="btnTestTgHome">
-          <i class="fab fa-telegram"></i> اختبار تيليجرام
-        </button>
-      </div>
+  <!-- Step 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">تحديث الحزم</div>
+    </div>
+    <div class="step-desc">افتح Termux واكتب الأوامر دي:</div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd1">pkg update && pkg upgrade -y</span>
+      <button class="copy-btn" onclick="copyCmd('cmd1', this)">نسخ</button>
     </div>
   </div>
 
-  <!-- ================= البحث ================= -->
-  <div id="search" class="section">
-    <div class="card mb-3">
-      <div class="card-header bg-primary text-white"><i class="fas fa-gears"></i> استراتيجية التوليد</div>
-      <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="card mode-card active" data-mode="random">
-              <div class="card-body">
-                <h5><i class="fas fa-dice text-primary"></i> عشوائي (Random)</h5>
-                <p class="mini mb-0">مفاتيح 256-بت عشوائية بالكامل. احتمال النجاح = 0 عملياً. للتعليم فقط.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card mode-card" data-mode="brain">
-              <div class="card-body">
-                <h5><i class="fas fa-brain text-warning"></i> Brain Wallet</h5>
-                <p class="mini mb-0">SHA256 لكل كلمة/عبارة. الطريقة الوحيدة ذات جدوى واقعية (قديمة جداً).</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="brainPanel" class="mt-3 d-none">
-          <label class="form-label">
-            <i class="fas fa-list"></i> قائمة الكلمات / العبارات (سطر واحد لكل مدخل)
-          </label>
-          <textarea class="form-control" id="brainWords" rows="8" placeholder="hello
-password
-satoshi
-correct horse battery staple
-..."></textarea>
-          <div class="mini mt-1">
-            كل سطر سيُحوَّل: <code>privkey = SHA256(UTF-8(sentence))</code> ثم يُشتق منه 3 عناوين ويُفحص رصيدها.
-            <b>لا تُدرج كلمات مرور شخصية</b> — هذا نموذج تعليمي.
-          </div>
-          <div class="form-check form-switch mt-2">
-            <input class="form-check-input" type="checkbox" id="brainVariants" checked>
-            <label class="form-check-label" for="brainVariants">
-              تجربة صيغ إضافية لكل كلمة (SHA256², إضافة \n, hex مباشر)
-            </label>
-          </div>
-        </div>
-      </div>
+  <!-- Step 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">تثبيت الأدوات المطلوبة</div>
     </div>
-
-    <div class="card mb-3">
-      <div class="card-header bg-secondary text-white"><i class="fas fa-sliders"></i> إعدادات الفحص</div>
-      <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-3">
-            <label class="form-label">عدد العمال</label>
-            <select class="form-select" id="workers">
-              <option>1</option><option>2</option><option>3</option>
-              <option selected>4</option><option>6</option><option>8</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">التأخير بين الطلبات</label>
-            <select class="form-select" id="delay">
-              <option value="1500">1500 ms (آمن)</option>
-              <option value="800">800 ms</option>
-              <option value="400" selected>400 ms</option>
-              <option value="200">200 ms (قد يُحظر)</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">المزوّد</label>
-            <select class="form-select" id="provider">
-              <option value="mempool" selected>mempool.space</option>
-              <option value="blockstream">blockstream.info</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">أنواع العناوين المفحوصة</label>
-            <select class="form-select" id="checkMode">
-              <option value="p2wpkh" selected>P2WPKH فقط (الأسرع)</option>
-              <option value="p2pkh">P2PKH فقط (الأقدم للـ brain)</option>
-              <option value="all">الثلاثة معاً (الأدق — أبطأ)</option>
-            </select>
-          </div>
-        </div>
-
-        <hr class="border-secondary">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="tgAlerts" checked>
-          <label class="form-check-label" for="tgAlerts">إشعار فوري عند أي إصابة</label>
-        </div>
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="tgReport" checked>
-          <label class="form-check-label" for="tgReport">تقرير دوري إلى تيليجرام</label>
-        </div>
-
-        <div class="d-flex gap-2 mt-4">
-          <button class="btn btn-success btn-lg flex-fill" id="btnStart">
-            <i class="fas fa-play"></i> بدء الفحص
-          </button>
-          <button class="btn btn-danger btn-lg flex-fill" id="btnStop" disabled>
-            <i class="fas fa-stop"></i> إيقاف
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card mb-3">
-      <div class="card-header bg-dark text-white"><i class="fas fa-chart-simple"></i> الإحصائيات</div>
-      <div class="card-body">
-        <div class="row g-2 text-center">
-          <div class="col-6 col-md-3"><div class="stat"><div class="mini">مفاتيح مُولّدة</div><h4 class="text-primary" id="sGenerated">0</h4></div></div>
-          <div class="col-6 col-md-3"><div class="stat"><div class="mini">عناوين مفحوصة</div><h4 class="text-info" id="sChecked">0</h4></div></div>
-          <div class="col-6 col-md-3"><div class="stat"><div class="mini">أخطاء / حد طلبات</div><h4 class="text-warning" id="sErrors">0</h4></div></div>
-          <div class="col-6 col-md-3"><div class="stat"><div class="mini">عناوين فيها نشاط</div><h4 class="text-success" id="sHits">0</h4></div></div>
-        </div>
-        <div class="mini mt-3 text-center" id="rateInfo">المعدّل: —</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header bg-secondary text-white"><i class="fas fa-terminal"></i> السجل الحي</div>
-      <div class="card-body"><div class="log-box" id="log"><div class="muted">جاهز. اضغط "بدء الفحص".</div></div></div>
+    <div class="step-desc">الأدوات دي ضرورية للبناء (بياخد 5-10 دقايق):</div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd2">pkg install git cmake build-essential -y</span>
+      <button class="copy-btn" onclick="copyCmd('cmd2', this)">نسخ</button>
     </div>
   </div>
 
-  <!-- ================= النتائج ================= -->
-  <div id="results" class="section">
-    <div class="card">
-      <div class="card-header bg-success text-white">
-        <i class="fas fa-trophy"></i> النتائج (كل عنوان فيه معاملات أو رصيد)
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between mb-3">
-          <span class="mini">إجمالي الإصابات: <b id="hitsCount">0</b></span>
-          <button class="btn btn-sm btn-outline-light" id="btnExport">
-            <i class="fas fa-download"></i> تصدير JSON
-          </button>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-dark table-hover align-middle">
-            <thead><tr>
-              <th>#</th><th>النوع</th><th>العنوان</th>
-              <th>الرصيد (BTC)</th><th>Tx</th><th>WIF</th><th></th>
-            </tr></thead>
-            <tbody id="hitsBody">
-              <tr><td colspan="7" class="text-center text-secondary py-4">
-                لا نتائج بعد — وهذا متوقّع تماماً.
-              </td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <!-- Step 3 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">تحميل XMRig</div>
+    </div>
+    <div class="step-desc">نسخ كود XMRig من GitHub:</div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd3">git clone https://github.com/xmrig/xmrig.git</span>
+      <button class="copy-btn" onclick="copyCmd('cmd3', this)">نسخ</button>
     </div>
   </div>
 
-  <!-- ================= الإعدادات ================= -->
-  <div id="settings" class="section">
-    <div class="card">
-      <div class="card-header bg-info text-white"><i class="fas fa-cog"></i> الإعدادات</div>
-      <div class="card-body">
-        <h5 class="mb-3">تيليجرام</h5>
-        <div class="alert alert-warning small mb-3">
-          <b>تحذير أمني:</b> التوكن يُخزَّن في localStorage ويُرسَل مباشرة إلى api.telegram.org من متصفحك.
-          لا تفتح هذه الصفحة على جهاز مشترك، ولا تنشرها على الإنترنت وهي تحتوي التوكن.
-        </div>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Bot Token</label>
-            <input type="text" class="form-control" id="tgToken" dir="ltr" placeholder="123456:ABC-DEF...">
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Chat ID</label>
-            <input type="text" class="form-control" id="tgChat" dir="ltr" placeholder="123456789">
-          </div>
-        </div>
-        <div class="row g-3 mt-3">
-          <div class="col-md-3">
-            <label class="form-label">كل كم دقيقة تقرير؟</label>
-            <input type="number" class="form-control" id="reportMin" value="15" min="1">
-          </div>
-        </div>
-        <div class="d-flex flex-wrap gap-2 mt-3">
-          <button class="btn btn-outline-info" id="btnSave"><i class="fas fa-save"></i> حفظ</button>
-          <button class="btn btn-info" id="btnTestTg2"><i class="fab fa-telegram"></i> اختبار الإرسال</button>
-          <button class="btn btn-outline-danger" id="btnClear"><i class="fas fa-trash"></i> مسح المحفوظ</button>
-        </div>
-      </div>
+  <!-- Step 4 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div class="step-title">الدخول للمجلد</div>
     </div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd4">cd xmrig</span>
+      <button class="copy-btn" onclick="copyCmd('cmd4', this)">نسخ</button>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div class="step-title">إنشاء مجلد البناء</div>
+    </div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd5">mkdir build && cd build</span>
+      <button class="copy-btn" onclick="copyCmd('cmd5', this)">نسخ</button>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div class="step-title">تهيئة CMake</div>
+    </div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd6">cmake .. -DWITH_HWLOC=OFF</span>
+      <button class="copy-btn" onclick="copyCmd('cmd6', this)">نسخ</button>
+    </div>
+    <div class="info">
+      💡 أضفنا <code>-DWITH_HWLOC=OFF</code> لأن Termux مش بيدعم hwloc بشكل كامل.
+    </div>
+  </div>
+
+  <!-- Step 7 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">7</div>
+      <div class="step-title">البناء (Compile)</div>
+    </div>
+    <div class="step-desc">⏳ ده هياخد 30-60 دقيقة على الموبايل، استحمل:</div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd7">make -j2</span>
+      <button class="copy-btn" onclick="copyCmd('cmd7', this)">نسخ</button>
+    </div>
+    <div class="info">
+      💡 <code>-j2</code> يعني استخدام نواتين. لو موبايلك ضعيف خليها <code>-j1</code>.
+    </div>
+  </div>
+
+  <!-- Step 8 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">8</div>
+      <div class="step-title">تشغيل المُعدّن 🚀</div>
+    </div>
+    <div class="step-desc">الأمر النهائي لتشغيل التعدين:</div>
+    <div class="cmd-box">
+      <span class="cmd-text" id="cmd8">./xmrig -o pool.supportxmr.com:3333 -u 44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk -p x -k</span>
+      <button class="copy-btn" onclick="copyCmd('cmd8', this)">نسخ</button>
+    </div>
+  </div>
+
+  <div class="warning">
+    ⚠️ <strong>تنبيه:</strong> التعدين على الموبايل بيسخّنه جدًا وبيوّرم البطارية. لو هتسيبه شغال، حطه في مكان بارد وشيله من الشاحن لو سخن.
+  </div>
+
+  <div class="info">
+    💡 <strong>لفتح Termux بسرعة:</strong> اضغط على زر F-Droid فوق لتحميل التطبيق، وبعد التثبيت هتلاقي أيقونته في الموبايل.
+  </div>
+
+  <div class="footer">
+    ⛏️ XMRig Installer - نسخة تعليمية<br>
+    استخدم على مسؤوليتك الشخصية
   </div>
 
 </div>
 
-<footer class="text-center text-secondary py-4 small">
-  أداة تعليمية — لا تُضيّع وقتك في البحث عن مفاتيح الآخرين.
-</footer>
-
-<script type="importmap">
-{
-  "imports": {
-    "@noble/curves/secp256k1": "https://esm.sh/@noble/curves@1.4.2/secp256k1",
-    "@noble/hashes/sha256": "https://esm.sh/@noble/hashes@1.4.0/sha256",
-    "@noble/hashes/ripemd160": "https://esm.sh/@noble/hashes@1.4.0/ripemd160"
-  }
-}
-</script>
-
-<script type="module">
-import { secp256k1 } from '@noble/curves/secp256k1';
-import { sha256 } from '@noble/hashes/sha256';
-import { ripemd160 } from '@noble/hashes/ripemd160';
-
-/* ============================================================
-   1) ترميزات Base58Check / Bech32 / Hash160
-   ============================================================ */
-const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-
-function concatBytes(...arrs){
-  const len = arrs.reduce((s,a)=>s+a.length,0);
-  const out = new Uint8Array(len);
-  let o = 0;
-  for (const a of arrs){ out.set(a,o); o += a.length; }
-  return out;
-}
-function base58Encode(bytes){
-  let n = 0n;
-  for (const b of bytes) n = (n << 8n) | BigInt(b);
-  let out = '';
-  while (n > 0n){ out = B58[Number(n % 58n)] + out; n /= 58n; }
-  let pad = 0;
-  for (const b of bytes){ if (b === 0) pad++; else break; }
-  return '1'.repeat(pad) + out;
-}
-function sha256d(b){ return sha256(sha256(b)); }
-function base58Check(payload){
-  return base58Encode(concatBytes(payload, sha256d(payload).slice(0,4)));
-}
-function hash160(b){ return ripemd160(sha256(b)); }
-function toHex(bytes){ let s=''; for (const b of bytes) s += b.toString(16).padStart(2,'0'); return s; }
-
-/* --- Bech32 (SegWit v0) --- */
-const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
-const BECH32_GEN = [0x3b6a57b2,0x26508e6d,0x1ea119fa,0x3d4233dd,0x2a1462b3];
-function bech32Polymod(values){
-  let chk = 1;
-  for (const v of values){
-    const top = chk >>> 25;
-    chk = ((chk & 0x1ffffff) << 5) ^ v;
-    for (let i = 0; i < 5; i++) if ((top >>> i) & 1) chk ^= BECH32_GEN[i];
-  }
-  return chk;
-}
-function hrpExpand(hrp){
-  const out = [];
-  for (const c of hrp) out.push(c.charCodeAt(0) >>> 5);
-  out.push(0);
-  for (const c of hrp) out.push(c.charCodeAt(0) & 31);
-  return out;
-}
-function convertBits(data, from, to, pad){
-  let acc = 0, bits = 0;
-  const out = []; const maxv = (1 << to) - 1;
-  for (const v of data){
-    acc = (acc << from) | v; bits += from;
-    while (bits >= to){ bits -= to; out.push((acc >>> bits) & maxv); }
-  }
-  if (pad && bits > 0) out.push((acc << (to - bits)) & maxv);
-  return out;
-}
-function segwitV0(hrp, program){
-  const data = [0, ...convertBits(program, 8, 5, true)];
-  const values = [...hrpExpand(hrp), ...data, 0,0,0,0,0,0];
-  const polymod = bech32Polymod(values) ^ 1;
-  const checksum = [];
-  for (let i = 0; i < 6; i++) checksum.push((polymod >>> (5 * (5 - i))) & 31);
-  return hrp + '1' + [...data, ...checksum].map(d => BECH32_CHARSET[d]).join('');
-}
-
-/* ============================================================
-   2) توليد المفاتيح واشتقاق العناوين
-   ============================================================ */
-const CURVE_N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141n;
-
-function randomPrivateKey(){
-  while (true){
-    const b = new Uint8Array(32);
-    crypto.getRandomValues(b);
-    let n = 0n;
-    for (const x of b) n = (n << 8n) | BigInt(x);
-    if (n > 0n && n < CURVE_N) return b;
-  }
-}
-
-function deriveAddresses(priv){
-  const pub  = secp256k1.getPublicKey(priv, true);   // compressed 33B
-  const h160 = hash160(pub);
-
-  const p2pkh = base58Check(concatBytes(new Uint8Array([0x00]), h160));
-  const p2wpkh = segwitV0('bc', h160);
-
-  // P2SH-P2WPKH: redeemScript = OP_0 <20-byte hash>
-  const redeemScript = concatBytes(new Uint8Array([0x00, 0x14]), h160);
-  const scriptHash   = hash160(redeemScript);
-  const p2sh         = base58Check(concatBytes(new Uint8Array([0x05]), scriptHash));
-
-  return { p2pkh, p2wpkh, p2sh };
-}
-
-function toWIF(priv){
-  return base58Check(concatBytes(new Uint8Array([0x80]), priv, new Uint8Array([0x01])));
-}
-
-/* ============================================================
-   3) استراتيجيات التوليد
-   ============================================================ */
-function privFromBrain(word, variant){
-  const enc = new TextEncoder();
-  if (variant === 0){                       // SHA256(word)
-    return sha256(enc.encode(word));
-  }
-  if (variant === 1){                       // SHA256(SHA256(word))
-    return sha256(sha256(enc.encode(word)));
-  }
-  if (variant === 2){                       // SHA256(word + "\n")
-    return sha256(enc.encode(word + "\n"));
-  }
-  // variant 3: إذا كانت الكلمة hex 64 → استخدمها مباشرة
-  if (/^[0-9a-fA-F]{64}$/.test(word)){
-    const out = new Uint8Array(32);
-    for (let i = 0; i < 32; i++) out[i] = parseInt(word.substr(i*2, 2), 16);
-    return out;
-  }
-  return null;
-}
-
-/* ============================================================
-   4) فحص الرصيد — واجهات عامة حقيقية
-   ============================================================ */
-const PROVIDERS = {
-  mempool:     a => `https://mempool.space/api/address/${a}`,
-  blockstream: a => `https://blockstream.info/api/address/${a}`
-};
-
-async function fetchBalance(address, provider){
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 15000);
-  try {
-    const res = await fetch(PROVIDERS[provider](address), { signal: ctrl.signal });
-    if (res.status === 429) throw new Error('RATE_LIMIT');
-    if (!res.ok) throw new Error('HTTP_' + res.status);
-    const d = await res.json();
-    const c = d.chain_stats   || {};
-    const m = d.mempool_stats || {};
-    const sats =
-      (c.funded_txo_sum || 0) - (c.spent_txo_sum || 0) +
-      (m.funded_txo_sum  || 0) - (m.spent_txo_sum  || 0);
-    const txs = (c.tx_count || 0) + (m.tx_count || 0);
-    return { sats, txs };
-  } finally {
-    clearTimeout(t);
-  }
-}
-
-/* ============================================================
-   5) تيليجرام
-   ============================================================ */
-function tgConfig(){
-  return {
-    token:  document.getElementById('tgToken').value.trim(),
-    chatId: document.getElementById('tgChat').value.trim()
-  };
-}
-async function tgSend(text){
-  const { token, chatId } = tgConfig();
-  if (!token || !chatId) throw new Error('إعدادات تيليجرام ناقصة');
-  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true })
-  });
-  const data = await res.json();
-  if (!data.ok) throw new Error(data.description || 'فشل الإرسال');
-  return data;
-}
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-/* ============================================================
-   6) حالة التطبيق
-   ============================================================ */
-const S = {
-  running: false, stop: false,
-  mode: 'random',
-  workers: 4, delay: 400,
-  provider: 'mempool',
-  checkMode: 'p2wpkh',
-  brainWords: [],
-  brainIndex: 0,
-  brainVariant: 0,
-  brainVariants: true,
-  stats: { generated: 0, checked: 0, errors: 0, hits: 0, variantsTried: 0 },
-  hits: [],
-  startedAt: 0, lastReport: 0, logLines: 0
-};
-
-const $  = id => document.getElementById(id);
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-/* ============================================================
-   7) السجل
-   ============================================================ */
-function log(msg, cls = 'muted'){
-  const box = $('log');
-  if (S.logLines === 0) box.innerHTML = '';
-  const el = document.createElement('div');
-  el.className = cls;
-  el.textContent = `[${new Date().toLocaleTimeString('en-GB')}] ${msg}`;
-  box.appendChild(el);
-  S.logLines++;
-  while (box.childElementCount > 400) box.removeChild(box.firstChild);
-  box.scrollTop = box.scrollHeight;
-}
-
-/* ============================================================
-   8) الحصول على مُرشَّح (privateKey + مصدر)
-   ============================================================ */
-function nextCandidate(){
-  if (S.mode === 'random'){
-    return { priv: randomPrivateKey(), source: 'random' };
-  }
-  // brain mode
-  if (S.brainIndex >= S.brainWords.length) return null;
-
-  const word = S.brainWords[S.brainIndex];
-  const variants = S.brainVariants ? [0,1,2,3] : [0];
-  // ابحث عن أول صيغة تعطي مفتاحاً صالحاً لم تُجرَّب بعد
-  while (S.brainVariant < variants.length){
-    const v = variants[S.brainVariant];
-    S.brainVariant++;
-    const priv = privFromBrain(word, v);
-    if (!priv) continue;
-    // تحقق أن المفتاح في المجال الصالح
-    let n = 0n; for (const b of priv) n = (n<<8n)|BigInt(b);
-    if (n === 0n || n >= CURVE_N) continue;
-    S.stats.variantsTried++;
-    return { priv, source: `brain[${v}]:${word}` };
-  }
-  // انتهت الصيغ لهذه الكلمة
-  S.brainIndex++;
-  S.brainVariant = 0;
-  if (S.brainIndex >= S.brainWords.length) return null;
-  return nextCandidate();
-}
-
-/* ============================================================
-   9) فحص مرشّح واحد
-   ============================================================ */
-function pickAddressesToCheck(addrs){
-  if (S.checkMode === 'p2wpkh') return { p2wpkh: addrs.p2wpkh };
-  if (S.checkMode === 'p2pkh')  return { p2pkh:  addrs.p2pkh };
-  return { p2pkh: addrs.p2pkh, p2wpkh: addrs.p2wpkh, p2sh: addrs.p2sh };
-}
-
-async function checkCandidate(cand){
-  const addrs   = deriveAddresses(cand.priv);
-  const targets = pickAddressesToCheck(addrs);
-  const entries = Object.entries(targets);
-
-  const results = await Promise.allSettled(
-    entries.map(([type, addr]) =>
-      fetchBalance(addr, S.provider).then(r => ({ type, addr, ...r }))
-    )
-  );
-
-  for (const r of results){
-    if (r.status === 'rejected'){
-      const err = r.reason;
-      if (err && err.message === 'RATE_LIMIT'){
-        S.stats.errors++;
-        return { rateLimited: true };
-      }
-      S.stats.errors++;
-      continue;
-    }
-    S.stats.checked++;
-    const { type, addr, sats, txs } = r.value;
-    if (sats > 0 || txs > 0){
-      onHit(cand, { type, addr, sats, txs });
-    }
-  }
-  return { rateLimited: false };
-}
-
-/* ============================================================
-   10) عند إصابة
-   ============================================================ */
-async function onHit(cand, info){
-  S.stats.hits++;
-  const btc = (info.sats / 1e8).toFixed(8);
-  const wif = toWIF(cand.priv);
-
-  const hit = {
-    source: cand.source,
-    type: info.type,
-    address: info.addr,
-    sats: info.sats,
-    txs: info.txs,
-    btc,
-    wif,
-    privHex: toHex(cand.priv),
-    foundAt: new Date().toISOString()
-  };
-  S.hits.push(hit);
-  renderHits();
-
-  log(`HIT [${info.type}] ${info.addr} | ${btc} BTC | ${info.txs} tx | source=${cand.source}`, 'ok');
-
-  if ($('tgAlerts').checked){
-    try {
-      await tgSend(
-        `🎯 <b>إصابة</b>\n` +
-        `المصدر: <code>${esc(cand.source)}</code>\n` +
-        `النوع: ${esc(info.type)}\n` +
-        `العنوان: <code>${esc(info.addr)}</code>\n` +
-        `الرصيد: <b>${btc} BTC</b>\n` +
-        `المعاملات: ${info.txs}\n` +
-        `WIF: <code>${esc(wif)}</code>`
-      );
-      log('Telegram: تم إرسال الإشعار', 'info');
-    } catch(e){
-      log('Telegram error: ' + e.message, 'err');
-    }
-  }
-}
-
-/* ============================================================
-   11) عامل واحد
-   ============================================================ */
-async function worker(id){
-  while (S.running && !S.stop){
-    let cand = null;
-    try { cand = nextCandidate(); }
-    catch(e){ log('generation error: ' + e.message, 'err'); await sleep(500); continue; }
-
-    if (!cand){
-      // brain انتهى
-      log('انتهت جميع كلمات Brain Wallet — إيقاف.', 'warn');
-      S.stop = true;
-      break;
-    }
-
-    S.stats.generated++;
-
-    let r;
-    try { r = await checkCandidate(cand); }
-    catch(e){ S.stats.errors++; await sleep(500); continue; }
-
-    if (r && r.rateLimited){
-      log('تجاوز حد الطلبات — إبطاء 3 ثوانٍ', 'warn');
-      await sleep(3000);
-    }
-    await sleep(S.delay);
-  }
-}
-
-/* ============================================================
-   12) بدء / إيقاف
-   ============================================================ */
-function loadBrainWords(){
-  const raw = $('brainWords').value || '';
-  const list = raw.split(/\r?\n/).map(s => s.trim()).filter(s => s.length > 0);
-  return list;
-}
-
-async function start(){
-  if (S.running) return;
-
-  S.mode       = document.querySelector('.mode-card.active')?.dataset.mode || 'random';
-  S.workers    = parseInt($('workers').value, 10);
-  S.delay      = parseInt($('delay').value, 10);
-  S.provider   = $('provider').value;
-  S.checkMode  = $('checkMode').value;
-  S.brainVariants = $('brainVariants').checked;
-
-  if (S.mode === 'brain'){
-    S.brainWords = loadBrainWords();
-    if (S.brainWords.length === 0){
-      alert('أدخل كلمة واحدة على الأقل في قائمة Brain Wallet.');
-      return;
-    }
-    S.brainIndex = 0;
-    S.brainVariant = 0;
-    log(`Brain Wallet: ${S.brainWords.length} مدخل × ${S.brainVariants ? 4 : 1} صيغة`, 'info');
-  }
-
-  S.running = true; S.stop = false;
-  S.startedAt = Date.now(); S.lastReport = Date.now();
-
-  $('btnStart').disabled = true;
-  $('btnStop').disabled  = false;
-
-  // نظّف السجل إن كان فيه رسالة البداية فقط
-  $('log').innerHTML = ''; S.logLines = 0;
-  log(`بدء التشغيل — الوضع=${S.mode} | عمال=${S.workers} | ${S.checkMode} | ${S.provider}`, 'info');
-
-  const pool = Array.from({ length: S.workers }, (_, i) => worker(i));
-  await Promise.allSettled(pool);
-
-  S.running = false;
-  $('btnStart').disabled = false;
-  $('btnStop').disabled  = true;
-  log('تم إيقاف الفحص.', 'warn');
-
-  if ($('tgReport').checked){
-    try { await tgSend(reportText(true)); } catch(e){ /* تجاهل */ }
-  }
-}
-
-function stop(){
-  if (!S.running) return;
-  S.stop = true;
-  log('جارٍ الإيقاف...', 'warn');
-}
-
-/* ============================================================
-   13) التقارير
-   ============================================================ */
-function reportText(final = false){
-  const mins = ((Date.now() - S.startedAt) / 60000).toFixed(1);
-  const secs = Math.max(0.001, (Date.now() - S.startedAt) / 1000);
-  const rate = (S.stats.checked / secs).toFixed(2);
-  return (
-    `${final ? '🛑' : '📊'} <b>تقرير ${final ? 'نهائي' : 'دوري'}</b>\n` +
-    `الوضع: ${S.mode}\n` +
-    `المدة: ${mins} دقيقة\n` +
-    `مفاتيح مُولّدة: ${S.stats.generated.toLocaleString('en-US')}\n` +
-    `عناوين مفحوصة: ${S.stats.checked.toLocaleString('en-US')}\n` +
-    `معدّل: ${rate} عنوان/ثانية\n` +
-    `أخطاء / rate limit: ${S.stats.errors}\n` +
-    `إصابات: ${S.stats.hits}\n` +
-    (S.mode === 'brain' ? `تقدّم القائمة: ${S.brainIndex}/${S.brainWords.length}\n` : '') +
-    `المزوّد: ${S.provider}`
-  );
-}
-
-/* ============================================================
-   14) الرسم
-   ============================================================ */
-function fmt(n){ return n.toLocaleString('en-US'); }
-
-function renderStats(){
-  $('sGenerated').textContent = fmt(S.stats.generated);
-  $('sChecked').textContent   = fmt(S.stats.checked);
-  $('sErrors').textContent    = fmt(S.stats.errors);
-  $('sHits').textContent      = fmt(S.stats.hits);
-
-  if (S.running && S.startedAt){
-    const secs = (Date.now() - S.startedAt) / 1000;
-    const r = secs > 0 ? (S.stats.checked / secs) : 0;
-    const extra = S.mode === 'brain'
-      ? ` — القائمة: ${S.brainIndex}/${S.brainWords.length}`
-      : '';
-    $('rateInfo').textContent =
-      `المعدّل: ${r.toFixed(2)} عنوان/ثانية — منذ ${(secs/60).toFixed(1)} دقيقة${extra}`;
-  }
-}
-
-function renderHits(){
-  $('hitsCount').textContent = S.hits.length;
-  const tb = $('hitsBody');
-  if (!S.hits.length){
-    tb.innerHTML = '<tr><td colspan="7" class="text-center text-secondary py-4">لا نتائج بعد — وهذا متوقّع تماماً.</td></tr>';
-    return;
-  }
-  tb.innerHTML = S.hits.map((h, i) => `
-    <tr>
-      <td>${i + 1}</td>
-      <td><span class="badge bg-info text-dark">${esc(h.type)}</span></td>
-      <td><span class="keybox">${esc(h.address)}</span></td>
-      <td class="text-success fw-bold">${h.btc}</td>
-      <td>${h.txs}</td>
-      <td><span class="keybox">${esc(h.wif)}</span></td>
-      <td><a class="btn btn-sm btn-outline-info" target="_blank" rel="noopener"
-             href="https://mempool.space/address/${encodeURIComponent(h.address)}">عرض</a></td>
-    </tr>`).join('');
-}
-
-/* ============================================================
-   15) التنقل بين الأقسام
-   ============================================================ */
-function show(section){
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  $(section).classList.add('active');
-  document.querySelectorAll('.nav-link').forEach(l =>
-    l.classList.toggle('active', l.dataset.section === section));
-}
-document.querySelectorAll('.nav-link').forEach(l => {
-  l.addEventListener('click', e => { e.preventDefault(); show(l.dataset.section); });
-});
-
-/* ============================================================
-   16) اختيار الوضع
-   ============================================================ */
-document.querySelectorAll('.mode-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-    const m = card.dataset.mode;
-    $('brainPanel').classList.toggle('d-none', m !== 'brain');
-  });
-});
-
-/* ============================================================
-   17) الأحداث
-   ============================================================ */
-$('btnStart').addEventListener('click', start);
-$('btnStop').addEventListener('click', stop);
-
-document.querySelectorAll('.quick').forEach(b => {
-  b.addEventListener('click', () => {
-    const mode = b.dataset.mode;
-    document.querySelectorAll('.mode-card').forEach(c =>
-      c.classList.toggle('active', c.dataset.mode === mode));
-    $('brainPanel').classList.toggle('d-none', mode !== 'brain');
-    if (b.dataset.workers) $('workers').value = b.dataset.workers;
-    if (b.dataset.delay)   $('delay').value   = b.dataset.delay;
-    show('search');
-    if (mode === 'brain' && loadBrainWords().length === 0){
-      alert('الصق بعض الكلمات في قائمة Brain Wallet أولاً.');
-      return;
-    }
-    start();
-  });
-});
-
-async function testTelegram(){
-  try {
-    await tgSend('✅ اختبار ناجح من باحث مفاتيح البيتكوين.');
-    alert('تم إرسال رسالة الاختبار ✅');
-  } catch(e){
-    alert('فشل الإرسال: ' + e.message);
-  }
-}
-$('btnTestTgHome').addEventListener('click', testTelegram);
-$('btnTestTg2').addEventListener('click', testTelegram);
-
-$('btnSave').addEventListener('click', () => {
-  localStorage.setItem('bkf_token', $('tgToken').value.trim());
-  localStorage.setItem('bkf_chat',  $('tgChat').value.trim());
-  localStorage.setItem('bkf_reportMin', $('reportMin').value);
-  alert('تم الحفظ.');
-});
-
-$('btnClear').addEventListener('click', () => {
-  ['bkf_token','bkf_chat','bkf_reportMin'].forEach(k => localStorage.removeItem(k));
-  $('tgToken').value = ''; $('tgChat').value = '';
-  alert('تم المسح.');
-});
-
-$('btnExport').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify(S.hits, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `bitcoin-hits-${Date.now()}.json`;
-  a.click();
-});
-
-/* ============================================================
-   18) مؤقتات
-   ============================================================ */
-setInterval(renderStats, 500);
-setInterval(() => { $('clock').textContent = new Date().toLocaleTimeString('en-GB'); }, 1000);
-
-setInterval(async () => {
-  if (!S.running) return;
-  if (!$('tgReport').checked) return;
-  const every = Math.max(1, parseInt($('reportMin').value, 10) || 15) * 60000;
-  if (Date.now() - S.lastReport < every) return;
-  S.lastReport = Date.now();
-  try {
-    await tgSend(reportText(false));
-    log('Telegram: تم إرسال التقرير الدوري', 'info');
-  } catch(e){
-    log('Telegram error: ' + e.message, 'err');
-  }
-}, 30000);
-
-/* ============================================================
-   19) استرجاع الإعدادات + الجاهزية
-   ============================================================ */
-(function restore(){
-  const t = localStorage.getItem('bkf_token');
-  const c = localStorage.getItem('bkf_chat');
-  const r = localStorage.getItem('bkf_reportMin');
-  if (t) $('tgToken').value = t;
-  if (c) $('tgChat').value  = c;
-  if (r) $('reportMin').value = r;
-})();
-
-window.__APP_READY__ = true;
-log('النظام جاهز.', 'info');
-</script>
+<div class="toast" id="toast">✅ تم النسخ!</div>
 
 <script>
+function copyCmd(id, btn) {
+  const text = document.getElementById(id).innerText;
+  
+  // Try clipboard API first
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopied(btn);
+    }).catch(() => {
+      fallbackCopy(text, btn);
+    });
+  } else {
+    fallbackCopy(text, btn);
+  }
+}
+
+function fallbackCopy(text, btn) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    showCopied(btn);
+  } catch (e) {
+    alert('❌ متصفحك مش بيدعم النسخ التلقائي. انسخ يدويًا.');
+  }
+  document.body.removeChild(textarea);
+}
+
+function showCopied(btn) {
+  const original = btn.innerText;
+  btn.innerText = '✅ تم';
+  btn.classList.add('copied');
+  
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  
   setTimeout(() => {
-    if (!window.__APP_READY__)
-      document.getElementById('loadError').classList.remove('d-none');
-  }, 8000);
+    btn.innerText = original;
+    btn.classList.remove('copied');
+    toast.classList.remove('show');
+  }, 1500);
+}
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
