@@ -2,494 +2,471 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🚀 Ultra Scanner v3.7</title>
-<meta name="description" content="Browser-based multi-coin address scanner">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-
 <style>
-:root{
-  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
-  --bd:#30363d;--tx:#c9d1d9;--tx2:#8b949e;--tx3:#484f58;
-  --ac:#ffa500;--ac2:#ff6b00;--gr:#3fb950;--rd:#f85149;
-  --yl:#ffc107;--bl:#58a6ff;--mg:#bc8cff;
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --muted: #8b949e;
+  --accent: #ffa500;
+  --accent2: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --yellow: #ffc107;
+  --purple: #a371f7;
+  --cyan: #39d0d8;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Segoe UI',Tahoma,-apple-system,sans-serif;
-  background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);
-  color:var(--tx);min-height:100vh;padding:15px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', Tahoma, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 12px;
+  line-height: 1.6;
+  -webkit-tap-highlight-color: transparent;
 }
-.wrap{max-width:900px;margin:0 auto}
-.header{text-align:center;margin-bottom:20px}
-.h1{font-size:26px;font-weight:bold;
-  background:linear-gradient(90deg,#ff6b00,#ffa500,#ff6b00);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;background-size:200% auto;
-  animation:shine 3s linear infinite;}
-@keyframes shine{to{background-position:200% center}}
-.sub{color:var(--tx2);font-size:12px;margin-top:5px}
-.card{background:var(--bg2);border:1px solid var(--bd);
-  border-radius:12px;padding:16px;margin-bottom:12px}
-.card-title{font-size:13px;color:var(--tx2);margin-bottom:10px;
-  display:flex;align-items:center;gap:8px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:500px){.grid,.grid3{grid-template-columns:1fr}}
-.stat{background:var(--bg);border:1px solid var(--bd);
-  border-radius:8px;padding:12px;text-align:center;transition:border .2s}
-.stat:hover{border-color:var(--ac)}
-.stat-l{font-size:10px;color:var(--tx2);margin-bottom:4px;
-  text-transform:uppercase;letter-spacing:.5px}
-.stat-v{font-size:20px;font-weight:bold;color:var(--bl);
-  font-family:'Courier New',monospace;word-break:break-all}
-.stat-v.orange{color:var(--ac)}.stat-v.green{color:var(--gr)}
-.stat-v.red{color:var(--rd)}.stat-v.yellow{color:var(--yl)}
-.stat-v.purple{color:var(--mg)}
-
-.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;
-  font-size:15px;font-weight:bold;cursor:pointer;transition:all .2s;
-  margin:8px 0;color:#fff;font-family:inherit}
-.btn-start{background:linear-gradient(90deg,#238636,#2ea043)}
-.btn-start:hover:not(:disabled){background:linear-gradient(90deg,#2ea043,#3fb950);
-  transform:translateY(-1px);box-shadow:0 4px 12px rgba(63,185,80,.3)}
-.btn-stop{background:linear-gradient(90deg,#da3633,#f85149)}
-.btn-stop:hover:not(:disabled){background:linear-gradient(90deg,#f85149,#ff6b6b);
-  transform:translateY(-1px);box-shadow:0 4px 12px rgba(248,81,73,.3)}
-.btn-clear{background:linear-gradient(90deg,#6e7681,#8b949e)}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
-
-.input,textarea,select{
-  width:100%;background:var(--bg);border:1px solid var(--bd);
-  border-radius:8px;padding:10px;color:var(--tx);font-family:inherit;
-  font-size:13px;transition:border .2s;outline:none}
-.input:focus,textarea:focus,select:focus{border-color:var(--ac)}
-textarea{font-family:'Courier New',monospace;font-size:11px;
-  direction:ltr;text-align:left;word-break:break-all;resize:vertical}
-.label{font-size:11px;color:var(--tx2);margin-bottom:6px;
-  display:flex;justify-content:space-between;align-items:center}
-
-.log{background:var(--bg);border:1px solid var(--bd);border-radius:8px;
-  padding:10px;max-height:300px;overflow-y:auto;
-  font-family:'Courier New',monospace;font-size:11px;
-  direction:ltr;text-align:left;color:var(--gr);margin-top:10px}
-.log::-webkit-scrollbar{width:6px}
-.log::-webkit-scrollbar-track{background:var(--bg2)}
-.log::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
-.log-line{margin:2px 0;line-height:1.4;word-break:break-all}
-.log-line.error{color:var(--rd)}
-.log-line.warn{color:var(--yl)}
-.log-line.info{color:var(--bl)}
-.log-line.ok{color:var(--gr)}
-.log-line.found{color:var(--mg);font-weight:bold}
-.log-line.muted{color:var(--tx3)}
-
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;
-  margin-left:6px;vertical-align:middle;transition:background .3s}
-.dot.offline{background:var(--rd)}
-.dot.connecting{background:var(--yl);animation:pulse 1s infinite}
-.dot.online{background:var(--gr);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-.badge{display:inline-block;padding:3px 8px;border-radius:12px;
-  font-size:10px;font-weight:bold;margin:0 3px}
-.badge-tg{background:rgba(88,166,255,.15);color:var(--bl);
-  border:1px solid var(--bl)}
-.badge-v{background:rgba(188,140,255,.15);color:var(--mg);
-  border:1px solid var(--mg)}
-
-.warn{background:rgba(255,193,7,.08);border:1px solid var(--yl);
-  border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;
-  color:var(--yl);line-height:1.5}
-.ok-box{background:rgba(63,185,80,.08);border:1px solid var(--gr);
-  border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;
-  color:var(--gr)}
-.info-box{background:rgba(88,166,255,.08);border:1px solid var(--bl);
-  border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;
-  color:var(--bl)}
-
-.found-item{background:var(--bg);border:1px solid var(--mg);
-  border-radius:8px;padding:12px;margin-bottom:8px;
-  border-right:4px solid var(--mg)}
-.found-coin{color:var(--mg);font-weight:bold;font-size:13px;
-  margin-bottom:6px}
-.found-seed{font-family:'Courier New',monospace;font-size:10px;
-  direction:ltr;text-align:left;word-break:break-all;
-  background:var(--bg2);padding:6px;border-radius:4px;margin:4px 0;
-  color:var(--yl)}
-.found-addr{font-family:'Courier New',monospace;font-size:10px;
-  direction:ltr;text-align:left;word-break:break-all;
-  background:var(--bg2);padding:6px;border-radius:4px;color:var(--bl)}
-.copy-btn{background:var(--bg3);border:1px solid var(--bd);
-  color:var(--tx);padding:4px 8px;border-radius:4px;font-size:10px;
-  cursor:pointer;margin-top:4px}
-.copy-btn:hover{border-color:var(--ac);color:var(--ac)}
-
-.footer{text-align:center;color:var(--tx3);font-size:10px;
-  margin-top:30px;padding-top:20px;border-top:1px solid var(--bd)}
-.tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
-.tab{padding:8px 14px;background:var(--bg);border:1px solid var(--bd);
-  border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s;
-  color:var(--tx2)}
-.tab.active{background:var(--ac);color:#fff;border-color:var(--ac)}
-.tab:hover:not(.active){border-color:var(--ac);color:var(--ac)}
-.tab-content{display:none}
-.tab-content.active{display:block}
-
-.checkbox-wrap{display:flex;align-items:center;gap:8px;
-  font-size:12px;color:var(--tx);cursor:pointer;user-select:none}
-.checkbox-wrap input[type="checkbox"]{width:auto;
-  accent-color:var(--ac);cursor:pointer}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.row>*{flex:1;min-width:120px}
-.progress{height:4px;background:var(--bg);border-radius:2px;
-  overflow:hidden;margin:8px 0}
-.progress-fill{height:100%;background:linear-gradient(90deg,
-  var(--ac2),var(--ac),var(--ac2));width:0;transition:width .5s;
-  background-size:200% auto;animation:shine 2s linear infinite}
+.container { max-width: 900px; margin: 0 auto; }
+h1 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #ff6b00, #ffa500, #ffcc00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.subtitle {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+}
+.card-title {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.stat {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.stat-label { font-size: 10px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-value { font-size: 18px; font-weight: bold; color: var(--accent2); font-family: 'Courier New', monospace; word-break: break-all; }
+.stat-value.orange { color: var(--accent); }
+.stat-value.green { color: var(--green); }
+.stat-value.red { color: var(--red); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.small { font-size: 13px; }
+.btn {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 8px 0;
+  font-family: inherit;
+  color: #fff;
+}
+.btn-start { background: linear-gradient(90deg, #238636, #2ea043); }
+.btn-stop { background: linear-gradient(90deg, #da3633, #f85149); }
+.btn-clear { background: linear-gradient(90deg, #6e40c9, #8957e5); }
+.btn-export { background: linear-gradient(90deg, #1f6feb, #388bfd); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:not(:disabled):hover { filter: brightness(1.15); }
+.btn:not(:disabled):active { transform: scale(0.98); }
+.log {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  direction: ltr;
+  text-align: left;
+  color: var(--green);
+  margin-top: 8px;
+}
+.log-line { margin: 1px 0; word-break: break-all; }
+.log-line.info { color: var(--accent2); }
+.log-line.warn { color: var(--yellow); }
+.log-line.error { color: var(--red); }
+.log-line.ok { color: var(--green); }
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+th, td { padding: 6px 4px; text-align: right; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: normal; font-size: 10px; text-transform: uppercase; }
+.ep-url { font-family: 'Courier New', monospace; direction: ltr; text-align: left; font-size: 10px; color: var(--text); }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-left: 4px; }
+.dot.closed { background: var(--green); }
+.dot.open { background: var(--red); }
+.dot.half { background: var(--yellow); animation: pulse 1s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+select, input[type=number] {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+}
+.wallet-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--accent);
+  font-family: monospace;
+  font-size: 10px;
+  word-break: break-all;
+  margin-bottom: 8px;
+  resize: vertical;
+}
+.footer {
+  text-align: center;
+  color: #484f58;
+  font-size: 10px;
+  margin-top: 20px;
+  padding: 15px 0;
+  border-top: 1px solid var(--border);
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+.badge.on { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+.badge.off { background: rgba(248, 81, 73, 0.15); color: var(--red); }
+.found-item {
+  background: linear-gradient(135deg, rgba(63,185,80,0.15), rgba(46,160,67,0.05));
+  border: 1px solid rgba(63,185,80,0.5);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+.found-item .coin { color: var(--accent); font-weight: bold; font-size: 13px; }
+.found-item .row { color: var(--muted); margin-top: 4px; font-family: monospace; word-break: break-all; }
+.found-item .row b { color: var(--text); }
+.tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+.tab {
+  flex: 1;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+.tab.active { background: rgba(88, 166, 255, 0.15); border-color: var(--accent2); color: var(--accent2); font-weight: bold; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.progress-bar {
+  height: 6px;
+  background: var(--bg);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  width: 0%;
+  transition: width 0.5s;
+}
 </style>
 </head>
-
 <body>
-<div class="wrap">
+<div class="container">
 
-  <div class="header">
-    <div class="h1">🚀 Ultra Scanner v3.7</div>
-    <div class="sub">
-      <span class="dot offline" id="statusDot"></span>
-      <span id="statusText">جاهز</span>
-      <span class="badge badge-v" id="verBadge">HTML</span>
-      <span class="badge badge-tg" id="wgBadge">Workers: 0</span>
+  <h1>🚀 Ultra Scanner v3.7</h1>
+  <p class="subtitle">
+    <span class="dot offline" id="statusDot"></span>
+    <span id="statusText">جاهز</span>
+    &nbsp;|&nbsp; عشوائي 100% + Triple Dedup
+  </p>
+
+  <!-- تحذير -->
+  <div class="card" style="border-color:rgba(255,193,7,0.5);background:rgba(255,193,7,0.05)">
+    <div style="font-size:12px;color:#ffc107;line-height:1.5">
+      ⚠️ <b>تنبيه صادق:</b> الاحتمال رياضياً = <code>2^-128</code>. لن تجد رصيداً حتى لو عملت آلاف السنين.
+      القيمة الفعلية: <b>تعلّم JavaScript + Crypto + Async + Web Workers</b> في مشروع احترافي.
     </div>
   </div>
 
-  <div class="warn">
-    ⚠️ <strong>تنبيه صريح:</strong> احتمال العثور على رصيد عبر التوليد العشوائي = 2<sup>-128</sup>
-    (مستحيل رياضياً). هذا المشروع <strong>تعليمي</strong> — يوضح BIP39/BIP32/BIP44 وتقنيات الويب المتقدمة.
-  </div>
-
+  <!-- التبويبات -->
   <div class="tabs">
-    <div class="tab active" onclick="showTab('main',this)">⛏️ التعدين</div>
-    <div class="tab" onclick="showTab('found',this)">🎉 الموجودات</div>
-    <div class="tab" onclick="showTab('settings',this)">⚙️ الإعدادات</div>
-    <div class="tab" onclick="showTab('about',this)">ℹ️ عن</div>
+    <div class="tab active" onclick="switchTab('main', this)">📊 الرئيسية</div>
+    <div class="tab" onclick="switchTab('rpc', this)">🌐 RPC</div>
+    <div class="tab" onclick="switchTab('found', this)">🎉 النتائج</div>
+    <div class="tab" onclick="switchTab('settings', this)">⚙️ إعدادات</div>
   </div>
 
-  <!-- MAIN TAB -->
+  <!-- تبويب: الرئيسية -->
   <div class="tab-content active" id="tab-main">
-
     <div class="card">
-      <div class="grid">
+      <div class="grid2">
         <div class="stat">
-          <div class="stat-l">📊 فُحص</div>
-          <div class="stat-v" id="sTotal">0</div>
+          <div class="stat-label">⚡ السرعة</div>
+          <div class="stat-value orange" id="hashrate">0/s</div>
         </div>
         <div class="stat">
-          <div class="stat-l">🎉 أرصدة</div>
-          <div class="stat-v green" id="sFound">0</div>
+          <div class="stat-label">📊 فُحص</div>
+          <div class="stat-value" id="totalChecked">0</div>
         </div>
         <div class="stat">
-          <div class="stat-l">⚡ السرعة/ث</div>
-          <div class="stat-v orange" id="sRate">0.0</div>
+          <div class="stat-label">⏱️ الوقت</div>
+          <div class="stat-value green" id="runtime">00:00</div>
         </div>
         <div class="stat">
-          <div class="stat-l">⏱️ الوقت</div>
-          <div class="stat-v" id="sTime">00:00</div>
-        </div>
-        <div class="stat">
-          <div class="stat-l">🚫 Known Skipped</div>
-          <div class="stat-v yellow" id="sSkip">0</div>
-        </div>
-        <div class="stat">
-          <div class="stat-l">🛡️ Duplicates</div>
-          <div class="stat-v red" id="sDup">0</div>
+          <div class="stat-label">🎉 أرصدة</div>
+          <div class="stat-value purple" id="foundCount">0</div>
         </div>
       </div>
-      <div class="progress"><div class="progress-fill" id="progressBar"></div></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
     </div>
 
-    <button class="btn btn-start" id="startBtn" onclick="startScan()">▶️ ابدأ الفحص</button>
-    <button class="btn btn-stop" id="stopBtn" onclick="stopScan()" disabled>⏹️ إيقاف</button>
+    <div class="card">
+      <button class="btn btn-start" id="startBtn" onclick="startMining()">
+        ▶️ ابدأ الفحص
+      </button>
+      <button class="btn btn-stop" id="stopBtn" onclick="stopMining()" disabled>
+        ⏹️ أوقف
+      </button>
+    </div>
 
     <div class="card">
-      <div class="card-title">📝 سجل مباشر</div>
+      <div class="card-title">
+        <span>📝 السجل</span>
+        <span id="logCount">0</span>
+      </div>
       <div class="log" id="log">
         <div class="log-line info">⏳ في انتظار البدء...</div>
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-title"><span>🛡️ Deduplication</span></div>
+      <div class="grid3">
+        <div class="stat"><div class="stat-label">Memory</div><div class="stat-value small" id="dedupMem">0</div></div>
+        <div class="stat"><div class="stat-label">Bloom</div><div class="stat-value small" id="dedupBloom">0</div></div>
+        <div class="stat"><div class="stat-label">DB</div><div class="stat-value small" id="dedupDB">0</div></div>
+      </div>
+    </div>
   </div>
 
-  <!-- FOUND TAB -->
+  <!-- تبويب: RPC -->
+  <div class="tab-content" id="tab-rpc">
+    <div class="card">
+      <div class="card-title"><span>🌐 حالة Endpoints</span><span id="rpcCount">0</span></div>
+      <table id="rpcTable">
+        <thead>
+          <tr><th>#</th><th>Endpoint</th><th>الحالة</th><th>EWMA</th><th>OK</th><th>Fail</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- تبويب: النتائج -->
   <div class="tab-content" id="tab-found">
     <div class="card">
-      <div class="card-title">
-        🎉 الموجودات
-        <button class="copy-btn" onclick="exportFound()" style="margin-right:auto">📥 تصدير JSON</button>
-        <button class="copy-btn" onclick="clearFound()">🗑️ مسح</button>
+      <div class="card-title"><span>🎉 النتائج المكتشفة</span><span id="foundCount2">0</span></div>
+      <div id="foundList" style="min-height:80px">
+        <div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">
+          لم يتم العثور على أرصدة بعد
+        </div>
       </div>
-      <div id="foundList" style="font-size:12px;color:var(--tx2)">
-        لم يتم العثور على أرصدة بعد
-      </div>
+      <button class="btn btn-export" onclick="exportResults()">📥 تصدير JSON</button>
+      <button class="btn btn-clear" onclick="clearResults()">🗑️ حذف النتائج</button>
     </div>
   </div>
 
-  <!-- SETTINGS TAB -->
+  <!-- تبويب: الإعدادات -->
   <div class="tab-content" id="tab-settings">
-
     <div class="card">
-      <div class="card-title">🔧 الإعدادات الأساسية</div>
-      <div class="row" style="margin-bottom:12px">
-        <label class="checkbox-wrap">
-          <input type="checkbox" id="cfgSkipKnown" checked>
-          🚫 تخطي العبارات المعروفة
-        </label>
-        <label class="checkbox-wrap">
-          <input type="checkbox" id="cfgCheckBTC" checked>
-          🟠 فحص BTC
-        </label>
-        <label class="checkbox-wrap">
-          <input type="checkbox" id="cfgCheckETH" checked>
-          🔷 فحص ETH
-        </label>
-        <label class="checkbox-wrap">
-          <input type="checkbox" id="cfgCheckTRX" checked>
-          🔴 فحص TRX
-        </label>
-      </div>
-      <div class="label">
-        <span>🧵 عدد Workers</span>
-        <span id="workersVal">4</span>
-      </div>
-      <input type="range" id="cfgWorkers" min="1" max="8" value="4"
-             style="width:100%;accent-color:var(--ac)" oninput="document.getElementById('workersVal').textContent=this.value">
-    </div>
+      <div class="card-title"><span>⚙️ الإعدادات</span></div>
+      
+      <label style="font-size:12px;color:var(--muted)">عدد الكلمات (Seed Length)</label>
+      <select id="wordCount" style="margin-bottom:10px">
+        <option value="12" selected>12 كلمة (128-bit entropy)</option>
+        <option value="15">15 كلمة (160-bit)</option>
+        <option value="18">18 كلمة (192-bit)</option>
+        <option value="21">21 كلمة (224-bit)</option>
+        <option value="24">24 كلمة (256-bit)</option>
+      </select>
 
-    <div class="card">
-      <div class="card-title">📱 Telegram (اختياري)</div>
-      <div class="label">Bot Token</div>
-      <input class="input" id="cfgTgToken" placeholder="1234567890:ABC..." style="margin-bottom:8px">
-      <div class="label">Chat ID</div>
-      <input class="input" id="cfgTgChat" placeholder="123456789" style="margin-bottom:8px">
-      <button class="btn" style="background:var(--bg3);color:var(--tx)"
-              onclick="testTelegram()">🧪 اختبار الإرسال</button>
-    </div>
+      <label style="font-size:12px;color:var(--muted)">Batch Derive Size</label>
+      <select id="batchSize" style="margin-bottom:10px">
+        <option value="8">8 (سريع، خطوات صغيرة)</option>
+        <option value="16" selected>16 (متوازن)</option>
+        <option value="32">32 (سريع جداً)</option>
+        <option value="64">64 (للكمبيوترات القوية)</option>
+      </select>
 
-    <div class="card">
-      <div class="card-title">💾 البيانات</div>
-      <button class="btn" style="background:var(--bg3);color:var(--tx)"
-              onclick="clearCache()">🗑️ مسح Cache (IndexedDB)</button>
-      <div style="font-size:11px;color:var(--tx2);margin-top:8px">
-        Cache يحفظ العبارات المفحوصة لتجنب التكرار.
-        <br>الحجم الحالي: <span id="cacheSize">0</span> عبارة
-      </div>
-    </div>
+      <label style="font-size:12px;color:var(--muted)">RPC Batch Size</label>
+      <select id="rpcBatchSize" style="margin-bottom:10px">
+        <option value="10">10</option>
+        <option value="25" selected>25</option>
+        <option value="50">50</option>
+        <option value="100">100 (للكمبيوترات القوية)</option>
+      </select>
 
-  </div>
+      <label style="font-size:12px;color:var(--muted)">Telegram Bot Token (اختياري)</label>
+      <input type="text" id="tgToken" class="wallet-input" placeholder="123456:ABC..." rows="1">
 
-  <!-- ABOUT TAB -->
-  <div class="tab-content" id="tab-about">
-    <div class="card">
-      <div class="card-title">ℹ️ عن المشروع</div>
-      <div style="font-size:13px;line-height:1.8">
-        <p><strong>🚀 Ultra Scanner v3.7</strong> — نسخة HTML تعمل بالكامل في المتصفح.</p>
-        <br>
-        <p><strong>🎯 الميزات:</strong></p>
-        <ul style="margin-right:20px;margin-top:8px">
-          <li>🎲 توليد عشوائي 100% عبر Web Crypto API</li>
-          <li>🔐 BIP39/BIP32/BIP44 عبر @scure/@noble</li>
-          <li>🛡️ Triple Dedup: Memory + IndexedDB</li>
-          <li>🧵 Web Workers للمعالجة المتوازية</li>
-          <li>🌐 فحص متعدد العملات (BTC/ETH/TRX...)</li>
-          <li>📱 إشعارات Telegram</li>
-          <li>💾 تخزين دائم للنتائج</li>
-        </ul>
-        <br>
-        <p><strong>⚠️ تحذير:</strong> هذا المشروع تعليمي فقط. لا تحاول استخدامه لسرقة أموال. الاحتمال الرياضي للنجاح = 0%.</p>
-        <br>
-        <p><strong>📚 التقنيات:</strong> Web Crypto, IndexedDB, Web Workers, ES Modules, @noble/curves, @scure/bip39, @scure/base</p>
-      </div>
+      <label style="font-size:12px;color:var(--muted)">Telegram Chat ID (اختياري)</label>
+      <input type="text" id="tgChat" class="wallet-input" placeholder="7181380947" rows="1">
+
+      <button class="btn btn-export" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+      <button class="btn btn-clear" onclick="resetDedup()">🗑️ مسح Dedup (ابدأ من جديد)</button>
     </div>
   </div>
 
   <div class="footer">
-    🚀 Ultra Scanner v3.7 — HTML Edition<br>
-    <span style="color:var(--tx3)">استخدم على مسؤوليتك • تعليمي فقط</span>
+    Ultra Scanner v3.7 — Pure Random Edition<br>
+    Client-side only • Deployed on Vercel<br>
+    <span style="color:var(--muted)">Made with ❤️</span>
   </div>
-
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ -->
-<!-- Libraries via ESM import map (jsDelivr CDN) -->
-<!-- ═══════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- Crypto Libraries from CDN (ESM) -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
 <script type="importmap">
 {
   "imports": {
-    "@noble/curves/secp256k1": "https://cdn.jsdelivr.net/npm/@noble/curves@1.4.0/esm/secp256k1.js",
-    "@noble/hashes/sha256":    "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/sha256.js",
-    "@noble/hashes/sha512":    "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/sha512.js",
-    "@noble/hashes/ripemd160": "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/ripemd160.js",
-    "@noble/hashes/sha3":      "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/sha3.js",
-    "@noble/hashes/hmac":      "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/hmac.js",
-    "@noble/hashes/utils":     "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/utils.js",
-    "@scure/bip39":            "https://cdn.jsdelivr.net/npm/@scure/bip39@1.3.0/esm/index.js",
-    "@scure/bip39/wordlists/english": "https://cdn.jsdelivr.net/npm/@scure/bip39@1.3.0/esm/wordlists/english.js",
-    "@scure/base":             "https://cdn.jsdelivr.net/npm/@scure/base@1.1.6/esm/index.js"
+    "@scure/bip39": "https://esm.sh/@scure/bip39@1.3.0",
+    "@scure/bip39/wordlists/english": "https://esm.sh/@scure/bip39@1.3.0/wordlists/english",
+    "@scure/bip32": "https://esm.sh/@scure/bip32@1.4.0",
+    "@noble/secp256k1": "https://esm.sh/@noble/secp256k1@2.1.0",
+    "@noble/hashes/sha256": "https://esm.sh/@noble/hashes@1.4.0/sha256",
+    "@noble/hashes/sha512": "https://esm.sh/@noble/hashes@1.4.0/sha512",
+    "@noble/hashes/ripemd160": "https://esm.sh/@noble/hashes@1.4.0/ripemd160",
+    "@noble/hashes/sha3": "https://esm.sh/@noble/hashes@1.4.0/sha3",
+    "@noble/hashes/utils": "https://esm.sh/@noble/hashes@1.4.0/utils",
+    "@noble/curves/secp256k1": "https://esm.sh/@noble/curves@1.4.0/secp256k1"
   }
 }
 </script>
 
 <script type="module">
-// ═══════════════════════════════════════════════════════════
-// 📦 Imports
-// ═══════════════════════════════════════════════════════════
-import { secp256k1 } from '@noble/curves/secp256k1';
-import { sha256 } from '@noble/hashes/sha256';
-import { sha512 } from '@noble/hashes/sha512';
-import { ripemd160 } from '@noble/hashes/ripemd160';
-import { keccak_256 } from '@noble/hashes/sha3';
-import { hmac } from '@noble/hashes/hmac';
-import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+// ═══════════════════════════════════════════════════════════════
+// Imports
+// ═══════════════════════════════════════════════════════════════
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
-import { bech32, base58 } from '@scure/base';
+import { HDKey } from '@scure/bip32';
+import { secp256k1 } from '@noble/curves/secp256k1';
+import { sha256 as sha256Fn } from '@noble/hashes/sha256';
+import { ripemd160 as ripemd160Fn } from '@noble/hashes/ripemd160';
+import { keccak_256 } from '@noble/hashes/sha3';
+import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 
-// ═══════════════════════════════════════════════════════════
-// 🌐 Global state
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════════════════
 const State = {
   running: false,
-  workers: [],
-  workerCount: 4,
   total: 0,
   found: 0,
-  skipped: 0,
-  dup: 0,
   startTime: 0,
-  lastTotal: 0,
+  lastCount: 0,
   lastTime: 0,
-  timer: null,
-  rateTimer: null,
-  foundItems: [],
-  telegram: {token:'', chat:''},
+  rate: 0,
+  results: [],
+  dedupMem: new Set(),
+  dedupDB: 0,
+  dedupBloom: 0,
+  weakSkipped: 0,
+  dupSkipped: 0,
+  workers: [],
+  workerBlob: null,
+  activeWorkers: 4,
 };
 
-// ═══════════════════════════════════════════════════════════
-// 🎨 UI Helpers
-// ═══════════════════════════════════════════════════════════
-const $ = (id) => document.getElementById(id);
-
-function log(msg, cls='info') {
-  const el = $('log');
-  const div = document.createElement('div');
-  div.className = 'log-line ' + cls;
-  const t = new Date().toLocaleTimeString('en-GB');
-  div.textContent = `[${t}] ${msg}`;
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
-  while (el.children.length > 300) el.removeChild(el.firstChild);
-}
-
-function setStatus(text, cls) {
-  $('statusText').textContent = text;
-  $('statusDot').className = 'dot ' + cls;
-}
-
-function fmt(n) { return n.toLocaleString('en-US'); }
-
-function showTab(name, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  $('tab-' + name).classList.add('active');
-}
-
-function updateUI() {
-  $('sTotal').textContent = fmt(State.total);
-  $('sFound').textContent = State.found;
-  $('sSkip').textContent = fmt(State.skipped);
-  $('sDup').textContent = fmt(State.dup);
-  $('wgBadge').textContent = `Workers: ${State.workers.length}`;
-}
-
-// ═══════════════════════════════════════════════════════════
-// 💾 IndexedDB for dedup (persistent)
-// ═══════════════════════════════════════════════════════════
-const DB = {
-  db: null,
-  async init() {
-    return new Promise((resolve, reject) => {
-      const req = indexedDB.open('ultra_scanner_v37', 1);
-      req.onupgradeneeded = e => {
-        const db = e.target.result;
-        if (!db.objectStoreNames.contains('seeds')) {
-          const store = db.createObjectStore('seeds', {keyPath: 'h'});
-          store.createIndex('at', 'at', {unique: false});
-        }
-        if (!db.objectStoreNames.contains('found')) {
-          db.createObjectStore('found', {keyPath: 'id', autoIncrement: true});
-        }
-      };
-      req.onsuccess = e => { this.db = e.target.result; resolve(); };
-      req.onerror = e => reject(e);
-    });
-  },
-  async hasSeed(hash) {
-    return new Promise(resolve => {
-      const tx = this.db.transaction('seeds', 'readonly');
-      const req = tx.objectStore('seeds').get(hash);
-      req.onsuccess = () => resolve(!!req.result);
-      req.onerror = () => resolve(false);
-    });
-  },
-  async addSeed(hash, seed, src) {
-    return new Promise(resolve => {
-      const tx = this.db.transaction('seeds', 'readwrite');
-      tx.objectStore('seeds').put({h: hash, seed, src, at: Date.now()});
-      tx.oncomplete = () => resolve(true);
-      tx.onerror = () => resolve(false);
-    });
-  },
-  async count() {
-    return new Promise(resolve => {
-      const tx = this.db.transaction('seeds', 'readonly');
-      const req = tx.objectStore('seeds').count();
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => resolve(0);
-    });
-  },
-  async addFound(item) {
-    return new Promise(resolve => {
-      const tx = this.db.transaction('found', 'readwrite');
-      tx.objectStore('found').add(item);
-      tx.oncomplete = () => resolve(true);
-      tx.onerror = () => resolve(false);
-    });
-  },
-  async allFound() {
-    return new Promise(resolve => {
-      const tx = this.db.transaction('found', 'readonly');
-      const req = tx.objectStore('found').getAll();
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => resolve([]);
-    });
-  },
-  async clear() {
-    return new Promise(resolve => {
-      const tx = this.db.transaction(['seeds', 'found'], 'readwrite');
-      tx.objectStore('seeds').clear();
-      tx.objectStore('found').clear();
-      tx.oncomplete = () => resolve(true);
-      tx.onerror = () => resolve(false);
-    });
-  }
+// إعدادات
+let CFG = {
+  wordCount: 12,
+  batchSize: 16,
+  rpcBatchSize: 25,
+  tgToken: '',
+  tgChat: '',
 };
 
-// ═══════════════════════════════════════════════════════════
-// 🚫 Known Weak Words (للتصفية)
-// ═══════════════════════════════════════════════════════════
-const KNOWN_WEAK = new Set([
+// RPC Pool
+const RPC = {
+  ETH: [
+    'https://eth.llamarpc.com',
+    'https://rpc.ankr.com/eth',
+    'https://cloudflare-eth.com',
+    'https://ethereum.publicnode.com',
+    'https://1rpc.io/eth',
+  ],
+  BNB: [
+    'https://bsc-dataseed.binance.org',
+    'https://bsc-dataseed1.defibit.io',
+    'https://bsc.publicnode.com',
+  ],
+  MATIC: [
+    'https://polygon-rpc.com',
+    'https://polygon.llamarpc.com',
+    'https://rpc.ankr.com/polygon',
+  ],
+};
+
+const CONTRACTS = {
+  USDT_ERC20: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  USDC_ERC20: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  USDT_TRC20: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
+};
+
+// Circuit Breaker
+const CB = {};
+const initCB = (host) => {
+  if (!CB[host]) CB[host] = {
+    state: 'closed', failures: 0, successes: 0,
+    lastFailure: 0, ewma: 0, ok: 0, fail: 0, latencies: [],
+  };
+};
+
+// ═══════════════════════════════════════════════════════════════
+// Known Weak Words Filter
+// ═══════════════════════════════════════════════════════════════
+const WEAK_WORDS = new Set([
   'abandon','test','hello','apple','bitcoin','money','master','password',
   'qwerty','letmein','zoo','cat','dog','sun','moon','star','fire','water',
   'correct','horse','battery','staple','satoshi','nakamoto','world',
@@ -497,627 +474,685 @@ const KNOWN_WEAK = new Set([
   'ten','eleven','twelve','void','come','effort','suffer','camp','survey',
   'warrior','heavy','shoot','primary','clutch','crush','open','amazing',
   'screen','patrol','group','space','point','exist','slush','involve',
-  'unfold','legal','winner','thank','year','wave','sausage','worth',
-  'useful','yellow','letter','advice','cage','absurd','amount','doctor',
-  'acoustic','avoid','above','ozone','drill','grab','fiber','curtain',
-  'grace','pudding','cruise','elder','picnic','scheme','spot','photo',
-  'card','baby','mountain','device','kick','cradle','pact','join','borrow'
+  'unfold','legal','winner','thank','year','wave','sausage','worth','useful',
+  'yellow','letter','advice','cage','absurd','amount','doctor','acoustic',
+  'avoid','above','ozone','drill','grab','fiber','curtain','grace','pudding',
+  'cruise','elder','picnic','scheme','spot','photo','card','baby','mountain',
+  'device','kick','cradle','pact','join','borrow','gravity','machine','north',
 ]);
 
 function isKnownWeak(mnemonic) {
   const words = mnemonic.toLowerCase().split(' ');
-  // كل الكلمات من القائمة؟
-  let cnt = 0;
-  for (const w of words) if (KNOWN_WEAK.has(w)) cnt++;
-  if (cnt >= Math.floor(words.length * 0.6)) return true;
-  // كلمة مكررة ≥ 4 مرات؟
+  const wordSet = new Set(words);
+  // كل الكلمات من القائمة
+  let knownCount = 0;
+  for (const w of wordSet) if (WEAK_WORDS.has(w)) knownCount++;
+  if (knownCount === wordSet.size) return true;
+  if (knownCount >= Math.floor(words.length * 2 / 3)) return true;
+  // كلمة مكررة 4+ مرات
   const freq = {};
   for (const w of words) freq[w] = (freq[w] || 0) + 1;
-  for (const w in freq) if (freq[w] >= 4) return true;
+  if (Math.max(...Object.values(freq)) >= 4) return true;
   return false;
 }
 
-// ═══════════════════════════════════════════════════════════
-// 🔐 Crypto — BIP32/BIP44 derivation
-// ═══════════════════════════════════════════════════════════
-const HARDENED = 0x80000000;
+// ═══════════════════════════════════════════════════════════════
+// Address Derivation
+// ═══════════════════════════════════════════════════════════════
+const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 
-function deriveChild(parentKey, parentChain, index) {
-  const isHardened = index >= HARDENED;
-  const data = new Uint8Array(37);
-  if (isHardened) {
-    data[0] = 0;
-    data.set(parentKey, 1);
-  } else {
-    const pub = secp256k1.getPublicKey(parentKey, true);
-    data.set(pub, 0);
+function base58Encode(bytes) {
+  let n = 0n;
+  for (const b of bytes) n = n * 256n + BigInt(b);
+  let out = '';
+  while (n > 0) { out = BASE58_ALPHABET[Number(n % 58n)] + out; n = n / 58n; }
+  for (const b of bytes) { if (b === 0) out = '1' + out; else break; }
+  return out;
+}
+
+function base58Check(payload) {
+  const checksum = sha256Fn(sha256Fn(payload)).slice(0, 4);
+  return base58Encode(new Uint8Array([...payload, ...checksum]));
+}
+
+const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+function bech32Polymod(values) {
+  const GEN = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
+  let chk = 1;
+  for (const v of values) {
+    const b = chk >> 25;
+    chk = ((chk & 0x1ffffff) << 5) ^ v;
+    for (let i = 0; i < 5; i++) chk ^= ((b >> i) & 1) ? GEN[i] : 0;
   }
-  // index big-endian في آخر 4 بايت
-  const idx = index >>> 0;
-  data[33] = (idx >>> 24) & 0xff;
-  data[34] = (idx >>> 16) & 0xff;
-  data[35] = (idx >>> 8) & 0xff;
-  data[36] = idx & 0xff;
-
-  const I = hmac(sha512, parentChain, data);
-  const IL = I.slice(0, 32);
-  const IR = I.slice(32, 64);
-  const n = secp256k1.CURVE.n;
-  const ilInt = BigInt('0x' + bytesToHex(IL));
-  const pkInt = BigInt('0x' + bytesToHex(parentKey));
-  const childInt = (ilInt + pkInt) % n;
-  const childHex = childInt.toString(16).padStart(64, '0');
-  const childKey = hexToBytes(childHex);
-  return { key: childKey, chain: IR };
+  return chk;
 }
-
-function masterFromSeed(seed) {
-  const I = hmac(sha512, 'Bitcoin seed', seed);
-  return { key: I.slice(0, 32), chain: I.slice(32, 64) };
+function bech32HrpExpand(hrp) {
+  const out = [];
+  for (const c of hrp) out.push(c.charCodeAt(0) >> 5);
+  out.push(0);
+  for (const c of hrp) out.push(c.charCodeAt(0) & 31);
+  return out;
 }
-
-function derivePath(seed, path) {
-  let { key, chain } = masterFromSeed(seed);
-  const parts = path.split('/').slice(1);
-  for (const p of parts) {
-    const hardened = p.endsWith("'") || p.endsWith('h');
-    const num = parseInt(hardened ? p.slice(0, -1) : p, 10);
-    const idx = hardened ? num + HARDENED : num;
-    const r = deriveChild(key, chain, idx);
-    key = r.key; chain = r.chain;
+function bech32CreateChecksum(hrp, data) {
+  const values = [...bech32HrpExpand(hrp), ...data];
+  const polymod = bech32Polymod([...values, 0, 0, 0, 0, 0, 0]) ^ 1;
+  const out = [];
+  for (let i = 0; i < 6; i++) out.push((polymod >> (5 * (5 - i))) & 31);
+  return out;
+}
+function bech32Encode(hrp, data) {
+  const combined = [...data, ...bech32CreateChecksum(hrp, data)];
+  return hrp + '1' + combined.map(d => BECH32_CHARSET[d]).join('');
+}
+function convertBits(data, fromBits, toBits, pad = true) {
+  let acc = 0, bits = 0;
+  const ret = [];
+  const maxv = (1 << toBits) - 1;
+  for (const value of data) {
+    acc = (acc << fromBits) | value;
+    bits += fromBits;
+    while (bits >= toBits) { bits -= toBits; ret.push((acc >> bits) & maxv); }
   }
-  return key;
+  if (pad && bits) ret.push((acc << (toBits - bits)) & maxv);
+  return ret;
 }
 
-// ═══════════════════════════════════════════════════════════
-// 🏠 Address generation
-// ═══════════════════════════════════════════════════════════
-function ethAddress(priv) {
-  const pub = secp256k1.getPublicKey(priv, false).slice(1); // 64 bytes
-  const h = keccak_256(pub);
-  return '0x' + bytesToHex(h.slice(-20));
-}
-
-function btcAddress(priv) {
-  const pub = secp256k1.getPublicKey(priv, true);
-  const sha = sha256(pub);
-  const rip = ripemd160(sha);
-  const payload = new Uint8Array(21);
-  payload[0] = 0x00;
-  payload.set(rip, 1);
-  const checksum = sha256(sha256(payload)).slice(0, 4);
-  const full = new Uint8Array(25);
-  full.set(payload, 0);
-  full.set(checksum, 21);
-  return base58.encode(full);
-}
-
-function btcSegwit(priv) {
-  const pub = secp256k1.getPublicKey(priv, true);
-  const rip = ripemd160(sha256(pub));
-  // bech32 segwit v0
-  const words = bech32.toWords(rip);
-  return bech32.encode('bc', [0, ...words]);
-}
-
-function tronAddress(priv) {
-  const pub = secp256k1.getPublicKey(priv, false).slice(1);
-  const h = keccak_256(pub);
-  const payload = new Uint8Array(21);
-  payload[0] = 0x41;
-  payload.set(h.slice(-20), 1);
-  const checksum = sha256(sha256(payload)).slice(0, 4);
-  const full = new Uint8Array(25);
-  full.set(payload, 0);
-  full.set(checksum, 21);
-  return base58.encode(full);
-}
-
-function deriveAllAddresses(mnemonic) {
+function deriveAddresses(mnemonic) {
   const seed = bip39.mnemonicToSeedSync(mnemonic);
-  return {
-    ETH_0: ethAddress(derivePath(seed, "m/44'/60'/0'/0/0")),
-    BTC_0: btcAddress(derivePath(seed, "m/44'/0'/0'/0/0")),
-    BTC_S0: btcSegwit(derivePath(seed, "m/84'/0'/0'/0/0")),
-    TRON_0: tronAddress(derivePath(seed, "m/44'/195'/0'/0/0")),
-  };
+  const master = HDKey.fromMasterSeed(seed);
+  const addrs = {};
+
+  // ETH (m/44'/60'/0'/0/0)
+  try {
+    const ethKey = master.derive("m/44'/60'/0'/0/0");
+    const pub = ethKey.publicKey;
+    if (pub) {
+      const h = keccak_256(pub.slice(1));
+      addrs.ETH = '0x' + bytesToHex(h.slice(12));
+    }
+  } catch (e) {}
+
+  // TRON (m/44'/195'/0'/0/0)
+  try {
+    const tronKey = master.derive("m/44'/195'/0'/0/0");
+    const pub = tronKey.publicKey;
+    if (pub) {
+      const h = keccak_256(pub.slice(1));
+      const payload = new Uint8Array([0x41, ...h.slice(12)]);
+      addrs.TRON = base58Check(payload);
+    }
+  } catch (e) {}
+
+  // BTC Legacy (m/44'/0'/0'/0/0)
+  try {
+    const btcKey = master.derive("m/44'/0'/0'/0/0");
+    const pub = btcKey.publicKey;
+    if (pub) {
+      const h160 = ripemd160Fn(sha256Fn(pub));
+      addrs.BTC = base58Check(new Uint8Array([0x00, ...h160]));
+    }
+  } catch (e) {}
+
+  // BTC SegWit (m/84'/0'/0'/0/0)
+  try {
+    const segKey = master.derive("m/84'/0'/0'/0/0");
+    const pub = segKey.publicKey;
+    if (pub) {
+      const h160 = ripemd160Fn(sha256Fn(pub));
+      const witprog = [0, ...convertBits(h160, 8, 5)];
+      addrs.BTC_SegWit = bech32Encode('bc', witprog);
+    }
+  } catch (e) {}
+
+  return addrs;
 }
 
-// ═══════════════════════════════════════════════════════════
-// 🌐 Balance checkers (CORS-friendly endpoints only)
-// ═══════════════════════════════════════════════════════════
-async function fetchJSON(url, timeout = 6000) {
+// ═══════════════════════════════════════════════════════════════
+// RPC Balance Checks (CORS-friendly APIs only)
+// ═══════════════════════════════════════════════════════════════
+async function rpcCall(url, payload, timeoutMs = 6000) {
+  const host = new URL(url).hostname;
+  initCB(host);
+  const cb = CB[host];
+
+  // Circuit Breaker
+  if (cb.state === 'open') {
+    if (Date.now() - cb.lastFailure > 30000) cb.state = 'half';
+    else throw new Error('CB open');
+  }
+
   const ctrl = new AbortController();
-  const id = setTimeout(() => ctrl.abort(), timeout);
+  const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+  const t0 = performance.now();
   try {
-    const r = await fetch(url, {signal: ctrl.signal});
-    clearTimeout(id);
-    if (r.ok) return await r.json();
-  } catch (e) { clearTimeout(id); }
-  return null;
-}
-
-async function checkBTC(addr) {
-  // mempool.space يدعم CORS
-  const d = await fetchJSON(`https://mempool.space/api/address/${addr}`);
-  if (d && d.chain_stats) {
-    return d.chain_stats.funded_txo_sum - d.chain_stats.spent_txo_sum;
-  }
-  return null;
-}
-
-async function checkETH(addr) {
-  // llamarpc يدعم CORS
-  try {
-    const r = await fetch('https://eth.llamarpc.com', {
+    const r = await fetch(url, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        jsonrpc: '2.0', method: 'eth_getBalance',
-        params: [addr, 'latest'], id: 1
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: ctrl.signal,
     });
-    const d = await r.json();
-    if (d && d.result) return parseInt(d.result, 16);
-  } catch (e) {}
-  return null;
-}
-
-async function checkTRX(addr) {
-  const d = await fetchJSON(`https://api.trongrid.io/v1/accounts/${addr}`);
-  if (d && d.data && d.data.length > 0) {
-    return d.data[0].balance || 0;
+    clearTimeout(tid);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    const lat = (performance.now() - t0) / 1000;
+    cb.ok++; cb.latencies.push(lat);
+    if (cb.latencies.length > 50) cb.latencies.shift();
+    cb.ewma = cb.ewma ? 0.3 * lat + 0.7 * cb.ewma : lat;
+    if (cb.state === 'half') { cb.state = 'closed'; cb.failures = 0; }
+    return j;
+  } catch (e) {
+    clearTimeout(tid);
+    cb.fail++; cb.lastFailure = Date.now();
+    cb.failures++;
+    if (cb.failures >= 3) cb.state = 'open';
+    throw e;
   }
-  return 0;
 }
 
-async function checkBNB(addr) {
-  try {
-    const r = await fetch('https://bsc-dataseed.binance.org', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
+async function checkBalanceETH(address) {
+  for (const url of RPC.ETH) {
+    try {
+      const r = await rpcCall(url, {
         jsonrpc: '2.0', method: 'eth_getBalance',
-        params: [addr, 'latest'], id: 1
-      })
-    });
-    const d = await r.json();
-    if (d && d.result) return parseInt(d.result, 16);
-  } catch (e) {}
-  return null;
+        params: [address, 'latest'], id: 1,
+      });
+      if (r && r.result) return BigInt(r.result);
+    } catch (e) {}
+  }
+  return 0n;
 }
 
-// ═══════════════════════════════════════════════════════════
-// 🧵 Worker — توليد + فحص
-// ═══════════════════════════════════════════════════════════
-function workerCode() {
-  return `
-    // Worker code (running in separate thread)
-    // Uses importScripts for @noble libs
-    importScripts(
-      'https://cdn.jsdelivr.net/npm/@noble/curves@1.4.0/bundles/secp256k1.js',
-      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/sha256.js',
-      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/sha512.js',
-      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/ripemd160.js',
-      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/sha3.js',
-      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/hmac.js',
-      'https://cdn.jsdelivr.net/npm/@scure/bip39@1.3.0/bundles/bip39.js',
-      'https://cdn.jsdelivr.net/npm/@scure/base@1.1.6/bundles/base.js'
-    );
-
-    // الأسماء من bundles
-    const secp = nobleCurves.secp256k1;
-    const { sha256 } = nobleHashes;
-    const { sha512 } = nobleHashes;
-    const { ripemd160 } = nobleHashes;
-    const { keccak_256 } = nobleHashes;
-    const { hmac } = nobleHashes;
-    const { bytesToHex, hexToBytes } = nobleHashes.utils || nobleHashes;
-    const bip39 = scureBip39;
-    const wordlist = scureBip39.wordlists.english;
-    const bech32 = scureBase.bech32;
-    const base58 = scureBase.base58;
-
-    const HARDENED = 0x80000000;
-
-    function deriveChild(parentKey, parentChain, index) {
-      const isHardened = index >= HARDENED;
-      const data = new Uint8Array(37);
-      if (isHardened) {
-        data[0] = 0;
-        data.set(parentKey, 1);
-      } else {
-        const pub = secp.getPublicKey(parentKey, true);
-        data.set(pub, 0);
+async function checkBalanceERC20(address, contract) {
+  const data = '0x70a08231' + address.slice(2).toLowerCase().padStart(64, '0');
+  for (const url of RPC.ETH) {
+    try {
+      const r = await rpcCall(url, {
+        jsonrpc: '2.0', method: 'eth_call',
+        params: [{ to: contract, data }, 'latest'], id: 1,
+      });
+      if (r && r.result) {
+        if (r.result === '0x' || r.result === '0x0') return 0n;
+        return BigInt(r.result);
       }
-      const idx = index >>> 0;
-      data[33] = (idx >>> 24) & 0xff;
-      data[34] = (idx >>> 16) & 0xff;
-      data[35] = (idx >>> 8) & 0xff;
-      data[36] = idx & 0xff;
-      const I = hmac(sha512, parentChain, data);
-      const IL = I.slice(0, 32);
-      const IR = I.slice(32, 64);
-      const n = secp.CURVE.n;
-      const ilInt = BigInt('0x' + bytesToHex(IL));
-      const pkInt = BigInt('0x' + bytesToHex(parentKey));
-      const childInt = (ilInt + pkInt) % n;
-      const childHex = childInt.toString(16).padStart(64, '0');
-      return { key: hexToBytes(childHex), chain: IR };
-    }
+    } catch (e) {}
+  }
+  return 0n;
+}
 
-    function masterFromSeed(seed) {
-      const I = hmac(sha512, 'Bitcoin seed', seed);
-      return { key: I.slice(0, 32), chain: I.slice(32, 64) };
-    }
+async function checkBalanceBNB(address) {
+  for (const url of RPC.BNB) {
+    try {
+      const r = await rpcCall(url, {
+        jsonrpc: '2.0', method: 'eth_getBalance',
+        params: [address, 'latest'], id: 1,
+      });
+      if (r && r.result) return BigInt(r.result);
+    } catch (e) {}
+  }
+  return 0n;
+}
 
-    function derivePath(seed, path) {
-      let { key, chain } = masterFromSeed(seed);
-      const parts = path.split('/').slice(1);
-      for (const p of parts) {
-        const hardened = p.endsWith("'") || p.endsWith('h');
-        const num = parseInt(hardened ? p.slice(0, -1) : p, 10);
-        const idx = hardened ? num + HARDENED : num;
-        const r = deriveChild(key, chain, idx);
-        key = r.key; chain = r.chain;
+async function checkBalanceMATIC(address) {
+  for (const url of RPC.MATIC) {
+    try {
+      const r = await rpcCall(url, {
+        jsonrpc: '2.0', method: 'eth_getBalance',
+        params: [address, 'latest'], id: 1,
+      });
+      if (r && r.result) return BigInt(r.result);
+    } catch (e) {}
+  }
+  return 0n;
+}
+
+async function checkBalanceBTC(address) {
+  try {
+    const r = await fetch(`https://mempool.space/api/address/${address}`, { cache: 'no-cache' });
+    if (!r.ok) return 0n;
+    const j = await r.json();
+    const cs = j.chain_stats;
+    return BigInt(cs.funded_txo_sum - cs.spent_txo_sum);
+  } catch (e) { return 0n; }
+}
+
+async function checkBalanceTRX(address) {
+  try {
+    const r = await fetch(`https://api.trongrid.io/v1/accounts/${address}`, { cache: 'no-cache' });
+    if (!r.ok) return 0n;
+    const j = await r.json();
+    if (j.data && j.data.length > 0) return BigInt(j.data[0].balance || 0);
+  } catch (e) {}
+  return 0n;
+}
+
+async function checkBalanceTRC20(address, contract) {
+  try {
+    const r = await fetch(`https://api.trongrid.io/v1/accounts/${address}/tokens`, { cache: 'no-cache' });
+    if (!r.ok) return 0n;
+    const j = await r.json();
+    if (j.data) {
+      for (const t of j.data) {
+        if (t.tokenId === contract || t.tokenAbbr === 'USDT') {
+          return BigInt(t.balance || 0);
+        }
       }
-      return key;
     }
+  } catch (e) {}
+  return 0n;
+}
 
-    function ethAddr(priv) {
-      const pub = secp.getPublicKey(priv, false).slice(1);
-      const h = keccak_256(pub);
-      return '0x' + bytesToHex(h.slice(-20));
+// ═══════════════════════════════════════════════════════════════
+// Process One Seed
+// ═══════════════════════════════════════════════════════════════
+async function processSeed(mnemonic) {
+  let addrs;
+  try {
+    addrs = deriveAddresses(mnemonic);
+  } catch (e) { return; }
+
+  const checks = [];
+  if (addrs.ETH) {
+    checks.push({ name: 'ETH', addr: addrs.ETH, unit: 'wei', dec: 18, fn: () => checkBalanceETH(addrs.ETH) });
+    checks.push({ name: 'BNB', addr: addrs.ETH, unit: 'wei', dec: 18, fn: () => checkBalanceBNB(addrs.ETH) });
+    checks.push({ name: 'MATIC', addr: addrs.ETH, unit: 'wei', dec: 18, fn: () => checkBalanceMATIC(addrs.ETH) });
+    checks.push({ name: 'USDT-ERC20', addr: addrs.ETH, unit: 'micro', dec: 6, fn: () => checkBalanceERC20(addrs.ETH, CONTRACTS.USDT_ERC20) });
+    checks.push({ name: 'USDC-ERC20', addr: addrs.ETH, unit: 'micro', dec: 6, fn: () => checkBalanceERC20(addrs.ETH, CONTRACTS.USDC_ERC20) });
+  }
+  if (addrs.BTC) checks.push({ name: 'BTC', addr: addrs.BTC, unit: 'sat', dec: 8, fn: () => checkBalanceBTC(addrs.BTC) });
+  if (addrs.BTC_SegWit) checks.push({ name: 'BTC-SegWit', addr: addrs.BTC_SegWit, unit: 'sat', dec: 8, fn: () => checkBalanceBTC(addrs.BTC_SegWit) });
+  if (addrs.TRON) {
+    checks.push({ name: 'TRX', addr: addrs.TRON, unit: 'SUN', dec: 6, fn: () => checkBalanceTRX(addrs.TRON) });
+    checks.push({ name: 'USDT-TRC20', addr: addrs.TRON, unit: 'micro', dec: 6, fn: () => checkBalanceTRC20(addrs.TRON, CONTRACTS.USDT_TRC20) });
+  }
+
+  const results = await Promise.all(checks.map(c => c.fn().catch(() => 0n)));
+
+  for (let i = 0; i < checks.length; i++) {
+    const c = checks[i];
+    const raw = results[i];
+    if (raw > 0n) {
+      const human = Number(raw) / Math.pow(10, c.dec);
+      const item = {
+        mnemonic, coin: c.name, addr: c.addr,
+        raw: raw.toString(), bal: human,
+        unit: c.unit, at: new Date().toISOString(),
+      };
+      State.results.push(item);
+      State.found++;
+      addFoundToUI(item);
+      log(`🎉 ${c.name}: ${human.toFixed(c.dec > 6 ? 8 : 4)} | ${c.addr}`, 'ok');
+      notifyTelegram(item);
     }
+  }
+}
 
-    function btcAddr(priv) {
-      const pub = secp.getPublicKey(priv, true);
-      const rip = ripemd160(sha256(pub));
-      const payload = new Uint8Array(21);
-      payload.set(rip, 1);
-      const cs = sha256(sha256(payload)).slice(0, 4);
-      const full = new Uint8Array(25);
-      full.set(payload, 0); full.set(cs, 21);
-      return base58.encode(full);
-    }
-
-    function btcSegAddr(priv) {
-      const pub = secp.getPublicKey(priv, true);
-      const rip = ripemd160(sha256(pub));
-      const w = bech32.toWords(rip);
-      return bech32.encode('bc', [0, ...w]);
-    }
-
-    function tronAddr(priv) {
-      const pub = secp.getPublicKey(priv, false).slice(1);
-      const h = keccak_256(pub);
-      const payload = new Uint8Array(21);
-      payload[0] = 0x41; payload.set(h.slice(-20), 1);
-      const cs = sha256(sha256(payload)).slice(0, 4);
-      const full = new Uint8Array(25);
-      full.set(payload, 0); full.set(cs, 21);
-      return base58.encode(full);
-    }
-
-    self.onmessage = async function(e) {
-      const {type} = e.data;
-      if (type === 'generate') {
-        const {count} = e.data;
+// ═══════════════════════════════════════════════════════════════
+// Web Worker for random generation
+// ═══════════════════════════════════════════════════════════════
+function createWorker() {
+  const code = `
+    let wordlist = null;
+    self.onmessage = async (e) => {
+      const { type, data } = e.data;
+      if (type === 'init') {
+        wordlist = data.wordlist;
+        self.postMessage({ type: 'ready' });
+      } else if (type === 'generate') {
+        const { count, wordCount } = data;
         const out = [];
         for (let i = 0; i < count; i++) {
-          // entropy حقيقي
-          const entropy = new Uint8Array(16);
+          const entropy = new Uint8Array(wordCount === 12 ? 16 : wordCount === 15 ? 20 :
+                                        wordCount === 18 ? 24 : wordCount === 21 ? 28 : 32);
           crypto.getRandomValues(entropy);
-          const mnemonic = bip39.entropyToMnemonic(entropy, wordlist);
-          const seed = bip39.mnemonicToSeedSync(mnemonic);
-          const addrs = {
-            mnemonic,
-            ETH: ethAddr(derivePath(seed, "m/44'/60'/0'/0/0")),
-            BTC: btcAddr(derivePath(seed, "m/44'/0'/0'/0/0")),
-            BTC_S: btcSegAddr(derivePath(seed, "m/84'/0'/0'/0/0")),
-            TRON: tronAddr(derivePath(seed, "m/44'/195'/0'/0/0"))
-          };
-          out.push(addrs);
+          const mnemonic = entropyToMnemonic(entropy, wordlist);
+          out.push(mnemonic);
         }
-        self.postMessage({type: 'generated', items: out});
+        self.postMessage({ type: 'batch', data: out });
       }
     };
+    
+    function entropyToMnemonic(entropy, wordlist) {
+      const entropyBits = entropy.length * 8;
+      const checksumBits = entropyBits / 32;
+      const checksumByte = entropyBits / 8 + (checksumBits > 0 ? 1 : 0);
+      const hash = sha256(entropy);
+      
+      const bits = [];
+      for (const b of entropy) {
+        for (let i = 7; i >= 0; i--) bits.push((b >> i) & 1);
+      }
+      const hashByte = hash[0];
+      for (let i = 7; i >= 7 - checksumBits + 1; i--) bits.push((hashByte >> i) & 1);
+      
+      const words = [];
+      for (let i = 0; i < bits.length; i += 11) {
+        let idx = 0;
+        for (let j = 0; j < 11; j++) idx = (idx << 1) | bits[i + j];
+        words.push(wordlist[idx]);
+      }
+      return words.join(' ');
+    }
+    
+    function sha256(data) {
+      // Simple SHA-256 implementation
+      const K = new Uint32Array([
+        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+      ]);
+      const H = new Uint32Array([
+        0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19
+      ]);
+      
+      const ml = data.length * 8;
+      const k = (56 - (data.length + 1) % 64 + 64) % 64;
+      const padded = new Uint8Array(data.length + 1 + k + 8);
+      padded.set(data);
+      padded[data.length] = 0x80;
+      const dv = new DataView(padded.buffer);
+      dv.setUint32(padded.length - 4, ml);
+      
+      const w = new Uint32Array(64);
+      for (let i = 0; i < padded.length; i += 64) {
+        for (let j = 0; j < 16; j++) w[j] = dv.getUint32(i + j * 4);
+        for (let j = 16; j < 64; j++) {
+          const s0 = ((w[j-15]>>>7)|(w[j-15]<<25)) ^ ((w[j-15]>>>18)|(w[j-15]<<14)) ^ (w[j-15]>>>3);
+          const s1 = ((w[j-2]>>>17)|(w[j-2]<<15)) ^ ((w[j-2]>>>19)|(w[j-2]<<13)) ^ (w[j-2]>>>10);
+          w[j] = (w[j-16] + s0 + w[j-7] + s1) >>> 0;
+        }
+        let [a,b,c,d,e,f,g,h] = H;
+        for (let j = 0; j < 64; j++) {
+          const S1 = ((e>>>6)|(e<<26)) ^ ((e>>>11)|(e<<21)) ^ ((e>>>25)|(e<<7));
+          const ch = (e & f) ^ (~e & g);
+          const t1 = (h + S1 + ch + K[j] + w[j]) >>> 0;
+          const S0 = ((a>>>2)|(a<<30)) ^ ((a>>>13)|(a<<19)) ^ ((a>>>22)|(a<<10));
+          const mj = (a & b) ^ (a & c) ^ (b & c);
+          const t2 = (S0 + mj) >>> 0;
+          h = g; g = f; f = e; e = (d + t1) >>> 0;
+          d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+        }
+        H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+d)>>>0;
+        H[4]=(H[4]+e)>>>0; H[5]=(H[5]+f)>>>0; H[6]=(H[6]+g)>>>0; H[7]=(H[7]+h)>>>0;
+      }
+      const out = new Uint8Array(32);
+      const outDv = new DataView(out.buffer);
+      for (let i = 0; i < 8; i++) outDv.setUint32(i * 4, H[i]);
+      return out;
+    }
   `;
+  const blob = new Blob([code], { type: 'application/javascript' });
+  return new Worker(URL.createObjectURL(blob));
 }
 
-// ═══════════════════════════════════════════════════════════
-// 🎯 Main scan loop
-// ═══════════════════════════════════════════════════════════
-async function scanCycle(worker) {
-  if (!State.running) return;
+// ═══════════════════════════════════════════════════════════════
+// Loop
+// ═══════════════════════════════════════════════════════════════
+let worker = null;
+let processingQueue = false;
+const queue = [];
 
-  // اطلب 10 عناوين من الـ worker
-  return new Promise((resolve) => {
-    const handler = async (e) => {
-      if (e.data.type !== 'generated') return;
-      worker.removeEventListener('message', handler);
+async function startMining() {
+  if (State.running) return;
+  State.running = true;
+  State.startTime = Date.now();
+  State.total = 0;
+  State.found = 0;
+  State.results = [];
+  State.lastCount = 0;
+  State.lastTime = Date.now();
 
-      const items = e.data.items;
-      const skipKnown = $('cfgSkipKnown').checked;
-      const checkBTC_on = $('cfgCheckBTC').checked;
-      const checkETH_on = $('cfgCheckETH').checked;
-      const checkTRX_on = $('cfgCheckTRX').checked;
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('stopBtn').disabled = false;
+  document.getElementById('statusText').textContent = 'يعمل';
+  document.getElementById('statusDot').className = 'dot closed';
 
-      for (const item of items) {
-        if (!State.running) break;
-        State.total++;
+  log('▶️ بدء الفحص العشوائي', 'ok');
+  log('🎲 wordCount=' + CFG.wordCount + ' | batch=' + CFG.batchSize, 'info');
 
-        // 🚫 Skip known weak
-        if (skipKnown && isKnownWeak(item.mnemonic)) {
-          State.skipped++;
-          continue;
+  // Worker
+  worker = createWorker();
+  worker.onmessage = (e) => {
+    if (e.data.type === 'ready') {
+      log('✅ Worker جاهز', 'ok');
+      requestBatch();
+    } else if (e.data.type === 'batch') {
+      for (const m of e.data.data) {
+        if (isKnownWeak(m)) { State.weakSkipped++; continue; }
+        if (State.dedupMem.has(m)) { State.dupSkipped++; continue; }
+        State.dedupMem.add(m);
+        if (State.dedupMem.size > 2_000_000) {
+          // reset (احتفظ بآخر 1M)
+          const arr = Array.from(State.dedupMem).slice(-1_000_000);
+          State.dedupMem = new Set(arr);
         }
-
-        // 🛡️ Dedup
-        const h = bytesToHex(sha256(item.mnemonic));
-        if (await DB.hasSeed(h)) {
-          State.dup++;
-          continue;
-        }
-        await DB.addSeed(h, item.mnemonic, 'random');
-
-        // 🌐 فحص الأرصدة (بالتوازي)
-        const checks = [];
-        if (checkBTC_on) checks.push(checkBTC(item.BTC).then(v => ({coin:'BTC', v, addr:item.BTC})));
-        if (checkETH_on) checks.push(checkETH(item.ETH).then(v => ({coin:'ETH', v, addr:item.ETH})));
-        if (checkTRX_on) checks.push(checkTRX(item.TRON).then(v => ({coin:'TRX', v, addr:item.TRON})));
-
-        const results = await Promise.all(checks);
-        for (const {coin, v, addr} of results) {
-          if (v && v > 0) {
-            onFound(item.mnemonic, coin, addr, v);
-          }
-        }
+        queue.push(m);
       }
+      if (State.running) requestBatch();
+    }
+  };
+  worker.postMessage({ type: 'init', data: { wordlist } });
 
-      resolve();
-    };
-    worker.addEventListener('message', handler);
-    worker.postMessage({type: 'generate', count: 10});
+  // Process loop
+  processQueue();
+
+  // Timers
+  setInterval(updateRuntime, 1000);
+  setInterval(updateRate, 1000);
+  setInterval(updateDedupUI, 2000);
+  setInterval(updateRPCUI, 3000);
+}
+
+function requestBatch() {
+  if (!worker || !State.running) return;
+  worker.postMessage({
+    type: 'generate',
+    data: { count: CFG.batchSize * 2, wordCount: CFG.wordCount },
   });
 }
 
-async function workerLoop(id) {
-  const blob = new Blob([`(${workerCode.toString()})()`], {type: 'application/javascript'});
-  const url = URL.createObjectURL(blob);
-  const worker = new Worker(url);
-  State.workers.push(worker);
-
+async function processQueue() {
+  if (processingQueue) return;
+  processingQueue = true;
   while (State.running) {
-    try {
-      await scanCycle(worker);
-    } catch (e) {
-      log(`w${id} error: ${e.message}`, 'error');
-      await new Promise(r => setTimeout(r, 1000));
+    if (queue.length === 0) {
+      await new Promise(r => setTimeout(r, 200));
+      continue;
     }
-    await new Promise(r => setTimeout(r, 50));
+    const batch = queue.splice(0, CFG.batchSize);
+    for (const m of batch) {
+      if (!State.running) break;
+      try {
+        await processSeed(m);
+        State.total++;
+      } catch (e) {}
+    }
+    // UI update
+    document.getElementById('totalChecked').textContent = State.total.toLocaleString();
   }
+  processingQueue = false;
 }
 
-// ═══════════════════════════════════════════════════════════
-// 🎉 On found
-// ═══════════════════════════════════════════════════════════
-async function onFound(mnemonic, coin, addr, raw) {
-  State.found++;
-  const item = {mnemonic, coin, addr, raw, at: new Date().toISOString()};
-  State.foundItems.push(item);
-  await DB.addFound(item);
-
-  log(`🎉🎉🎉 ${coin}: ${raw} | ${addr}`, 'found');
-  log(`   Seed: ${mnemonic}`, 'found');
-
-  // Telegram
-  if (State.telegram.token && State.telegram.chat) {
-    sendTelegram(`🎉 *${coin} Found!*\n\n\`${mnemonic}\`\n💰 \`${raw}\`\n📍 \`${addr}\``);
-  }
-
-  renderFound();
-  updateUI();
+function stopMining() {
+  State.running = false;
+  if (worker) { worker.terminate(); worker = null; }
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = true;
+  document.getElementById('statusText').textContent = 'متوقف';
+  document.getElementById('statusDot').className = 'dot open';
+  log('⏹️ تم الإيقاف | Total=' + State.total + ' | Found=' + State.found, 'warn');
+  exportResults();
 }
 
-// ═══════════════════════════════════════════════════════════
-// 📱 Telegram
-// ═══════════════════════════════════════════════════════════
-async function sendTelegram(text) {
-  if (!State.telegram.token || !State.telegram.chat) return;
+function updateRuntime() {
+  if (!State.running) return;
+  const s = Math.floor((Date.now() - State.startTime) / 1000);
+  document.getElementById('runtime').textContent =
+    `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+}
+
+function updateRate() {
+  if (!State.running) return;
+  const now = Date.now();
+  const dt = (now - State.lastTime) / 1000;
+  const dn = State.total - State.lastCount;
+  State.rate = dt > 0 ? dn / dt : 0;
+  State.lastCount = State.total;
+  State.lastTime = now;
+  document.getElementById('hashrate').textContent = State.rate.toFixed(1) + '/s';
+  const pct = Math.min(100, State.rate / 100 * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function updateDedupUI() {
+  document.getElementById('dedupMem').textContent = State.dedupMem.size.toLocaleString();
+  document.getElementById('dedupBloom').textContent = State.dedupBloom.toLocaleString();
+  document.getElementById('dedupDB').textContent = State.dedupDB.toLocaleString();
+  document.getElementById('logCount').textContent = State.total.toLocaleString();
+}
+
+function updateRPCUI() {
+  const tbody = document.querySelector('#rpcTable tbody');
+  const rows = [];
+  let i = 1;
+  for (const host in CB) {
+    const cb = CB[host];
+    const icon = cb.state === 'closed' ? 'closed' : cb.state === 'open' ? 'open' : 'half';
+    rows.push(`<tr>
+      <td>${i++}</td>
+      <td class="ep-url">${host.substring(0, 32)}</td>
+      <td><span class="dot ${icon}"></span>${cb.state}</td>
+      <td>${(cb.ewma*1000).toFixed(0)}ms</td>
+      <td>${cb.ok}</td>
+      <td>${cb.fail}</td>
+    </tr>`);
+  }
+  tbody.innerHTML = rows.join('') || '<tr><td colspan="6" style="text-align:center;color:#8b949e">لا توجد اتصالات بعد</td></tr>';
+  document.getElementById('rpcCount').textContent = Object.keys(CB).length;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UI Helpers
+// ═══════════════════════════════════════════════════════════════
+function log(msg, type = 'info') {
+  const el = document.getElementById('log');
+  const div = document.createElement('div');
+  div.className = 'log-line ' + type;
+  const t = new Date().toTimeString().slice(0, 8);
+  div.textContent = `[${t}] ${msg}`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  while (el.children.length > 200) el.removeChild(el.firstChild);
+}
+
+function addFoundToUI(item) {
+  const list = document.getElementById('foundList');
+  if (list.querySelector('div[style*="text-align:center"]')) list.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'found-item';
+  div.innerHTML = `
+    <div class="coin">🎉 ${item.coin} — ${item.bal.toFixed(8)}</div>
+    <div class="row"><b>Seed:</b> ${item.mnemonic}</div>
+    <div class="row"><b>Addr:</b> ${item.addr}</div>
+    <div class="row"><b>Raw:</b> ${item.raw} ${item.unit}</div>
+  `;
+  list.prepend(div);
+  document.getElementById('foundCount').textContent = State.found;
+  document.getElementById('foundCount2').textContent = State.found;
+}
+
+function switchTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function saveSettings() {
+  CFG.wordCount = parseInt(document.getElementById('wordCount').value);
+  CFG.batchSize = parseInt(document.getElementById('batchSize').value);
+  CFG.rpcBatchSize = parseInt(document.getElementById('rpcBatchSize').value);
+  CFG.tgToken = document.getElementById('tgToken').value.trim();
+  CFG.tgChat = document.getElementById('tgChat').value.trim();
+  localStorage.setItem('ultra37_cfg', JSON.stringify(CFG));
+  log('💾 تم حفظ الإعدادات', 'ok');
+}
+
+function loadSettings() {
   try {
-    await fetch(`https://api.telegram.org/bot${State.telegram.token}/sendMessage`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        chat_id: State.telegram.chat,
-        text: text,
-        parse_mode: 'Markdown'
-      })
-    });
+    const c = JSON.parse(localStorage.getItem('ultra37_cfg'));
+    if (c) {
+      CFG = { ...CFG, ...c };
+      document.getElementById('wordCount').value = CFG.wordCount;
+      document.getElementById('batchSize').value = CFG.batchSize;
+      document.getElementById('rpcBatchSize').value = CFG.rpcBatchSize;
+      document.getElementById('tgToken').value = CFG.tgToken || '';
+      document.getElementById('tgChat').value = CFG.tgChat || '';
+    }
   } catch (e) {}
 }
 
-function testTelegram() {
-  State.telegram.token = $('cfgTgToken').value.trim();
-  State.telegram.chat = $('cfgTgChat').value.trim();
-  if (!State.telegram.token || !State.telegram.chat) {
-    log('❌ Token/Chat مطلوب', 'error');
+function resetDedup() {
+  if (!confirm('متأكد؟ سيتم مسح كل سجل الفحص')) return;
+  State.dedupMem.clear();
+  State.dedupDB = 0;
+  State.dedupBloom = 0;
+  State.weakSkipped = 0;
+  State.dupSkipped = 0;
+  updateDedupUI();
+  log('🗑️ تم مسح Dedup', 'warn');
+}
+
+function clearResults() {
+  if (!confirm('حذف كل النتائج؟')) return;
+  State.results = [];
+  State.found = 0;
+  document.getElementById('foundList').innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">لم يتم العثور على أرصدة بعد</div>';
+  document.getElementById('foundCount').textContent = '0';
+  document.getElementById('foundCount2').textContent = '0';
+}
+
+function exportResults() {
+  if (State.results.length === 0) {
+    log('⚠️ لا توجد نتائج للتصدير', 'warn');
     return;
   }
-  sendTelegram('✅ اختبار Ultra Scanner v3.7');
-  log('📱 تم إرسال اختبار Telegram', 'ok');
-}
-
-// ═══════════════════════════════════════════════════════════
-// 🎛️ Start/Stop
-// ═══════════════════════════════════════════════════════════
-async function startScan() {
-  if (State.running) return;
-
-  // قراءة الإعدادات
-  State.telegram.token = $('cfgTgToken').value.trim();
-  State.telegram.chat = $('cfgTgChat').value.trim();
-  State.workerCount = parseInt($('cfgWorkers').value, 10);
-
-  State.running = true;
-  State.startTime = Date.now();
-  State.lastTotal = 0;
-  State.lastTime = Date.now();
-
-  $('startBtn').disabled = true;
-  $('stopBtn').disabled = false;
-  setStatus('يعمل', 'online');
-
-  log('🚀 بدء الفحص...', 'ok');
-  log(`🧵 Workers: ${State.workerCount}`, 'info');
-  log(`🎲 توليد عشوائي 100% + BIP44`, 'info');
-
-  // شغّل Workers
-  for (let i = 0; i < State.workerCount; i++) {
-    workerLoop(i);
-  }
-
-  // عدّاد الوقت
-  State.timer = setInterval(() => {
-    const el = Math.floor((Date.now() - State.startTime) / 1000);
-    const h = String(Math.floor(el / 3600)).padStart(2, '0');
-    const m = String(Math.floor((el % 3600) / 60)).padStart(2, '0');
-    const s = String(el % 60).padStart(2, '0');
-    $('sTime').textContent = `${h}:${m}:${s}`;
-  }, 1000);
-
-  // عدّاد السرعة
-  State.rateTimer = setInterval(() => {
-    const now = Date.now();
-    const dt = (now - State.lastTime) / 1000;
-    const rate = (State.total - State.lastTotal) / dt;
-    $('sRate').textContent = rate.toFixed(1);
-    State.lastTotal = State.total;
-    State.lastTime = now;
-    updateUI();
-  }, 2000);
-}
-
-function stopScan() {
-  if (!State.running) return;
-  State.running = false;
-
-  $('startBtn').disabled = false;
-  $('stopBtn').disabled = true;
-  setStatus('متوقف', 'offline');
-
-  if (State.timer) clearInterval(State.timer);
-  if (State.rateTimer) clearInterval(State.rateTimer);
-
-  for (const w of State.workers) w.terminate();
-  State.workers = [];
-
-  log('⏹️ تم الإيقاف', 'warn');
-  log(`📊 إجمالي: ${fmt(State.total)} | found: ${State.found} | skipped: ${fmt(State.skipped)} | dup: ${fmt(State.dup)}`, 'info');
-  updateUI();
-}
-
-// ═══════════════════════════════════════════════════════════
-// 🎉 Found Rendering
-// ═══════════════════════════════════════════════════════════
-function renderFound() {
-  const el = $('foundList');
-  if (State.foundItems.length === 0) {
-    el.innerHTML = '<div style="color:var(--tx2)">لم يتم العثور على أرصدة بعد</div>';
-    return;
-  }
-  el.innerHTML = State.foundItems.map((it, i) => `
-    <div class="found-item">
-      <div class="found-coin">${it.coin} — ${it.at}</div>
-      <div style="font-size:11px;color:var(--tx2)">Seed:</div>
-      <div class="found-seed">${it.mnemonic}</div>
-      <div style="font-size:11px;color:var(--tx2)">Address:</div>
-      <div class="found-addr">${it.addr}</div>
-      <div style="font-size:11px;color:var(--yl);margin-top:4px">Balance: ${it.raw}</div>
-      <button class="copy-btn" onclick="copyText('${it.mnemonic}')">📋 نسخ Seed</button>
-    </div>
-  `).join('');
-}
-
-function copyText(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    log('✅ تم النسخ', 'ok');
-  });
-}
-
-function exportFound() {
-  if (State.foundItems.length === 0) {
-    log('لا يوجد شيء للتصدير', 'warn'); return;
-  }
-  const blob = new Blob([JSON.stringify(State.foundItems, null, 2)], {type:'application/json'});
+  const blob = new Blob([JSON.stringify(State.results, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `ultra_scanner_found_${Date.now()}.json`;
+  a.download = `ultra37_found_${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
+  log('📥 تم التصدير', 'ok');
 }
 
-async function clearFound() {
-  if (!confirm('مسح كل النتائج؟')) return;
-  State.foundItems = [];
-  await DB.clear();
-  renderFound();
-  State.found = 0;
-  State.total = 0;
-  State.skipped = 0;
-  State.dup = 0;
-  updateUI();
-  log('🗑️ تم المسح', 'warn');
-}
-
-async function clearCache() {
-  if (!confirm('مسح كل Cache؟')) return;
-  await DB.clear();
-  State.total = 0; State.found = 0; State.skipped = 0; State.dup = 0;
-  State.foundItems = [];
-  renderFound();
-  updateUI();
-  await updateCacheSize();
-  log('🗑️ تم مسح Cache', 'warn');
-}
-
-async function updateCacheSize() {
-  const n = await DB.count();
-  $('cacheSize').textContent = fmt(n);
-}
-
-// ═══════════════════════════════════════════════════════════
-// 🎬 Initialize
-// ═══════════════════════════════════════════════════════════
-(async function init() {
+async function notifyTelegram(item) {
+  if (!CFG.tgToken || !CFG.tgChat) return;
   try {
-    await DB.init();
-    await updateCacheSize();
-    log('✅ IndexedDB جاهز', 'ok');
-    log('✅ المكتبات محمّلة', 'ok');
-    log('🎯 جاهز للبدء', 'info');
-    log('⚠️ ملاحظة: CORS قد يمنع بعض RPCs', 'warn');
-    updateUI();
-  } catch (e) {
-    log(`❌ init error: ${e.message}`, 'error');
-  }
-})();
+    const msg = `🎉 *${item.coin}*\n\n\`${item.mnemonic}\`\n💰 \`${item.bal}\`\n📍 \`${item.addr}\``;
+    await fetch(`https://api.telegram.org/bot${CFG.tgToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CFG.tgChat, text: msg, parse_mode: 'Markdown' }),
+    });
+  } catch (e) {}
+}
 
-// ═══════════════════════════════════════════════════════════
-// Expose globals for inline handlers
-// ═══════════════════════════════════════════════════════════
-window.startScan = startScan;
-window.stopScan = stopScan;
-window.showTab = showTab;
-window.testTelegram = testTelegram;
-window.clearCache = clearCache;
-window.clearFound = clearFound;
-window.exportFound = exportFound;
-window.copyText = copyText;
+// Init
+loadSettings();
+updateDedupUI();
+log('📄 الصفحة جاهزة', 'ok');
+log('🌐 Web Crypto API: ' + (window.crypto ? '✅' : '❌'), 'info');
+log('👷 Web Workers: ' + (window.Worker ? '✅' : '❌'), 'info');
 
+window.addEventListener('beforeunload', (e) => {
+  if (State.running) { e.preventDefault(); e.returnValue = 'الفحص شغال'; }
+});
 </script>
-
 </body>
 </html>
