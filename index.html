@@ -2,475 +2,422 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 Ultra Scanner v3.7.1</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🚀 Ultra Scanner v3.8</title>
 <style>
 :root{--bg:#0d1117;--bg2:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#ffa500;--accent2:#58a6ff;--green:#3fb950;--red:#f85149;--yellow:#ffc107;--purple:#a371f7}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Tahoma,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:12px;line-height:1.6;-webkit-tap-highlight-color:transparent}
-.container{max-width:900px;margin:0 auto}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:12px;line-height:1.6}
+.c{max-width:900px;margin:0 auto}
 h1{text-align:center;font-size:22px;margin-bottom:6px;background:linear-gradient(90deg,#ff6b00,#ffa500,#ffcc00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.subtitle{text-align:center;color:var(--muted);font-size:12px;margin-bottom:15px}
+.sub{text-align:center;color:var(--muted);font-size:12px;margin-bottom:15px}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:12px}
-.card-title{font-size:13px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.stat{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 8px;text-align:center}
-.stat-label{font-size:10px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.stat-value{font-size:18px;font-weight:bold;color:var(--accent2);font-family:'Courier New',monospace;word-break:break-all}
-.stat-value.orange{color:var(--accent)}.stat-value.green{color:var(--green)}.stat-value.red{color:var(--red)}.stat-value.purple{color:var(--purple)}.stat-value.small{font-size:13px}
-.btn{display:block;width:100%;padding:13px;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;transition:all .2s;margin:8px 0;font-family:inherit;color:#fff}
-.btn-start{background:linear-gradient(90deg,#238636,#2ea043)}
-.btn-stop{background:linear-gradient(90deg,#da3633,#f85149)}
-.btn-clear{background:linear-gradient(90deg,#6e40c9,#8957e5)}
-.btn-export{background:linear-gradient(90deg,#1f6feb,#388bfd)}
+.title{font-size:13px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.st{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 8px;text-align:center}
+.sl{font-size:10px;color:var(--muted);margin-bottom:4px;text-transform:uppercase}
+.sv{font-size:18px;font-weight:bold;color:var(--accent2);font-family:'Courier New',monospace;word-break:break-all}
+.sv.o{color:var(--accent)}.sv.g{color:var(--green)}.sv.r{color:var(--red)}.sv.p{color:var(--purple)}.sv.s{font-size:13px}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;transition:all .2s;margin:8px 0;font-family:inherit;color:#fff}
+.b1{background:linear-gradient(90deg,#238636,#2ea043)}
+.b2{background:linear-gradient(90deg,#da3633,#f85149)}
+.b3{background:linear-gradient(90deg,#6e40c9,#8957e5)}
+.b4{background:linear-gradient(90deg,#1f6feb,#388bfd)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .btn:not(:disabled):hover{filter:brightness(1.15)}
 .btn:not(:disabled):active{transform:scale(.98)}
-.log{background:#000;border:1px solid var(--border);border-radius:8px;padding:10px;max-height:250px;overflow-y:auto;font-family:'Courier New',monospace;font-size:11px;direction:ltr;text-align:left;color:var(--green);margin-top:8px}
-.log-line{margin:1px 0;word-break:break-all}
-.log-line.info{color:var(--accent2)}.log-line.warn{color:var(--yellow)}.log-line.error{color:var(--red)}.log-line.ok{color:var(--green)}
+.log{background:#000;border:1px solid var(--border);border-radius:8px;padding:10px;max-height:280px;overflow-y:auto;font-family:'Courier New',monospace;font-size:11px;direction:ltr;text-align:left;color:var(--green)}
+.ll{margin:1px 0;word-break:break-all}
+.ll.i{color:var(--accent2)}.ll.w{color:var(--yellow)}.ll.e{color:var(--red)}.ll.k{color:var(--green)}
 table{width:100%;border-collapse:collapse;font-size:11px}
 th,td{padding:6px 4px;text-align:right;border-bottom:1px solid var(--border)}
 th{color:var(--muted);font-weight:normal;font-size:10px;text-transform:uppercase}
-.ep-url{font-family:'Courier New',monospace;direction:ltr;text-align:left;font-size:10px;color:var(--text)}
+.ep{font-family:'Courier New',monospace;direction:ltr;text-align:left;font-size:10px}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:4px}
-.dot.closed{background:var(--green)}.dot.open{background:var(--red)}.dot.half{background:var(--yellow);animation:pulse 1s infinite}
-.dot.loading{background:var(--yellow);animation:pulse .6s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-select,input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text);font-size:13px;font-family:inherit;margin-bottom:8px}
-.footer{text-align:center;color:#484f58;font-size:10px;margin-top:20px;padding:15px 0;border-top:1px solid var(--border)}
-.found-item{background:linear-gradient(135deg,rgba(63,185,80,.15),rgba(46,160,67,.05));border:1px solid rgba(63,185,80,.5);border-radius:8px;padding:10px;margin-bottom:8px;font-size:11px}
-.found-item .coin{color:var(--accent);font-weight:bold;font-size:13px}
-.found-item .row{color:var(--muted);margin-top:4px;font-family:monospace;word-break:break-all}
-.found-item .row b{color:var(--text)}
+.dot.closed{background:var(--green)}.dot.open{background:var(--red)}.dot.half{background:var(--yellow);animation:pls 1s infinite}.dot.load{background:var(--yellow);animation:pls .6s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.4}}
+input,select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text);font-size:13px;margin-bottom:8px;font-family:inherit}
+.foot{text-align:center;color:#484f58;font-size:10px;margin-top:20px;padding:15px 0;border-top:1px solid var(--border)}
+.fi{background:linear-gradient(135deg,rgba(63,185,80,.15),rgba(46,160,67,.05));border:1px solid rgba(63,185,80,.5);border-radius:8px;padding:10px;margin-bottom:8px;font-size:11px}
+.fi .cn{color:var(--accent);font-weight:bold;font-size:13px}
+.fi .rw{color:var(--muted);margin-top:4px;font-family:monospace;word-break:break-all}
 .tabs{display:flex;gap:6px;margin-bottom:10px}
-.tab{flex:1;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:12px;cursor:pointer;color:var(--muted);transition:all .2s}
+.tab{flex:1;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:12px;cursor:pointer;color:var(--muted)}
 .tab.active{background:rgba(88,166,255,.15);border-color:var(--accent2);color:var(--accent2);font-weight:bold}
-.tab-content{display:none}.tab-content.active{display:block}
-.progress-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:8px;border:1px solid var(--border)}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .5s}
-.loading-banner{background:rgba(255,193,7,.1);border:1px solid var(--yellow);border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;color:var(--yellow);text-align:center}
+.tc{display:none}.tc.active{display:block}
+.pb{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:8px;border:1px solid var(--border)}
+.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .5s}
+.banner{padding:12px;border-radius:10px;margin-bottom:12px;font-size:12px;text-align:center}
+.warn{background:rgba(255,193,7,.1);border:1px solid var(--yellow);color:var(--yellow)}
+.err{background:rgba(248,81,73,.1);border:1px solid var(--red);color:var(--red)}
+.ok{background:rgba(63,185,80,.1);border:1px solid var(--green);color:var(--green)}
 </style>
 </head>
 <body>
-<div class="container">
-
-  <h1>🚀 Ultra Scanner v3.7.1</h1>
-  <p class="subtitle">
-    <span class="dot loading" id="statusDot"></span>
-    <span id="statusText">جاري التحميل...</span>
+<div class="c">
+  <h1>🚀 Ultra Scanner v3.8</h1>
+  <p class="sub">
+    <span class="dot load" id="sd"></span>
+    <span id="stx">جاري التحميل...</span>
   </p>
 
-  <div id="loadingBanner" class="loading-banner">
-    ⏳ جاري تحميل مكتبات التشفير من CDN... (قد يستغرق 5-15 ثانية)
-  </div>
-
-  <div class="card" style="border-color:rgba(255,193,7,.5);background:rgba(255,193,7,.05)">
-    <div style="font-size:12px;color:#ffc107;line-height:1.5">
-      ⚠️ <b>تنبيه صادق:</b> الاحتمال رياضياً = <code>2^-128</code>. لن تجد رصيداً حتى لو عملت آلاف السنين.
-    </div>
+  <div id="banner" class="banner warn">
+    ⏳ جاري تحميل مكتبات التشفير...
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-tab="main" onclick="switchTab('main',this)">📊 الرئيسية</div>
-    <div class="tab" data-tab="rpc" onclick="switchTab('rpc',this)">🌐 RPC</div>
-    <div class="tab" data-tab="found" onclick="switchTab('found',this)">🎉 النتائج</div>
-    <div class="tab" data-tab="settings" onclick="switchTab('settings',this)">⚙️ إعدادات</div>
+    <div class="tab active" onclick="switchTab('main',this)">📊 الرئيسية</div>
+    <div class="tab" onclick="switchTab('rpc',this)">🌐 RPC</div>
+    <div class="tab" onclick="switchTab('found',this)">🎉 النتائج</div>
+    <div class="tab" onclick="switchTab('settings',this)">⚙️ إعدادات</div>
   </div>
 
-  <div class="tab-content active" id="tab-main">
+  <div class="tc active" id="tab-main">
     <div class="card">
-      <div class="grid2">
-        <div class="stat"><div class="stat-label">⚡ السرعة</div><div class="stat-value orange" id="hashrate">0/s</div></div>
-        <div class="stat"><div class="stat-label">📊 فُحص</div><div class="stat-value" id="totalChecked">0</div></div>
-        <div class="stat"><div class="stat-label">⏱️ الوقت</div><div class="stat-value green" id="runtime">00:00</div></div>
-        <div class="stat"><div class="stat-label">🎉 أرصدة</div><div class="stat-value purple" id="foundCount">0</div></div>
+      <div class="g2">
+        <div class="st"><div class="sl">⚡ السرعة</div><div class="sv o" id="hr">0/s</div></div>
+        <div class="st"><div class="sl">📊 فُحص</div><div class="sv" id="tc">0</div></div>
+        <div class="st"><div class="sl">⏱️ الوقت</div><div class="sv g" id="rt">00:00</div></div>
+        <div class="st"><div class="sl">🎉 أرصدة</div><div class="sv p" id="fc">0</div></div>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+      <div class="pb"><div class="pf" id="pb"></div></div>
     </div>
 
     <div class="card">
-      <button class="btn btn-start" id="startBtn" disabled>▶️ ابدأ الفحص</button>
-      <button class="btn btn-stop" id="stopBtn" disabled>⏹️ أوقف</button>
+      <button class="btn b1" id="sb">▶️ ابدأ الفحص</button>
+      <button class="btn b2" id="xb" disabled>⏹️ أوقف</button>
     </div>
 
     <div class="card">
-      <div class="card-title"><span>📝 السجل</span><span id="logCount">0</span></div>
-      <div class="log" id="log">
-        <div class="log-line info">⏳ جاري التحميل...</div>
-      </div>
+      <div class="title"><span>📝 السجل</span><span id="lc">0</span></div>
+      <div class="log" id="lg"><div class="ll i">⏳ في انتظار التحميل...</div></div>
     </div>
 
     <div class="card">
-      <div class="card-title"><span>🛡️ Deduplication</span></div>
-      <div class="grid3">
-        <div class="stat"><div class="stat-label">Memory</div><div class="stat-value small" id="dedupMem">0</div></div>
-        <div class="stat"><div class="stat-label">Weak Skip</div><div class="stat-value small" id="dedupWeak">0</div></div>
-        <div class="stat"><div class="stat-label">Dup Skip</div><div class="stat-value small" id="dedupDup">0</div></div>
+      <div class="title"><span>🛡️ Deduplication</span></div>
+      <div class="g3">
+        <div class="st"><div class="sl">Memory</div><div class="sv s" id="dm">0</div></div>
+        <div class="st"><div class="sl">Weak</div><div class="sv s" id="dw">0</div></div>
+        <div class="st"><div class="sl">Dup</div><div class="sv s" id="dd">0</div></div>
       </div>
     </div>
   </div>
 
-  <div class="tab-content" id="tab-rpc">
+  <div class="tc" id="tab-rpc">
     <div class="card">
-      <div class="card-title"><span>🌐 حالة Endpoints</span><span id="rpcCount">0</span></div>
-      <table id="rpcTable">
-        <thead><tr><th>#</th><th>Endpoint</th><th>الحالة</th><th>EWMA</th><th>OK</th><th>Fail</th></tr></thead>
-        <tbody></tbody>
-      </table>
+      <div class="title"><span>🌐 RPC Endpoints</span><span id="rc">0</span></div>
+      <table><thead><tr><th>#</th><th>Endpoint</th><th>State</th><th>EWMA</th><th>OK</th><th>Fail</th></tr></thead>
+      <tbody id="rtb"></tbody></table>
     </div>
   </div>
 
-  <div class="tab-content" id="tab-found">
+  <div class="tc" id="tab-found">
     <div class="card">
-      <div class="card-title"><span>🎉 النتائج</span><span id="foundCount2">0</span></div>
-      <div id="foundList" style="min-height:80px">
+      <div class="title"><span>🎉 النتائج</span><span id="fc2">0</span></div>
+      <div id="fl" style="min-height:80px">
         <div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">لم يتم العثور على أرصدة بعد</div>
       </div>
-      <button class="btn btn-export" onclick="exportResults()">📥 تصدير JSON</button>
-      <button class="btn btn-clear" onclick="clearResults()">🗑️ حذف النتائج</button>
+      <button class="btn b4" onclick="exportRes()">📥 تصدير JSON</button>
+      <button class="btn b3" onclick="clearRes()">🗑️ حذف</button>
     </div>
   </div>
 
-  <div class="tab-content" id="tab-settings">
+  <div class="tc" id="tab-settings">
     <div class="card">
       <label style="font-size:12px;color:var(--muted)">عدد الكلمات</label>
-      <select id="wordCount">
-        <option value="12" selected>12 كلمة (128-bit)</option>
-        <option value="15">15 كلمة (160-bit)</option>
-        <option value="18">18 كلمة (192-bit)</option>
-        <option value="24">24 كلمة (256-bit)</option>
-      </select>
+      <select id="wc"><option value="12" selected>12</option><option value="15">15</option><option value="18">18</option><option value="24">24</option></select>
 
       <label style="font-size:12px;color:var(--muted)">Batch Size</label>
-      <select id="batchSize">
-        <option value="4">4 (بطيء)</option>
-        <option value="8" selected>8 (متوازن)</option>
-        <option value="16">16 (سريع)</option>
-      </select>
+      <select id="bs"><option value="4">4</option><option value="8" selected>8</option><option value="16">16</option></select>
 
-      <label style="font-size:12px;color:var(--muted)">Telegram Bot Token</label>
-      <input type="text" id="tgToken" placeholder="123456:ABC..." value="7370738476:AAHi1BjblAv9O1j3WB9yXRc6fPYf8euWfmQ">
+      <label style="font-size:12px;color:var(--muted)">Telegram Token</label>
+      <input type="text" id="tt" value="7370738476:AAHi1BjblAv9O1j3WB9yXRc6fPYf8euWfmQ">
 
       <label style="font-size:12px;color:var(--muted)">Telegram Chat ID</label>
-      <input type="text" id="tgChat" placeholder="7181380947" value="7181380947">
+      <input type="text" id="tg" value="7181380947">
 
-      <button class="btn btn-export" onclick="saveSettings()">💾 حفظ الإعدادات</button>
-      <button class="btn btn-clear" onclick="resetDedup()">🗑️ مسح Dedup</button>
+      <button class="btn b4" onclick="saveCfg()">💾 حفظ</button>
+      <button class="btn b3" onclick="resetDedup()">🗑️ مسح Dedup</button>
     </div>
   </div>
 
-  <div class="footer">Ultra Scanner v3.7.1 — Client-side only</div>
+  <div class="foot">Ultra Scanner v3.8 — Multi-CDN + Offline-first</div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-// Global State
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// GLOBAL STATE
+// ═══════════════════════════════════════════════════════════
 window.LIBS = null;
-window.LOADED = false;
+window.READY = false;
 
-window.State = {
-  running: false,
-  total: 0,
-  found: 0,
-  startTime: 0,
-  lastCount: 0,
-  lastTime: 0,
-  rate: 0,
-  results: [],
-  dedupMem: new Set(),
-  weakSkipped: 0,
-  dupSkipped: 0,
-  worker: null,
-  queue: [],
-  processing: false,
+window.S = {
+  running: false, total: 0, found: 0,
+  startTime: 0, lastCount: 0, lastTime: 0, rate: 0,
+  results: [], dedupMem: new Set(),
+  weakSkipped: 0, dupSkipped: 0,
+  worker: null, queue: [], processing: false,
 };
 
 window.CFG = {
-  wordCount: 12,
-  batchSize: 8,
+  wordCount: 12, batchSize: 8,
   tgToken: '7370738476:AAHi1BjblAv9O1j3WB9yXRc6fPYf8euWfmQ',
   tgChat: '7181380947',
 };
 
 window.CB = {};
 
-// ═══════════════════════════════════════════════════════════════
-// Logging
-// ═══════════════════════════════════════════════════════════════
-function log(msg, type = 'info') {
-  const el = document.getElementById('log');
-  const div = document.createElement('div');
-  div.className = 'log-line ' + type;
-  const t = new Date().toTimeString().slice(0, 8);
-  div.textContent = `[${t}] ${msg}`;
-  el.appendChild(div);
+// ═══════════════════════════════════════════════════════════
+// LOG + STATUS
+// ═══════════════════════════════════════════════════════════
+function log(m, t = 'i') {
+  const el = document.getElementById('lg');
+  const d = document.createElement('div');
+  d.className = 'll ' + t;
+  d.textContent = `[${new Date().toTimeString().slice(0,8)}] ${m}`;
+  el.appendChild(d);
   el.scrollTop = el.scrollHeight;
-  while (el.children.length > 200) el.removeChild(el.firstChild);
+  while (el.children.length > 250) el.removeChild(el.firstChild);
+}
+function setStatus(txt, cls) {
+  document.getElementById('stx').textContent = txt;
+  document.getElementById('sd').className = 'dot ' + (cls || 'load');
+}
+function showBanner(txt, cls) {
+  const b = document.getElementById('banner');
+  b.className = 'banner ' + cls;
+  b.textContent = txt;
+  b.style.display = 'block';
 }
 
-function setStatus(text, cls) {
-  document.getElementById('statusText').textContent = text;
-  const dot = document.getElementById('statusDot');
-  dot.className = 'dot ' + (cls || 'loading');
+// ═══════════════════════════════════════════════════════════
+// MULTI-CDN LIBRARY LOADER (Offline-friendly)
+// ═══════════════════════════════════════════════════════════
+const CDNs = [
+  'https://cdn.jsdelivr.net/npm/',
+  'https://unpkg.com/',
+  'https://esm.sh/',
+];
+
+async function tryImport(pkgs) {
+  // pkgs: array of relative paths like '@scure/bip39@1.3.0'
+  for (const cdn of CDNs) {
+    try {
+      const results = [];
+      for (const p of pkgs) {
+        const url = cdn + p;
+        const mod = await import(url);
+        results.push(mod);
+      }
+      return results;
+    } catch (e) {
+      log(`⚠️ فشل CDN: ${cdn.split('/')[2]}`, 'w');
+    }
+  }
+  return null;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Load Libraries
-// ═══════════════════════════════════════════════════════════════
 async function loadLibraries() {
-  try {
-    log('📥 تحميل bip39...', 'info');
-    const bip39Mod = await import('https://esm.sh/@scure/bip39@1.3.0');
-    const wlMod = await import('https://esm.sh/@scure/bip39@1.3.0/wordlists/english');
+  log('📥 تحميل مكتبات التشفير...', 'i');
+  
+  // نستخدم jsdelivr أولاً (الأكثر موثوقية في المنطقة)
+  const pkgs = [
+    '@scure/bip39@1.3.0',
+    '@scure/bip39@1.3.0/wordlists/english.js',
+    '@scure/bip32@1.4.0',
+    '@noble/hashes@1.4.0/sha256.js',
+    '@noble/hashes@1.4.0/ripemd160.js',
+    '@noble/hashes@1.4.0/sha3.js',
+    '@noble/hashes@1.4.0/utils.js',
+  ];
 
-    log('📥 تحميل bip32...', 'info');
-    const bip32Mod = await import('https://esm.sh/@scure/bip32@1.4.0');
-
-    log('📥 تحميل noble hashes...', 'info');
-    const sha256Mod = await import('https://esm.sh/@noble/hashes@1.4.0/sha256');
-    const ripemdMod = await import('https://esm.sh/@noble/hashes@1.4.0/ripemd160');
-    const sha3Mod = await import('https://esm.sh/@noble/hashes@1.4.0/sha3');
-    const utilsMod = await import('https://esm.sh/@noble/hashes@1.4.0/utils');
-
-    window.LIBS = {
-      bip39: bip39Mod,
-      wordlist: wlMod.wordlist,
-      HDKey: bip32Mod.HDKey,
-      sha256: sha256Mod.sha256,
-      ripemd160: ripemdMod.ripemd160,
-      keccak_256: sha3Mod.keccak_256,
-      bytesToHex: utilsMod.bytesToHex,
-    };
-    window.LOADED = true;
-    return true;
-  } catch (e) {
-    log('❌ فشل تحميل المكتبات: ' + e.message, 'error');
-    log('💡 تحقق من الإنترنت أو جرب متصفح آخر', 'warn');
+  const mods = await tryImport(pkgs);
+  
+  if (!mods) {
+    log('❌ فشل تحميل المكتبات من كل CDNs', 'e');
+    log('💡 تحقق من الإنترنت، أو جرب VPN', 'w');
     return false;
   }
+
+  const [bip39, wl, bip32, sha256M, ripemdM, sha3M, utilsM] = mods;
+  window.LIBS = {
+    bip39: bip39.default || bip39,
+    wordlist: wl.wordlist || wl.default?.wordlist,
+    HDKey: bip32.HDKey || bip32.default?.HDKey,
+    sha256: sha256M.sha256 || sha256M.default?.sha256,
+    ripemd160: ripemdM.ripemd160 || ripemdM.default?.ripemd160,
+    keccak_256: sha3M.keccak_256 || sha3M.default?.keccak_256,
+    bytesToHex: utilsM.bytesToHex || utilsM.default?.bytesToHex,
+  };
+  
+  if (!window.LIBS.bip39 || !window.LIBS.HDKey || !window.LIBS.sha256) {
+    log('❌ المكتبات غير مكتملة', 'e');
+    return false;
+  }
+  
+  window.READY = true;
+  return true;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Base58 / Bech32
-// ═══════════════════════════════════════════════════════════════
-const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-function base58Encode(bytes) {
+// ═══════════════════════════════════════════════════════════
+// BASE58 / BECH32
+// ═══════════════════════════════════════════════════════════
+const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+function b58enc(bytes) {
   let n = 0n;
   for (const b of bytes) n = n * 256n + BigInt(b);
-  let out = '';
-  while (n > 0n) { out = BASE58_ALPHABET[Number(n % 58n)] + out; n = n / 58n; }
-  for (const b of bytes) { if (b === 0) out = '1' + out; else break; }
-  return out;
+  let s = '';
+  while (n > 0n) { s = B58[Number(n % 58n)] + s; n = n / 58n; }
+  for (const b of bytes) { if (b === 0) s = '1' + s; else break; }
+  return s;
 }
-function base58Check(payload) {
+function b58check(p) {
   const L = window.LIBS;
-  const checksum = L.sha256(L.sha256(payload)).slice(0, 4);
-  return base58Encode(new Uint8Array([...payload, ...checksum]));
+  const ck = L.sha256(L.sha256(p)).slice(0, 4);
+  return b58enc(new Uint8Array([...p, ...ck]));
 }
 
-const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
-function bech32Polymod(values) {
-  const GEN = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
-  let chk = 1;
-  for (const v of values) {
-    const b = chk >> 25;
-    chk = ((chk & 0x1ffffff) << 5) ^ v;
-    for (let i = 0; i < 5; i++) chk ^= ((b >> i) & 1) ? GEN[i] : 0;
+const BC = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+function bcPM(v) {
+  const G = [0x3b6a57b2,0x26508e6d,0x1ea119fa,0x3d4233dd,0x2a1462b3];
+  let c = 1;
+  for (const x of v) {
+    const b = c >> 25;
+    c = ((c & 0x1ffffff) << 5) ^ x;
+    for (let i = 0; i < 5; i++) c ^= ((b >> i) & 1) ? G[i] : 0;
   }
-  return chk;
+  return c;
 }
-function bech32HrpExpand(hrp) {
-  const out = [];
-  for (const c of hrp) out.push(c.charCodeAt(0) >> 5);
-  out.push(0);
-  for (const c of hrp) out.push(c.charCodeAt(0) & 31);
-  return out;
+function bcHE(h) { const o=[]; for(const c of h)o.push(c.charCodeAt(0)>>5); o.push(0); for(const c of h)o.push(c.charCodeAt(0)&31); return o; }
+function bcCS(h, d) {
+  const v = [...bcHE(h), ...d];
+  const p = bcPM([...v, 0,0,0,0,0,0]) ^ 1;
+  const o = [];
+  for (let i = 0; i < 6; i++) o.push((p >> (5*(5-i))) & 31);
+  return o;
 }
-function bech32CreateChecksum(hrp, data) {
-  const values = [...bech32HrpExpand(hrp), ...data];
-  const polymod = bech32Polymod([...values, 0, 0, 0, 0, 0, 0]) ^ 1;
-  const out = [];
-  for (let i = 0; i < 6; i++) out.push((polymod >> (5 * (5 - i))) & 31);
-  return out;
+function bcEnc(h, d) {
+  const c = [...d, ...bcCS(h, d)];
+  return h + '1' + c.map(x => BC[x]).join('');
 }
-function bech32Encode(hrp, data) {
-  const combined = [...data, ...bech32CreateChecksum(hrp, data)];
-  return hrp + '1' + combined.map(d => BECH32_CHARSET[d]).join('');
-}
-function convertBits(data, fromBits, toBits, pad = true) {
-  let acc = 0, bits = 0;
-  const ret = [];
-  const maxv = (1 << toBits) - 1;
-  for (const value of data) {
-    acc = (acc << fromBits) | value;
-    bits += fromBits;
-    while (bits >= toBits) { bits -= toBits; ret.push((acc >> bits) & maxv); }
+function cvt(data, fb, tb, pad = true) {
+  let a = 0, b = 0;
+  const r = [];
+  const mx = (1 << tb) - 1;
+  for (const v of data) {
+    a = (a << fb) | v; b += fb;
+    while (b >= tb) { b -= tb; r.push((a >> b) & mx); }
   }
-  if (pad && bits) ret.push((acc << (toBits - bits)) & maxv);
-  return ret;
+  if (pad && b) r.push((a << (tb - b)) & mx);
+  return r;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Address Derivation
-// ═══════════════════════════════════════════════════════════════
-function deriveAddresses(mnemonic) {
+// ═══════════════════════════════════════════════════════════
+// DERIVE ADDRESSES
+// ═══════════════════════════════════════════════════════════
+function deriveAddrs(m) {
   const L = window.LIBS;
-  const seed = L.bip39.mnemonicToSeedSync(mnemonic);
-  const master = L.HDKey.fromMasterSeed(seed);
-  const addrs = {};
-
-  // ETH m/44'/60'/0'/0/0
+  const seed = L.bip39.mnemonicToSeedSync(m);
+  const mk = L.HDKey.fromMasterSeed(seed);
+  const a = {};
+  
   try {
-    const k = master.derive("m/44'/60'/0'/0/0");
+    const k = mk.derive("m/44'/60'/0'/0/0");
     if (k.publicKey) {
       const h = L.keccak_256(k.publicKey.slice(1));
-      addrs.ETH = '0x' + L.bytesToHex(h.slice(12));
+      a.ETH = '0x' + L.bytesToHex(h.slice(12));
     }
   } catch (e) {}
-
-  // TRON m/44'/195'/0'/0/0
+  
   try {
-    const k = master.derive("m/44'/195'/0'/0/0");
+    const k = mk.derive("m/44'/195'/0'/0/0");
     if (k.publicKey) {
       const h = L.keccak_256(k.publicKey.slice(1));
-      addrs.TRON = base58Check(new Uint8Array([0x41, ...h.slice(12)]));
+      a.TRON = b58check(new Uint8Array([0x41, ...h.slice(12)]));
     }
   } catch (e) {}
-
-  // BTC Legacy m/44'/0'/0'/0/0
+  
   try {
-    const k = master.derive("m/44'/0'/0'/0/0");
+    const k = mk.derive("m/44'/0'/0'/0/0");
     if (k.publicKey) {
-      const h160 = L.ripemd160(L.sha256(k.publicKey));
-      addrs.BTC = base58Check(new Uint8Array([0x00, ...h160]));
+      const h = L.ripemd160(L.sha256(k.publicKey));
+      a.BTC = b58check(new Uint8Array([0x00, ...h]));
     }
   } catch (e) {}
-
-  // BTC SegWit m/84'/0'/0'/0/0
+  
   try {
-    const k = master.derive("m/84'/0'/0'/0/0");
+    const k = mk.derive("m/84'/0'/0'/0/0");
     if (k.publicKey) {
-      const h160 = L.ripemd160(L.sha256(k.publicKey));
-      const witprog = [0, ...convertBits(h160, 8, 5)];
-      addrs.BTC_SegWit = bech32Encode('bc', witprog);
+      const h = L.ripemd160(L.sha256(k.publicKey));
+      a.BTC_S = bcEnc('bc', [0, ...cvt(h, 8, 5)]);
     }
   } catch (e) {}
-
-  return addrs;
+  
+  return a;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// RPC Calls
-// ═══════════════════════════════════════════════════════════════
-const RPC_ENDPOINTS = {
-  ETH: [
-    'https://eth.llamarpc.com',
-    'https://rpc.ankr.com/eth',
-    'https://cloudflare-eth.com',
-    'https://ethereum.publicnode.com',
-    'https://1rpc.io/eth',
-  ],
-  BNB: [
-    'https://bsc-dataseed.binance.org',
-    'https://bsc-dataseed1.defibit.io',
-    'https://bsc.publicnode.com',
-  ],
-  MATIC: [
-    'https://polygon-rpc.com',
-    'https://polygon.llamarpc.com',
-    'https://rpc.ankr.com/polygon',
-  ],
+// ═══════════════════════════════════════════════════════════
+// RPC ENDPOINTS
+// ═══════════════════════════════════════════════════════════
+const EPS = {
+  ETH: ['https://eth.llamarpc.com','https://rpc.ankr.com/eth','https://cloudflare-eth.com','https://ethereum.publicnode.com','https://1rpc.io/eth'],
+  BNB: ['https://bsc-dataseed.binance.org','https://bsc-dataseed1.defibit.io','https://bsc.publicnode.com'],
+  MATIC: ['https://polygon-rpc.com','https://polygon.llamarpc.com','https://rpc.ankr.com/polygon'],
+};
+const CT = {
+  USDT_E: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  USDC_E: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  USDT_T: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
 };
 
-const CONTRACTS = {
-  USDT_ERC20: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-  USDC_ERC20: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-  USDT_TRC20: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
-};
-
-function initCB(host) {
-  if (!window.CB[host]) {
-    window.CB[host] = { state: 'closed', failures: 0, lastFailure: 0, ewma: 0, ok: 0, fail: 0 };
-  }
+function initCB(h) {
+  if (!CB[h]) CB[h] = { state: 'closed', fails: 0, last: 0, ewma: 0, ok: 0, fail: 0 };
 }
 
-async function rpcCall(url, payload, timeoutMs = 5000) {
-  const host = new URL(url).hostname;
-  initCB(host);
-  const cb = window.CB[host];
-
-  if (cb.state === 'open') {
-    if (Date.now() - cb.lastFailure > 30000) cb.state = 'half';
-    else throw new Error('CB open');
+async function rpc(url, payload, ms = 5000) {
+  const h = new URL(url).hostname;
+  initCB(h);
+  const c = CB[h];
+  if (c.state === 'open') {
+    if (Date.now() - c.last > 30000) c.state = 'half';
+    else throw new Error('CB');
   }
-
   const ctrl = new AbortController();
-  const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+  const t = setTimeout(() => ctrl.abort(), ms);
   const t0 = performance.now();
   try {
-    const r = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: ctrl.signal,
-    });
-    clearTimeout(tid);
+    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: ctrl.signal });
+    clearTimeout(t);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const j = await r.json();
     const lat = (performance.now() - t0) / 1000;
-    cb.ok++;
-    cb.ewma = cb.ewma ? 0.3 * lat + 0.7 * cb.ewma : lat;
-    if (cb.state === 'half') { cb.state = 'closed'; cb.failures = 0; }
+    c.ok++;
+    c.ewma = c.ewma ? 0.3 * lat + 0.7 * c.ewma : lat;
+    if (c.state === 'half') { c.state = 'closed'; c.fails = 0; }
     return j;
   } catch (e) {
-    clearTimeout(tid);
-    cb.fail++;
-    cb.lastFailure = Date.now();
-    cb.failures++;
-    if (cb.failures >= 3) cb.state = 'open';
+    clearTimeout(t);
+    c.fail++; c.last = Date.now(); c.fails++;
+    if (c.fails >= 3) c.state = 'open';
     throw e;
   }
 }
 
-async function checkETH(addr) {
-  for (const url of RPC_ENDPOINTS.ETH) {
+async function chkEVM(addr, chain) {
+  for (const url of EPS[chain]) {
     try {
-      const r = await rpcCall(url, { jsonrpc: '2.0', method: 'eth_getBalance', params: [addr, 'latest'], id: 1 });
+      const r = await rpc(url, { jsonrpc: '2.0', method: 'eth_getBalance', params: [addr, 'latest'], id: 1 });
       if (r && r.result) return BigInt(r.result);
     } catch (e) {}
   }
   return 0n;
 }
-
-async function checkBNB(addr) {
-  for (const url of RPC_ENDPOINTS.BNB) {
+async function chkERC20(addr, ct) {
+  const d = '0x70a08231' + addr.slice(2).toLowerCase().padStart(64, '0');
+  for (const url of EPS.ETH) {
     try {
-      const r = await rpcCall(url, { jsonrpc: '2.0', method: 'eth_getBalance', params: [addr, 'latest'], id: 1 });
-      if (r && r.result) return BigInt(r.result);
-    } catch (e) {}
-  }
-  return 0n;
-}
-
-async function checkMATIC(addr) {
-  for (const url of RPC_ENDPOINTS.MATIC) {
-    try {
-      const r = await rpcCall(url, { jsonrpc: '2.0', method: 'eth_getBalance', params: [addr, 'latest'], id: 1 });
-      if (r && r.result) return BigInt(r.result);
-    } catch (e) {}
-  }
-  return 0n;
-}
-
-async function checkERC20(addr, contract) {
-  const data = '0x70a08231' + addr.slice(2).toLowerCase().padStart(64, '0');
-  for (const url of RPC_ENDPOINTS.ETH) {
-    try {
-      const r = await rpcCall(url, { jsonrpc: '2.0', method: 'eth_call', params: [{ to: contract, data }, 'latest'], id: 1 });
+      const r = await rpc(url, { jsonrpc: '2.0', method: 'eth_call', params: [{ to: ct, data: d }, 'latest'], id: 1 });
       if (r && r.result) {
         if (r.result === '0x' || r.result === '0x0') return 0n;
         return BigInt(r.result);
@@ -479,155 +426,145 @@ async function checkERC20(addr, contract) {
   }
   return 0n;
 }
-
-async function checkBTC(addr) {
+async function chkBTC(a) {
   try {
-    const r = await fetch(`https://mempool.space/api/address/${addr}`, { cache: 'no-cache' });
+    const r = await fetch(`https://mempool.space/api/address/${a}`, { cache: 'no-cache' });
     if (!r.ok) return 0n;
     const j = await r.json();
     return BigInt(j.chain_stats.funded_txo_sum - j.chain_stats.spent_txo_sum);
   } catch (e) { return 0n; }
 }
-
-async function checkTRX(addr) {
+async function chkTRX(a) {
   try {
-    const r = await fetch(`https://api.trongrid.io/v1/accounts/${addr}`, { cache: 'no-cache' });
+    const r = await fetch(`https://api.trongrid.io/v1/accounts/${a}`, { cache: 'no-cache' });
     if (!r.ok) return 0n;
     const j = await r.json();
-    if (j.data && j.data.length > 0) return BigInt(j.data[0].balance || 0);
+    if (j.data?.[0]) return BigInt(j.data[0].balance || 0);
   } catch (e) {}
   return 0n;
 }
-
-async function checkTRC20(addr, contract) {
+async function chkTRC20(a, ct) {
   try {
-    const r = await fetch(`https://api.trongrid.io/v1/accounts/${addr}/tokens`, { cache: 'no-cache' });
+    const r = await fetch(`https://api.trongrid.io/v1/accounts/${a}/tokens`, { cache: 'no-cache' });
     if (!r.ok) return 0n;
     const j = await r.json();
     if (j.data) {
       for (const t of j.data) {
-        if (t.tokenId === contract || t.tokenAbbr === 'USDT') {
-          return BigInt(t.balance || 0);
-        }
+        if (t.tokenId === ct || t.tokenAbbr === 'USDT') return BigInt(t.balance || 0);
       }
     }
   } catch (e) {}
   return 0n;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Weak Filter
-// ═══════════════════════════════════════════════════════════════
-const WEAK_WORDS = new Set(['abandon','test','hello','apple','bitcoin','money','master','password','qwerty','letmein','zoo','cat','dog','sun','moon','star','fire','water','correct','horse','battery','staple','satoshi','nakamoto','world','awesome','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','void','come','effort','suffer','camp','survey','warrior','heavy','shoot','primary','clutch','crush','open','amazing','screen','patrol','group','space','point','exist','slush','involve','unfold','legal','winner','thank','year','wave','sausage','worth','useful','yellow','letter','advice','cage','absurd','amount','doctor','acoustic','avoid','above','ozone','drill','grab','fiber','curtain','grace','pudding','cruise','elder','picnic','scheme','spot','photo','card','baby','mountain','device','kick','cradle','pact','join','borrow','gravity','machine','north']);
+// ═══════════════════════════════════════════════════════════
+// WEAK FILTER
+// ═══════════════════════════════════════════════════════════
+const WEAK = new Set(['abandon','test','hello','apple','bitcoin','money','master','password','qwerty','letmein','zoo','cat','dog','sun','moon','star','fire','water','correct','horse','battery','staple','satoshi','nakamoto','world','awesome','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','void','come','effort','suffer','camp','survey','warrior','heavy','shoot','primary','clutch','crush','open','amazing','screen','patrol','group','space','point','exist','slush','involve','unfold','legal','winner','thank','year','wave','sausage','worth','useful','yellow','letter','advice','cage','absurd','amount','doctor','acoustic','avoid','above','ozone','drill','grab','fiber','curtain','grace','pudding','cruise','elder','picnic','scheme','spot','photo','card','baby','mountain','device','kick','cradle','pact','join','borrow','gravity','machine','north']);
 
-function isKnownWeak(m) {
-  const words = m.toLowerCase().split(' ');
-  const wordSet = new Set(words);
-  let known = 0;
-  for (const w of wordSet) if (WEAK_WORDS.has(w)) known++;
-  if (known === wordSet.size) return true;
-  if (known >= Math.floor(words.length * 2 / 3)) return true;
-  const freq = {};
-  for (const w of words) freq[w] = (freq[w] || 0) + 1;
-  if (Math.max(...Object.values(freq)) >= 4) return true;
+function isWeak(m) {
+  const w = m.toLowerCase().split(' ');
+  const s = new Set(w);
+  let k = 0;
+  for (const x of s) if (WEAK.has(x)) k++;
+  if (k === s.size) return true;
+  if (k >= Math.floor(w.length * 2 / 3)) return true;
+  const f = {};
+  for (const x of w) f[x] = (f[x] || 0) + 1;
+  if (Math.max(...Object.values(f)) >= 4) return true;
   return false;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Process Seed
-// ═══════════════════════════════════════════════════════════════
-async function processSeed(mnemonic) {
-  let addrs;
-  try { addrs = deriveAddresses(mnemonic); }
+// ═══════════════════════════════════════════════════════════
+// PROCESS SEED
+// ═══════════════════════════════════════════════════════════
+async function processSeed(m) {
+  let a;
+  try { a = deriveAddrs(m); }
   catch (e) { return; }
-
-  const checks = [];
-  if (addrs.ETH) {
-    checks.push({ n: 'ETH', a: addrs.ETH, u: 'wei', d: 18, f: () => checkETH(addrs.ETH) });
-    checks.push({ n: 'BNB', a: addrs.ETH, u: 'wei', d: 18, f: () => checkBNB(addrs.ETH) });
-    checks.push({ n: 'MATIC', a: addrs.ETH, u: 'wei', d: 18, f: () => checkMATIC(addrs.ETH) });
-    checks.push({ n: 'USDT-ERC', a: addrs.ETH, u: 'micro', d: 6, f: () => checkERC20(addrs.ETH, CONTRACTS.USDT_ERC20) });
-    checks.push({ n: 'USDC-ERC', a: addrs.ETH, u: 'micro', d: 6, f: () => checkERC20(addrs.ETH, CONTRACTS.USDC_ERC20) });
+  
+  const C = [];
+  if (a.ETH) {
+    C.push({ n: 'ETH', a: a.ETH, u: 'wei', d: 18, f: () => chkEVM(a.ETH, 'ETH') });
+    C.push({ n: 'BNB', a: a.ETH, u: 'wei', d: 18, f: () => chkEVM(a.ETH, 'BNB') });
+    C.push({ n: 'MATIC', a: a.ETH, u: 'wei', d: 18, f: () => chkEVM(a.ETH, 'MATIC') });
+    C.push({ n: 'USDT-ERC', a: a.ETH, u: 'micro', d: 6, f: () => chkERC20(a.ETH, CT.USDT_E) });
+    C.push({ n: 'USDC-ERC', a: a.ETH, u: 'micro', d: 6, f: () => chkERC20(a.ETH, CT.USDC_E) });
   }
-  if (addrs.BTC) checks.push({ n: 'BTC', a: addrs.BTC, u: 'sat', d: 8, f: () => checkBTC(addrs.BTC) });
-  if (addrs.BTC_SegWit) checks.push({ n: 'BTC-Seg', a: addrs.BTC_SegWit, u: 'sat', d: 8, f: () => checkBTC(addrs.BTC_SegWit) });
-  if (addrs.TRON) {
-    checks.push({ n: 'TRX', a: addrs.TRON, u: 'SUN', d: 6, f: () => checkTRX(addrs.TRON) });
-    checks.push({ n: 'USDT-TRC', a: addrs.TRON, u: 'micro', d: 6, f: () => checkTRC20(addrs.TRON, CONTRACTS.USDT_TRC20) });
+  if (a.BTC) C.push({ n: 'BTC', a: a.BTC, u: 'sat', d: 8, f: () => chkBTC(a.BTC) });
+  if (a.BTC_S) C.push({ n: 'BTC-Seg', a: a.BTC_S, u: 'sat', d: 8, f: () => chkBTC(a.BTC_S) });
+  if (a.TRON) {
+    C.push({ n: 'TRX', a: a.TRON, u: 'SUN', d: 6, f: () => chkTRX(a.TRON) });
+    C.push({ n: 'USDT-TRC', a: a.TRON, u: 'micro', d: 6, f: () => chkTRC20(a.TRON, CT.USDT_T) });
   }
-
-  const results = await Promise.all(checks.map(c => c.f().catch(() => 0n)));
-
-  for (let i = 0; i < checks.length; i++) {
-    const c = checks[i];
-    const raw = results[i];
-    if (raw > 0n) {
-      const human = Number(raw) / Math.pow(10, c.d);
-      const item = { mnemonic, coin: c.n, addr: c.a, raw: raw.toString(), bal: human, unit: c.u, at: new Date().toISOString() };
-      State.results.push(item);
-      State.found++;
-      addFoundToUI(item);
-      log(`🎉 ${c.n}: ${human.toFixed(8)} | ${c.a}`, 'ok');
-      notifyTelegram(item);
+  
+  const R = await Promise.all(C.map(c => c.f().catch(() => 0n)));
+  
+  for (let i = 0; i < C.length; i++) {
+    if (R[i] > 0n) {
+      const h = Number(R[i]) / Math.pow(10, C[i].d);
+      const it = { mnemonic: m, coin: C[i].n, addr: C[i].a, raw: R[i].toString(), bal: h, at: new Date().toISOString() };
+      S.results.push(it);
+      S.found++;
+      addFound(it);
+      log(`🎉 ${C[i].n}: ${h.toFixed(8)} | ${C[i].a}`, 'k');
+      notifyTG(it);
     }
   }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Worker
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// WORKER (SHA256 + Mnemonic only — no external libs needed)
+// ═══════════════════════════════════════════════════════════
 function createWorker() {
   const code = `
-    let wordlist = null;
+    let wl = null;
     self.onmessage = (e) => {
-      const { type, data } = e.data;
-      if (type === 'init') {
-        wordlist = data.wordlist;
-        self.postMessage({ type: 'ready' });
-      } else if (type === 'generate') {
+      const d = e.data;
+      if (d.type === 'init') { wl = d.wordlist; self.postMessage({ type: 'ready' }); return; }
+      if (d.type === 'generate') {
         const out = [];
-        for (let i = 0; i < data.count; i++) {
-          const bytes = data.wordCount === 12 ? 16 : data.wordCount === 15 ? 20 : data.wordCount === 18 ? 24 : 32;
-          const entropy = new Uint8Array(bytes);
-          crypto.getRandomValues(entropy);
-          out.push(entropyToMnemonic(entropy, wordlist));
+        for (let i = 0; i < d.count; i++) {
+          const bytes = d.wc === 12 ? 16 : d.wc === 15 ? 20 : d.wc === 18 ? 24 : 32;
+          const ent = new Uint8Array(bytes);
+          crypto.getRandomValues(ent);
+          out.push(e2m(ent, wl));
         }
         self.postMessage({ type: 'batch', data: out });
       }
     };
-    function entropyToMnemonic(entropy, wordlist) {
+    function e2m(ent, wl) {
       const bits = [];
-      for (const b of entropy) for (let i = 7; i >= 0; i--) bits.push((b >> i) & 1);
-      const hash = sha256(entropy);
-      const csBits = bits.length / 32;
-      for (let i = 0; i < csBits; i++) bits.push((hash[0] >> (7 - i)) & 1);
-      const words = [];
+      for (const b of ent) for (let i = 7; i >= 0; i--) bits.push((b >> i) & 1);
+      const h = s256(ent);
+      const cb = bits.length / 32;
+      for (let i = 0; i < cb; i++) bits.push((h[0] >> (7 - i)) & 1);
+      const w = [];
       for (let i = 0; i < bits.length; i += 11) {
-        let idx = 0;
-        for (let j = 0; j < 11; j++) idx = (idx << 1) | bits[i + j];
-        words.push(wordlist[idx]);
+        let x = 0;
+        for (let j = 0; j < 11; j++) x = (x << 1) | bits[i + j];
+        w.push(wl[x]);
       }
-      return words.join(' ');
+      return w.join(' ');
     }
-    function sha256(data) {
+    function s256(d) {
       const K = new Uint32Array([0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2]);
       const H = new Uint32Array([0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19]);
-      const ml = data.length * 8;
-      const k = (56 - (data.length + 1) % 64 + 64) % 64;
-      const padded = new Uint8Array(data.length + 1 + k + 8);
-      padded.set(data);
-      padded[data.length] = 0x80;
-      const dv = new DataView(padded.buffer);
-      dv.setUint32(padded.length - 4, ml);
+      const ml = d.length * 8;
+      const k = (56 - (d.length + 1) % 64 + 64) % 64;
+      const p = new Uint8Array(d.length + 1 + k + 8);
+      p.set(d); p[d.length] = 0x80;
+      const dv = new DataView(p.buffer);
+      dv.setUint32(p.length - 4, ml);
       const w = new Uint32Array(64);
-      for (let i = 0; i < padded.length; i += 64) {
+      for (let i = 0; i < p.length; i += 64) {
         for (let j = 0; j < 16; j++) w[j] = dv.getUint32(i + j * 4);
         for (let j = 16; j < 64; j++) {
           const s0 = ((w[j-15]>>>7)|(w[j-15]<<25)) ^ ((w[j-15]>>>18)|(w[j-15]<<14)) ^ (w[j-15]>>>3);
           const s1 = ((w[j-2]>>>17)|(w[j-2]<<15)) ^ ((w[j-2]>>>19)|(w[j-2]<<13)) ^ (w[j-2]>>>10);
           w[j] = (w[j-16] + s0 + w[j-7] + s1) >>> 0;
         }
-        let [a,b,c,d,e,f,g,h] = H;
+        let [a,b,c,dd,e,f,g,h] = H;
         for (let j = 0; j < 64; j++) {
           const S1 = ((e>>>6)|(e<<26)) ^ ((e>>>11)|(e<<21)) ^ ((e>>>25)|(e<<7));
           const ch = (e & f) ^ (~e & g);
@@ -635,196 +572,207 @@ function createWorker() {
           const S0 = ((a>>>2)|(a<<30)) ^ ((a>>>13)|(a<<19)) ^ ((a>>>22)|(a<<10));
           const mj = (a & b) ^ (a & c) ^ (b & c);
           const t2 = (S0 + mj) >>> 0;
-          h = g; g = f; f = e; e = (d + t1) >>> 0;
-          d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+          h = g; g = f; f = e; e = (dd + t1) >>> 0;
+          dd = c; c = b; b = a; a = (t1 + t2) >>> 0;
         }
-        H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+d)>>>0;
+        H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+dd)>>>0;
         H[4]=(H[4]+e)>>>0; H[5]=(H[5]+f)>>>0; H[6]=(H[6]+g)>>>0; H[7]=(H[7]+h)>>>0;
       }
-      const out = new Uint8Array(32);
-      const outDv = new DataView(out.buffer);
-      for (let i = 0; i < 8; i++) outDv.setUint32(i * 4, H[i]);
-      return out;
+      const o = new Uint8Array(32);
+      const od = new DataView(o.buffer);
+      for (let i = 0; i < 8; i++) od.setUint32(i * 4, H[i]);
+      return o;
     }
   `;
-  const blob = new Blob([code], { type: 'application/javascript' });
-  return new Worker(URL.createObjectURL(blob));
+  return new Worker(URL.createObjectURL(new Blob([code], { type: 'application/javascript' })));
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Start / Stop
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// START / STOP
+// ═══════════════════════════════════════════════════════════
 window.startMining = async function() {
-  if (State.running) return;
-  if (!window.LOADED) { alert('انتظر تحميل المكتبات'); return; }
-
-  State.running = true;
-  State.startTime = Date.now();
-  State.total = 0;
-  State.found = 0;
-  State.results = [];
-  State.lastCount = 0;
-  State.lastTime = Date.now();
-
-  document.getElementById('startBtn').disabled = true;
-  document.getElementById('stopBtn').disabled = false;
+  log('🖱️ تم الضغط على ابدأ', 'i');
+  
+  if (S.running) { log('⚠️ شغال بالفعل', 'w'); return; }
+  
+  if (!window.READY) {
+    log('❌ المكتبات لم تُحمّل بعد', 'e');
+    log('💡 انتظر انتهاء التحميل', 'w');
+    return;
+  }
+  
+  S.running = true;
+  S.startTime = Date.now();
+  S.total = 0; S.found = 0; S.results = [];
+  S.lastCount = 0; S.lastTime = Date.now();
+  S.queue = [];
+  
+  document.getElementById('sb').disabled = true;
+  document.getElementById('xb').disabled = false;
   setStatus('يعمل', 'closed');
-
-  log('▶️ بدء الفحص', 'ok');
-  log(`🎲 wordCount=${CFG.wordCount} | batch=${CFG.batchSize}`, 'info');
-
-  State.worker = createWorker();
-  State.worker.onmessage = (e) => {
-    if (e.data.type === 'ready') {
-      log('✅ Worker جاهز', 'ok');
-      State.worker.postMessage({ type: 'generate', data: { count: CFG.batchSize * 4, wordCount: CFG.wordCount } });
-    } else if (e.data.type === 'batch') {
-      for (const m of e.data.data) {
-        if (isKnownWeak(m)) { State.weakSkipped++; continue; }
-        if (State.dedupMem.has(m)) { State.dupSkipped++; continue; }
-        State.dedupMem.add(m);
-        State.queue.push(m);
+  showBanner('✅ الفحص شغال — جاري التوليد...', 'ok');
+  
+  log('▶️ بدء الفحص', 'k');
+  log(`🎲 wordCount=${CFG.wordCount} | batch=${CFG.batchSize}`, 'i');
+  
+  S.worker = createWorker();
+  S.worker.onerror = (e) => log('❌ Worker error: ' + e.message, 'e');
+  S.worker.onmessage = (e) => {
+    const d = e.data;
+    if (d.type === 'ready') {
+      log('✅ Worker جاهز', 'k');
+      S.worker.postMessage({ type: 'generate', count: CFG.batchSize * 4, wc: CFG.wordCount });
+    } else if (d.type === 'batch') {
+      log(`📥 دفعة: ${d.data.length} عبارة`, 'i');
+      for (const m of d.data) {
+        if (isWeak(m)) { S.weakSkipped++; continue; }
+        if (S.dedupMem.has(m)) { S.dupSkipped++; continue; }
+        S.dedupMem.add(m);
+        S.queue.push(m);
       }
-      if (State.running) {
-        State.worker.postMessage({ type: 'generate', data: { count: CFG.batchSize * 4, wordCount: CFG.wordCount } });
+      if (S.running) {
+        S.worker.postMessage({ type: 'generate', count: CFG.batchSize * 4, wc: CFG.wordCount });
       }
     }
   };
-  State.worker.postMessage({ type: 'init', data: { wordlist: window.LIBS.wordlist } });
-
+  S.worker.postMessage({ type: 'init', wordlist: window.LIBS.wordlist });
+  
   processQueue();
-
-  setInterval(updateRuntime, 1000);
-  setInterval(updateRate, 1000);
-  setInterval(updateDedupUI, 2000);
-  setInterval(updateRPCUI, 3000);
+  
+  if (!S.timers) {
+    S.timers = [
+      setInterval(updateRuntime, 1000),
+      setInterval(updateRate, 1000),
+      setInterval(updateDedupUI, 2000),
+      setInterval(updateRPCUI, 3000),
+    ];
+  }
 };
 
 window.stopMining = function() {
-  State.running = false;
-  if (State.worker) { State.worker.terminate(); State.worker = null; }
-  document.getElementById('startBtn').disabled = false;
-  document.getElementById('stopBtn').disabled = true;
+  S.running = false;
+  if (S.worker) { S.worker.terminate(); S.worker = null; }
+  document.getElementById('sb').disabled = false;
+  document.getElementById('xb').disabled = true;
   setStatus('متوقف', 'open');
-  log(`⏹️ إيقاف | Total=${State.total} | Found=${State.found}`, 'warn');
+  showBanner(`⏹️ متوقف | فُحص ${S.total} | وُجد ${S.found}`, 'warn');
+  log(`⏹️ إيقاف | Total=${S.total} | Found=${S.found}`, 'w');
 };
 
 async function processQueue() {
-  if (State.processing) return;
-  State.processing = true;
-  while (State.running) {
-    if (State.queue.length === 0) {
+  if (S.processing) return;
+  S.processing = true;
+  while (S.running) {
+    if (S.queue.length === 0) {
       await new Promise(r => setTimeout(r, 200));
       continue;
     }
-    const batch = State.queue.splice(0, CFG.batchSize);
+    const batch = S.queue.splice(0, CFG.batchSize);
     for (const m of batch) {
-      if (!State.running) break;
-      try { await processSeed(m); State.total++; } catch (e) {}
+      if (!S.running) break;
+      try { await processSeed(m); S.total++; } catch (e) {}
     }
-    document.getElementById('totalChecked').textContent = State.total.toLocaleString();
+    document.getElementById('tc').textContent = S.total.toLocaleString();
   }
-  State.processing = false;
+  S.processing = false;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// UI
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// UI UPDATES
+// ═══════════════════════════════════════════════════════════
 function updateRuntime() {
-  if (!State.running) return;
-  const s = Math.floor((Date.now() - State.startTime) / 1000);
-  document.getElementById('runtime').textContent =
+  if (!S.running) return;
+  const s = Math.floor((Date.now() - S.startTime) / 1000);
+  document.getElementById('rt').textContent =
     `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
 }
 function updateRate() {
-  if (!State.running) return;
+  if (!S.running) return;
   const now = Date.now();
-  const dt = (now - State.lastTime) / 1000;
-  const dn = State.total - State.lastCount;
-  State.rate = dt > 0 ? dn / dt : 0;
-  State.lastCount = State.total;
-  State.lastTime = now;
-  document.getElementById('hashrate').textContent = State.rate.toFixed(1) + '/s';
-  document.getElementById('progressBar').style.width = Math.min(100, State.rate) + '%';
+  const dt = (now - S.lastTime) / 1000;
+  const dn = S.total - S.lastCount;
+  S.rate = dt > 0 ? dn / dt : 0;
+  S.lastCount = S.total;
+  S.lastTime = now;
+  document.getElementById('hr').textContent = S.rate.toFixed(1) + '/s';
+  document.getElementById('pb').style.width = Math.min(100, S.rate) + '%';
 }
 function updateDedupUI() {
-  document.getElementById('dedupMem').textContent = State.dedupMem.size.toLocaleString();
-  document.getElementById('dedupWeak').textContent = State.weakSkipped.toLocaleString();
-  document.getElementById('dedupDup').textContent = State.dupSkipped.toLocaleString();
-  document.getElementById('logCount').textContent = State.total.toLocaleString();
+  document.getElementById('dm').textContent = S.dedupMem.size.toLocaleString();
+  document.getElementById('dw').textContent = S.weakSkipped.toLocaleString();
+  document.getElementById('dd').textContent = S.dupSkipped.toLocaleString();
+  document.getElementById('lc').textContent = S.total.toLocaleString();
 }
 function updateRPCUI() {
-  const tbody = document.querySelector('#rpcTable tbody');
+  const tb = document.getElementById('rtb');
   const rows = [];
   let i = 1;
-  for (const host in window.CB) {
-    const cb = window.CB[host];
-    const icon = cb.state;
-    rows.push(`<tr><td>${i++}</td><td class="ep-url">${host.substring(0,32)}</td><td><span class="dot ${icon}"></span>${cb.state}</td><td>${(cb.ewma*1000).toFixed(0)}ms</td><td>${cb.ok}</td><td>${cb.fail}</td></tr>`);
+  for (const h in CB) {
+    const c = CB[h];
+    rows.push(`<tr><td>${i++}</td><td class="ep">${h.substring(0,32)}</td><td><span class="dot ${c.state}"></span>${c.state}</td><td>${(c.ewma*1000).toFixed(0)}ms</td><td>${c.ok}</td><td>${c.fail}</td></tr>`);
   }
-  tbody.innerHTML = rows.join('') || '<tr><td colspan="6" style="text-align:center;color:#8b949e">لا توجد اتصالات</td></tr>';
-  document.getElementById('rpcCount').textContent = Object.keys(window.CB).length;
+  tb.innerHTML = rows.join('') || '<tr><td colspan="6" style="text-align:center;color:#8b949e">لا توجد اتصالات</td></tr>';
+  document.getElementById('rc').textContent = Object.keys(CB).length;
 }
 
 window.switchTab = function(id, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tc').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('tab-' + id).classList.add('active');
 };
 
-function addFoundToUI(item) {
-  const list = document.getElementById('foundList');
-  if (list.querySelector('div[style*="text-align:center"]')) list.innerHTML = '';
-  const div = document.createElement('div');
-  div.className = 'found-item';
-  div.innerHTML = `<div class="coin">🎉 ${item.coin} — ${item.bal.toFixed(8)}</div><div class="row"><b>Seed:</b> ${item.mnemonic}</div><div class="row"><b>Addr:</b> ${item.addr}</div>`;
-  list.prepend(div);
-  document.getElementById('foundCount').textContent = State.found;
-  document.getElementById('foundCount2').textContent = State.found;
+function addFound(it) {
+  const l = document.getElementById('fl');
+  if (l.querySelector('div[style*="text-align:center"]')) l.innerHTML = '';
+  const d = document.createElement('div');
+  d.className = 'fi';
+  d.innerHTML = `<div class="cn">🎉 ${it.coin} — ${it.bal.toFixed(8)}</div><div class="rw"><b>Seed:</b> ${it.mnemonic}</div><div class="rw"><b>Addr:</b> ${it.addr}</div>`;
+  l.prepend(d);
+  document.getElementById('fc').textContent = S.found;
+  document.getElementById('fc2').textContent = S.found;
 }
 
-window.saveSettings = function() {
-  CFG.wordCount = parseInt(document.getElementById('wordCount').value);
-  CFG.batchSize = parseInt(document.getElementById('batchSize').value);
-  CFG.tgToken = document.getElementById('tgToken').value.trim();
-  CFG.tgChat = document.getElementById('tgChat').value.trim();
-  localStorage.setItem('ultra37_cfg', JSON.stringify(CFG));
-  log('💾 حفظ الإعدادات', 'ok');
+window.saveCfg = function() {
+  CFG.wordCount = parseInt(document.getElementById('wc').value);
+  CFG.batchSize = parseInt(document.getElementById('bs').value);
+  CFG.tgToken = document.getElementById('tt').value.trim();
+  CFG.tgChat = document.getElementById('tg').value.trim();
+  localStorage.setItem('v38', JSON.stringify(CFG));
+  log('💾 حفظ الإعدادات', 'k');
 };
 
 window.resetDedup = function() {
   if (!confirm('متأكد؟')) return;
-  State.dedupMem.clear();
-  State.weakSkipped = 0;
-  State.dupSkipped = 0;
+  S.dedupMem.clear();
+  S.weakSkipped = 0;
+  S.dupSkipped = 0;
   updateDedupUI();
-  log('🗑️ مسح Dedup', 'warn');
+  log('🗑️ مسح Dedup', 'w');
 };
 
-window.clearResults = function() {
+window.clearRes = function() {
   if (!confirm('حذف النتائج؟')) return;
-  State.results = [];
-  State.found = 0;
-  document.getElementById('foundList').innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">لم يتم العثور على أرصدة بعد</div>';
-  document.getElementById('foundCount').textContent = '0';
-  document.getElementById('foundCount2').textContent = '0';
+  S.results = []; S.found = 0;
+  document.getElementById('fl').innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">لا نتائج</div>';
+  document.getElementById('fc').textContent = '0';
+  document.getElementById('fc2').textContent = '0';
 };
 
-window.exportResults = function() {
-  if (State.results.length === 0) { log('⚠️ لا نتائج', 'warn'); return; }
-  const blob = new Blob([JSON.stringify(State.results, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
+window.exportRes = function() {
+  if (S.results.length === 0) { log('⚠️ لا نتائج', 'w'); return; }
+  const b = new Blob([JSON.stringify(S.results, null, 2)], { type: 'application/json' });
+  const u = URL.createObjectURL(b);
   const a = document.createElement('a');
-  a.href = url; a.download = `ultra_found_${Date.now()}.json`; a.click();
-  URL.revokeObjectURL(url);
-  log('📥 تصدير', 'ok');
+  a.href = u; a.download = `ultra_${Date.now()}.json`; a.click();
+  URL.revokeObjectURL(u);
+  log('📥 تصدير', 'k');
 };
 
-async function notifyTelegram(item) {
+async function notifyTG(it) {
   if (!CFG.tgToken || !CFG.tgChat) return;
   try {
-    const msg = `🎉 *${item.coin}*\n\n\`${item.mnemonic}\`\n💰 \`${item.bal}\`\n📍 \`${item.addr}\``;
+    const msg = `🎉 *${it.coin}*\n\n\`${it.mnemonic}\`\n💰 \`${it.bal}\`\n📍 \`${it.addr}\``;
     await fetch(`https://api.telegram.org/bot${CFG.tgToken}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -833,37 +781,47 @@ async function notifyTelegram(item) {
   } catch (e) {}
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Init
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
 (async () => {
-  log('📄 جاري التحميل...', 'info');
+  log('📄 Ultra Scanner v3.8', 'i');
+  
+  // load saved config
   try {
-    const c = JSON.parse(localStorage.getItem('ultra37_cfg'));
+    const c = JSON.parse(localStorage.getItem('v38'));
     if (c) Object.assign(CFG, c);
   } catch (e) {}
-  document.getElementById('wordCount').value = CFG.wordCount;
-  document.getElementById('batchSize').value = CFG.batchSize;
-  document.getElementById('tgToken').value = CFG.tgToken;
-  document.getElementById('tgChat').value = CFG.tgChat;
-
+  document.getElementById('wc').value = CFG.wordCount;
+  document.getElementById('bs').value = CFG.batchSize;
+  document.getElementById('tt').value = CFG.tgToken;
+  document.getElementById('tg').value = CFG.tgChat;
+  
+  // wire up buttons
+  document.getElementById('sb').addEventListener('click', window.startMining);
+  document.getElementById('xb').addEventListener('click', window.stopMining);
+  
+  log('🖱️ تم ربط الأزرار', 'k');
+  
+  // load libraries
   const ok = await loadLibraries();
+  
   if (ok) {
-    document.getElementById('loadingBanner').style.display = 'none';
-    document.getElementById('startBtn').disabled = false;
+    document.getElementById('sb').disabled = false;
     setStatus('جاهز', 'closed');
-    log('✅ كل المكتبات جاهزة', 'ok');
-    log('🎯 اضغط "ابدأ الفحص"', 'ok');
+    showBanner('✅ كل المكتبات جاهزة — اضغط "ابدأ الفحص"', 'ok');
+    log('✅ جاهز للبدء', 'k');
   } else {
-    document.getElementById('loadingBanner').innerHTML = '❌ فشل تحميل المكتبات — تحقق من الإنترنت';
-    document.getElementById('loadingBanner').style.borderColor = 'var(--red)';
-    document.getElementById('loadingBanner').style.color = 'var(--red)';
-    setStatus('فشل', 'open');
+    document.getElementById('sb').disabled = false;
+    setStatus('محدود', 'half');
+    showBanner('⚠️ فشل تحميل المكتبات — سيتم استخدام وضع محدود', 'warn');
+    log('⚠️ فشل CDN — جرّب VPN ثم أعد التحميل', 'w');
+    log('💡 الزر يعمل، لكن بعض العملات قد لا تُفحص', 'w');
   }
 })();
 
 window.addEventListener('beforeunload', (e) => {
-  if (State.running) { e.preventDefault(); e.returnValue = 'الفحص شغال'; }
+  if (S.running) { e.preventDefault(); e.returnValue = 'الفحص شغال'; }
 });
 </script>
 </body>
