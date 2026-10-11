@@ -2,117 +2,1122 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⛏️ XMR Web Miner (Original)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🚀 Ultra Scanner v3.7</title>
+<meta name="description" content="Browser-based multi-coin address scanner">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0d1117; color: #c9d1d9; min-height: 100vh; padding: 15px; }
-  .container { max-width: 720px; margin: 0 auto; }
-  h1 { text-align: center; font-size: 24px; margin-bottom: 10px; background: linear-gradient(90deg, #ff6b00, #ffa500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 18px; margin-bottom: 12px; }
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
-  .stat { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 12px; text-align: center; }
-  .stat-label { font-size: 10px; color: #8b949e; margin-bottom: 4px; }
-  .stat-value { font-size: 18px; font-weight: bold; color: #58a6ff; font-family: 'Courier New', monospace; }
-  .stat-value.orange { color: #ffa500; } .stat-value.green { color: #3fb950; }
-  .btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; margin: 8px 0; }
-  .btn-start { background: linear-gradient(90deg, #238636, #2ea043); color: #fff; }
-  .btn-stop { background: linear-gradient(90deg, #da3633, #f85149); color: #fff; }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .log { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px; max-height: 220px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 11px; color: #3fb950; direction: ltr; text-align: left; margin-top: 10px; }
-  .wallet-input { width: 100%; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 10px; color: #ffa500; font-family: monospace; font-size: 10px; word-break: break-all; margin-bottom: 10px; }
-  .warning { background: rgba(255, 193, 7, 0.08); border: 1px solid #ffc107; border-radius: 10px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: #ffc107; }
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
+  --bd:#30363d;--tx:#c9d1d9;--tx2:#8b949e;--tx3:#484f58;
+  --ac:#ffa500;--ac2:#ff6b00;--gr:#3fb950;--rd:#f85149;
+  --yl:#ffc107;--bl:#58a6ff;--mg:#bc8cff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Segoe UI',Tahoma,-apple-system,sans-serif;
+  background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);
+  color:var(--tx);min-height:100vh;padding:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto}
+.header{text-align:center;margin-bottom:20px}
+.h1{font-size:26px;font-weight:bold;
+  background:linear-gradient(90deg,#ff6b00,#ffa500,#ff6b00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;background-size:200% auto;
+  animation:shine 3s linear infinite;}
+@keyframes shine{to{background-position:200% center}}
+.sub{color:var(--tx2);font-size:12px;margin-top:5px}
+.card{background:var(--bg2);border:1px solid var(--bd);
+  border-radius:12px;padding:16px;margin-bottom:12px}
+.card-title{font-size:13px;color:var(--tx2);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:500px){.grid,.grid3{grid-template-columns:1fr}}
+.stat{background:var(--bg);border:1px solid var(--bd);
+  border-radius:8px;padding:12px;text-align:center;transition:border .2s}
+.stat:hover{border-color:var(--ac)}
+.stat-l{font-size:10px;color:var(--tx2);margin-bottom:4px;
+  text-transform:uppercase;letter-spacing:.5px}
+.stat-v{font-size:20px;font-weight:bold;color:var(--bl);
+  font-family:'Courier New',monospace;word-break:break-all}
+.stat-v.orange{color:var(--ac)}.stat-v.green{color:var(--gr)}
+.stat-v.red{color:var(--rd)}.stat-v.yellow{color:var(--yl)}
+.stat-v.purple{color:var(--mg)}
+
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;
+  font-size:15px;font-weight:bold;cursor:pointer;transition:all .2s;
+  margin:8px 0;color:#fff;font-family:inherit}
+.btn-start{background:linear-gradient(90deg,#238636,#2ea043)}
+.btn-start:hover:not(:disabled){background:linear-gradient(90deg,#2ea043,#3fb950);
+  transform:translateY(-1px);box-shadow:0 4px 12px rgba(63,185,80,.3)}
+.btn-stop{background:linear-gradient(90deg,#da3633,#f85149)}
+.btn-stop:hover:not(:disabled){background:linear-gradient(90deg,#f85149,#ff6b6b);
+  transform:translateY(-1px);box-shadow:0 4px 12px rgba(248,81,73,.3)}
+.btn-clear{background:linear-gradient(90deg,#6e7681,#8b949e)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+.input,textarea,select{
+  width:100%;background:var(--bg);border:1px solid var(--bd);
+  border-radius:8px;padding:10px;color:var(--tx);font-family:inherit;
+  font-size:13px;transition:border .2s;outline:none}
+.input:focus,textarea:focus,select:focus{border-color:var(--ac)}
+textarea{font-family:'Courier New',monospace;font-size:11px;
+  direction:ltr;text-align:left;word-break:break-all;resize:vertical}
+.label{font-size:11px;color:var(--tx2);margin-bottom:6px;
+  display:flex;justify-content:space-between;align-items:center}
+
+.log{background:var(--bg);border:1px solid var(--bd);border-radius:8px;
+  padding:10px;max-height:300px;overflow-y:auto;
+  font-family:'Courier New',monospace;font-size:11px;
+  direction:ltr;text-align:left;color:var(--gr);margin-top:10px}
+.log::-webkit-scrollbar{width:6px}
+.log::-webkit-scrollbar-track{background:var(--bg2)}
+.log::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.log-line{margin:2px 0;line-height:1.4;word-break:break-all}
+.log-line.error{color:var(--rd)}
+.log-line.warn{color:var(--yl)}
+.log-line.info{color:var(--bl)}
+.log-line.ok{color:var(--gr)}
+.log-line.found{color:var(--mg);font-weight:bold}
+.log-line.muted{color:var(--tx3)}
+
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;
+  margin-left:6px;vertical-align:middle;transition:background .3s}
+.dot.offline{background:var(--rd)}
+.dot.connecting{background:var(--yl);animation:pulse 1s infinite}
+.dot.online{background:var(--gr);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.badge{display:inline-block;padding:3px 8px;border-radius:12px;
+  font-size:10px;font-weight:bold;margin:0 3px}
+.badge-tg{background:rgba(88,166,255,.15);color:var(--bl);
+  border:1px solid var(--bl)}
+.badge-v{background:rgba(188,140,255,.15);color:var(--mg);
+  border:1px solid var(--mg)}
+
+.warn{background:rgba(255,193,7,.08);border:1px solid var(--yl);
+  border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;
+  color:var(--yl);line-height:1.5}
+.ok-box{background:rgba(63,185,80,.08);border:1px solid var(--gr);
+  border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;
+  color:var(--gr)}
+.info-box{background:rgba(88,166,255,.08);border:1px solid var(--bl);
+  border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;
+  color:var(--bl)}
+
+.found-item{background:var(--bg);border:1px solid var(--mg);
+  border-radius:8px;padding:12px;margin-bottom:8px;
+  border-right:4px solid var(--mg)}
+.found-coin{color:var(--mg);font-weight:bold;font-size:13px;
+  margin-bottom:6px}
+.found-seed{font-family:'Courier New',monospace;font-size:10px;
+  direction:ltr;text-align:left;word-break:break-all;
+  background:var(--bg2);padding:6px;border-radius:4px;margin:4px 0;
+  color:var(--yl)}
+.found-addr{font-family:'Courier New',monospace;font-size:10px;
+  direction:ltr;text-align:left;word-break:break-all;
+  background:var(--bg2);padding:6px;border-radius:4px;color:var(--bl)}
+.copy-btn{background:var(--bg3);border:1px solid var(--bd);
+  color:var(--tx);padding:4px 8px;border-radius:4px;font-size:10px;
+  cursor:pointer;margin-top:4px}
+.copy-btn:hover{border-color:var(--ac);color:var(--ac)}
+
+.footer{text-align:center;color:var(--tx3);font-size:10px;
+  margin-top:30px;padding-top:20px;border-top:1px solid var(--bd)}
+.tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.tab{padding:8px 14px;background:var(--bg);border:1px solid var(--bd);
+  border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s;
+  color:var(--tx2)}
+.tab.active{background:var(--ac);color:#fff;border-color:var(--ac)}
+.tab:hover:not(.active){border-color:var(--ac);color:var(--ac)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+.checkbox-wrap{display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--tx);cursor:pointer;user-select:none}
+.checkbox-wrap input[type="checkbox"]{width:auto;
+  accent-color:var(--ac);cursor:pointer}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1;min-width:120px}
+.progress{height:4px;background:var(--bg);border-radius:2px;
+  overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,
+  var(--ac2),var(--ac),var(--ac2));width:0;transition:width .5s;
+  background-size:200% auto;animation:shine 2s linear infinite}
 </style>
 </head>
+
 <body>
-<div class="container">
-  <h1>⛏️ XMR Web Miner (Original)</h1>
-  <div class="warning">
-    ⚠️ هذا الإصدار يستخدم البروكسي العام <b>ny1.xmrminingproxy.com</b> الذي قد يكون متوقفًا حاليًا. 
-    اضغط "ابدأ" وجرب مرة أخرى كل بضع دقائق.
-  </div>
+<div class="wrap">
 
-  <div class="card">
-    <div style="font-size:11px; color:#8b949e; margin-bottom:6px;">💼 محفظتك (Monero Address):</div>
-    <textarea class="wallet-input" id="walletInput" rows="3">44ARej17nLpAK6drFrVhgcY2miSAjPBowK9LkFsTZWdXPDsk5RKnqi3iE59akVkAHV76YRzrNadmWPPtgwZHQuxfSUtWxsk</textarea>
-  </div>
-
-  <div class="card">
-    <div class="stat-grid">
-      <div class="stat"><div class="stat-label">⚡ السرعة</div><div class="stat-value orange" id="hashrate">0 H/s</div></div>
-      <div class="stat"><div class="stat-label">📊 Hashes</div><div class="stat-value" id="totalHashes">0</div></div>
-      <div class="stat"><div class="stat-label">⏱️ الوقت</div><div class="stat-value green" id="runtime">00:00</div></div>
-      <div class="stat"><div class="stat-label">💎 Shares</div><div class="stat-value" id="shares">0</div></div>
+  <div class="header">
+    <div class="h1">🚀 Ultra Scanner v3.7</div>
+    <div class="sub">
+      <span class="dot offline" id="statusDot"></span>
+      <span id="statusText">جاهز</span>
+      <span class="badge badge-v" id="verBadge">HTML</span>
+      <span class="badge badge-tg" id="wgBadge">Workers: 0</span>
     </div>
-    <button class="btn btn-start" id="startBtn" onclick="startMining()">▶️ ابدأ التعدين</button>
-    <button class="btn btn-stop" id="stopBtn" onclick="stopMining()" disabled>⏹️ أوقف</button>
-    <div class="log" id="log"><div class="log-line info">⏳ في انتظار البدء...</div></div>
   </div>
+
+  <div class="warn">
+    ⚠️ <strong>تنبيه صريح:</strong> احتمال العثور على رصيد عبر التوليد العشوائي = 2<sup>-128</sup>
+    (مستحيل رياضياً). هذا المشروع <strong>تعليمي</strong> — يوضح BIP39/BIP32/BIP44 وتقنيات الويب المتقدمة.
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('main',this)">⛏️ التعدين</div>
+    <div class="tab" onclick="showTab('found',this)">🎉 الموجودات</div>
+    <div class="tab" onclick="showTab('settings',this)">⚙️ الإعدادات</div>
+    <div class="tab" onclick="showTab('about',this)">ℹ️ عن</div>
+  </div>
+
+  <!-- MAIN TAB -->
+  <div class="tab-content active" id="tab-main">
+
+    <div class="card">
+      <div class="grid">
+        <div class="stat">
+          <div class="stat-l">📊 فُحص</div>
+          <div class="stat-v" id="sTotal">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">🎉 أرصدة</div>
+          <div class="stat-v green" id="sFound">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">⚡ السرعة/ث</div>
+          <div class="stat-v orange" id="sRate">0.0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">⏱️ الوقت</div>
+          <div class="stat-v" id="sTime">00:00</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">🚫 Known Skipped</div>
+          <div class="stat-v yellow" id="sSkip">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">🛡️ Duplicates</div>
+          <div class="stat-v red" id="sDup">0</div>
+        </div>
+      </div>
+      <div class="progress"><div class="progress-fill" id="progressBar"></div></div>
+    </div>
+
+    <button class="btn btn-start" id="startBtn" onclick="startScan()">▶️ ابدأ الفحص</button>
+    <button class="btn btn-stop" id="stopBtn" onclick="stopScan()" disabled>⏹️ إيقاف</button>
+
+    <div class="card">
+      <div class="card-title">📝 سجل مباشر</div>
+      <div class="log" id="log">
+        <div class="log-line info">⏳ في انتظار البدء...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOUND TAB -->
+  <div class="tab-content" id="tab-found">
+    <div class="card">
+      <div class="card-title">
+        🎉 الموجودات
+        <button class="copy-btn" onclick="exportFound()" style="margin-right:auto">📥 تصدير JSON</button>
+        <button class="copy-btn" onclick="clearFound()">🗑️ مسح</button>
+      </div>
+      <div id="foundList" style="font-size:12px;color:var(--tx2)">
+        لم يتم العثور على أرصدة بعد
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div class="tab-content" id="tab-settings">
+
+    <div class="card">
+      <div class="card-title">🔧 الإعدادات الأساسية</div>
+      <div class="row" style="margin-bottom:12px">
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="cfgSkipKnown" checked>
+          🚫 تخطي العبارات المعروفة
+        </label>
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="cfgCheckBTC" checked>
+          🟠 فحص BTC
+        </label>
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="cfgCheckETH" checked>
+          🔷 فحص ETH
+        </label>
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="cfgCheckTRX" checked>
+          🔴 فحص TRX
+        </label>
+      </div>
+      <div class="label">
+        <span>🧵 عدد Workers</span>
+        <span id="workersVal">4</span>
+      </div>
+      <input type="range" id="cfgWorkers" min="1" max="8" value="4"
+             style="width:100%;accent-color:var(--ac)" oninput="document.getElementById('workersVal').textContent=this.value">
+    </div>
+
+    <div class="card">
+      <div class="card-title">📱 Telegram (اختياري)</div>
+      <div class="label">Bot Token</div>
+      <input class="input" id="cfgTgToken" placeholder="1234567890:ABC..." style="margin-bottom:8px">
+      <div class="label">Chat ID</div>
+      <input class="input" id="cfgTgChat" placeholder="123456789" style="margin-bottom:8px">
+      <button class="btn" style="background:var(--bg3);color:var(--tx)"
+              onclick="testTelegram()">🧪 اختبار الإرسال</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💾 البيانات</div>
+      <button class="btn" style="background:var(--bg3);color:var(--tx)"
+              onclick="clearCache()">🗑️ مسح Cache (IndexedDB)</button>
+      <div style="font-size:11px;color:var(--tx2);margin-top:8px">
+        Cache يحفظ العبارات المفحوصة لتجنب التكرار.
+        <br>الحجم الحالي: <span id="cacheSize">0</span> عبارة
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ABOUT TAB -->
+  <div class="tab-content" id="tab-about">
+    <div class="card">
+      <div class="card-title">ℹ️ عن المشروع</div>
+      <div style="font-size:13px;line-height:1.8">
+        <p><strong>🚀 Ultra Scanner v3.7</strong> — نسخة HTML تعمل بالكامل في المتصفح.</p>
+        <br>
+        <p><strong>🎯 الميزات:</strong></p>
+        <ul style="margin-right:20px;margin-top:8px">
+          <li>🎲 توليد عشوائي 100% عبر Web Crypto API</li>
+          <li>🔐 BIP39/BIP32/BIP44 عبر @scure/@noble</li>
+          <li>🛡️ Triple Dedup: Memory + IndexedDB</li>
+          <li>🧵 Web Workers للمعالجة المتوازية</li>
+          <li>🌐 فحص متعدد العملات (BTC/ETH/TRX...)</li>
+          <li>📱 إشعارات Telegram</li>
+          <li>💾 تخزين دائم للنتائج</li>
+        </ul>
+        <br>
+        <p><strong>⚠️ تحذير:</strong> هذا المشروع تعليمي فقط. لا تحاول استخدامه لسرقة أموال. الاحتمال الرياضي للنجاح = 0%.</p>
+        <br>
+        <p><strong>📚 التقنيات:</strong> Web Crypto, IndexedDB, Web Workers, ES Modules, @noble/curves, @scure/bip39, @scure/base</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    🚀 Ultra Scanner v3.7 — HTML Edition<br>
+    <span style="color:var(--tx3)">استخدم على مسؤوليتك • تعليمي فقط</span>
+  </div>
+
 </div>
 
-<!-- ============================================= -->
-<!-- 1. استدعاء مكتبة monero-webminer الرسمية   -->
-<!-- ============================================= -->
-<script src="https://cdn.jsdelivr.net/gh/NajmAjmal/monero-webminer@main/script.js"></script>
-
-<script>
-// ==========================================
-// 2. إعدادات التشغيل (المتغيرات التي تنتظرها المكتبة)
-// ==========================================
-const WORKER_NAME = "web_" + Math.floor(Math.random() * 99999);
-const PASSWORD = "x";
-
-// نستخدم دائمًا البروكسي العام ومونيرو أوشن (حتى لو كان متوقفًا)
-server = "wss://ny1.xmrminingproxy.com";
-const POOL = "moneroocean.stream";
-
-// ==========================================
-// 3. دالة تحديث الواجهة (تعمل بالتوازي مع المكتبة)
-// ==========================================
-function updateStats() {
-  if (!document.getElementById('log')) return;
-  const time = new Date().toLocaleTimeString('en-GB');
-  const hashes = document.getElementById('totalHashes')?.innerText || '0';
-  // نعتمد على متغيرات المكتبة العالمية
-  const hps = (typeof hashesPerSecond !== 'undefined') ? hashesPerSecond : 0;
-  const acc = (typeof acceptedHashes !== 'undefined') ? acceptedHashes : 0;
-  document.getElementById('hashrate').innerText = hps + ' H/s';
-  document.getElementById('shares').innerText = acc;
-  document.getElementById('totalHashes').innerText = (typeof totalHashes !== 'undefined') ? totalHashes : '0';
-}
-
-// ==========================================
-// 4. دوال التحكم (تتصل بالمكتبة)
-// ==========================================
-async function startMining() {
-  const wallet = document.getElementById('walletInput').value.trim();
-  if (!wallet || wallet.length < 90) {
-    alert("الرجاء إدخال محفظة XMR صحيحة");
-    return;
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- Libraries via ESM import map (jsDelivr CDN) -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script type="importmap">
+{
+  "imports": {
+    "@noble/curves/secp256k1": "https://cdn.jsdelivr.net/npm/@noble/curves@1.4.0/esm/secp256k1.js",
+    "@noble/hashes/sha256":    "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/sha256.js",
+    "@noble/hashes/sha512":    "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/sha512.js",
+    "@noble/hashes/ripemd160": "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/ripemd160.js",
+    "@noble/hashes/sha3":      "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/sha3.js",
+    "@noble/hashes/hmac":      "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/hmac.js",
+    "@noble/hashes/utils":     "https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/esm/utils.js",
+    "@scure/bip39":            "https://cdn.jsdelivr.net/npm/@scure/bip39@1.3.0/esm/index.js",
+    "@scure/bip39/wordlists/english": "https://cdn.jsdelivr.net/npm/@scure/bip39@1.3.0/esm/wordlists/english.js",
+    "@scure/base":             "https://cdn.jsdelivr.net/npm/@scure/base@1.1.6/esm/index.js"
   }
-  document.getElementById('startBtn').disabled = true;
-  document.getElementById('stopBtn').disabled = false;
-  document.getElementById('log').innerHTML = '<div class="log-line info">⏳ جاري الاتصال بالبروكسي...</div>';
-  
-  try {
-    // استدعاء الدالة الأساسية من المكتبة
-    startMining(POOL, wallet, WORKER_NAME, -1, PASSWORD);
-    document.getElementById('log').innerHTML += '<div class="log-line ok">✅ تم إرسال أمر البدء للمكتبة</div>';
-    // نبدأ بتحديث الواجهة كل ثانية
-    setInterval(updateStats, 1000);
-  } catch (e) {
-    document.getElementById('log').innerHTML += '<div class="log-line error">❌ خطأ: ' + e.message + '</div>';
-    document.getElementById('startBtn').disabled = false;
-    document.getElementById('stopBtn').disabled = true;
-  }
-}
-
-function stopMining() {
-  if (typeof stopMining === 'function') stopMining();
-  document.getElementById('startBtn').disabled = false;
-  document.getElementById('stopBtn').disabled = true;
-  document.getElementById('log').innerHTML += '<div class="log-line warn">⏹️ تم إرسال أمر الإيقاف</div>';
 }
 </script>
+
+<script type="module">
+// ═══════════════════════════════════════════════════════════
+// 📦 Imports
+// ═══════════════════════════════════════════════════════════
+import { secp256k1 } from '@noble/curves/secp256k1';
+import { sha256 } from '@noble/hashes/sha256';
+import { sha512 } from '@noble/hashes/sha512';
+import { ripemd160 } from '@noble/hashes/ripemd160';
+import { keccak_256 } from '@noble/hashes/sha3';
+import { hmac } from '@noble/hashes/hmac';
+import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import * as bip39 from '@scure/bip39';
+import { wordlist } from '@scure/bip39/wordlists/english';
+import { bech32, base58 } from '@scure/base';
+
+// ═══════════════════════════════════════════════════════════
+// 🌐 Global state
+// ═══════════════════════════════════════════════════════════
+const State = {
+  running: false,
+  workers: [],
+  workerCount: 4,
+  total: 0,
+  found: 0,
+  skipped: 0,
+  dup: 0,
+  startTime: 0,
+  lastTotal: 0,
+  lastTime: 0,
+  timer: null,
+  rateTimer: null,
+  foundItems: [],
+  telegram: {token:'', chat:''},
+};
+
+// ═══════════════════════════════════════════════════════════
+// 🎨 UI Helpers
+// ═══════════════════════════════════════════════════════════
+const $ = (id) => document.getElementById(id);
+
+function log(msg, cls='info') {
+  const el = $('log');
+  const div = document.createElement('div');
+  div.className = 'log-line ' + cls;
+  const t = new Date().toLocaleTimeString('en-GB');
+  div.textContent = `[${t}] ${msg}`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  while (el.children.length > 300) el.removeChild(el.firstChild);
+}
+
+function setStatus(text, cls) {
+  $('statusText').textContent = text;
+  $('statusDot').className = 'dot ' + cls;
+}
+
+function fmt(n) { return n.toLocaleString('en-US'); }
+
+function showTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  $('tab-' + name).classList.add('active');
+}
+
+function updateUI() {
+  $('sTotal').textContent = fmt(State.total);
+  $('sFound').textContent = State.found;
+  $('sSkip').textContent = fmt(State.skipped);
+  $('sDup').textContent = fmt(State.dup);
+  $('wgBadge').textContent = `Workers: ${State.workers.length}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// 💾 IndexedDB for dedup (persistent)
+// ═══════════════════════════════════════════════════════════
+const DB = {
+  db: null,
+  async init() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open('ultra_scanner_v37', 1);
+      req.onupgradeneeded = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('seeds')) {
+          const store = db.createObjectStore('seeds', {keyPath: 'h'});
+          store.createIndex('at', 'at', {unique: false});
+        }
+        if (!db.objectStoreNames.contains('found')) {
+          db.createObjectStore('found', {keyPath: 'id', autoIncrement: true});
+        }
+      };
+      req.onsuccess = e => { this.db = e.target.result; resolve(); };
+      req.onerror = e => reject(e);
+    });
+  },
+  async hasSeed(hash) {
+    return new Promise(resolve => {
+      const tx = this.db.transaction('seeds', 'readonly');
+      const req = tx.objectStore('seeds').get(hash);
+      req.onsuccess = () => resolve(!!req.result);
+      req.onerror = () => resolve(false);
+    });
+  },
+  async addSeed(hash, seed, src) {
+    return new Promise(resolve => {
+      const tx = this.db.transaction('seeds', 'readwrite');
+      tx.objectStore('seeds').put({h: hash, seed, src, at: Date.now()});
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+    });
+  },
+  async count() {
+    return new Promise(resolve => {
+      const tx = this.db.transaction('seeds', 'readonly');
+      const req = tx.objectStore('seeds').count();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(0);
+    });
+  },
+  async addFound(item) {
+    return new Promise(resolve => {
+      const tx = this.db.transaction('found', 'readwrite');
+      tx.objectStore('found').add(item);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+    });
+  },
+  async allFound() {
+    return new Promise(resolve => {
+      const tx = this.db.transaction('found', 'readonly');
+      const req = tx.objectStore('found').getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve([]);
+    });
+  },
+  async clear() {
+    return new Promise(resolve => {
+      const tx = this.db.transaction(['seeds', 'found'], 'readwrite');
+      tx.objectStore('seeds').clear();
+      tx.objectStore('found').clear();
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => resolve(false);
+    });
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+// 🚫 Known Weak Words (للتصفية)
+// ═══════════════════════════════════════════════════════════
+const KNOWN_WEAK = new Set([
+  'abandon','test','hello','apple','bitcoin','money','master','password',
+  'qwerty','letmein','zoo','cat','dog','sun','moon','star','fire','water',
+  'correct','horse','battery','staple','satoshi','nakamoto','world',
+  'awesome','one','two','three','four','five','six','seven','eight','nine',
+  'ten','eleven','twelve','void','come','effort','suffer','camp','survey',
+  'warrior','heavy','shoot','primary','clutch','crush','open','amazing',
+  'screen','patrol','group','space','point','exist','slush','involve',
+  'unfold','legal','winner','thank','year','wave','sausage','worth',
+  'useful','yellow','letter','advice','cage','absurd','amount','doctor',
+  'acoustic','avoid','above','ozone','drill','grab','fiber','curtain',
+  'grace','pudding','cruise','elder','picnic','scheme','spot','photo',
+  'card','baby','mountain','device','kick','cradle','pact','join','borrow'
+]);
+
+function isKnownWeak(mnemonic) {
+  const words = mnemonic.toLowerCase().split(' ');
+  // كل الكلمات من القائمة؟
+  let cnt = 0;
+  for (const w of words) if (KNOWN_WEAK.has(w)) cnt++;
+  if (cnt >= Math.floor(words.length * 0.6)) return true;
+  // كلمة مكررة ≥ 4 مرات؟
+  const freq = {};
+  for (const w of words) freq[w] = (freq[w] || 0) + 1;
+  for (const w in freq) if (freq[w] >= 4) return true;
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🔐 Crypto — BIP32/BIP44 derivation
+// ═══════════════════════════════════════════════════════════
+const HARDENED = 0x80000000;
+
+function deriveChild(parentKey, parentChain, index) {
+  const isHardened = index >= HARDENED;
+  const data = new Uint8Array(37);
+  if (isHardened) {
+    data[0] = 0;
+    data.set(parentKey, 1);
+  } else {
+    const pub = secp256k1.getPublicKey(parentKey, true);
+    data.set(pub, 0);
+  }
+  // index big-endian في آخر 4 بايت
+  const idx = index >>> 0;
+  data[33] = (idx >>> 24) & 0xff;
+  data[34] = (idx >>> 16) & 0xff;
+  data[35] = (idx >>> 8) & 0xff;
+  data[36] = idx & 0xff;
+
+  const I = hmac(sha512, parentChain, data);
+  const IL = I.slice(0, 32);
+  const IR = I.slice(32, 64);
+  const n = secp256k1.CURVE.n;
+  const ilInt = BigInt('0x' + bytesToHex(IL));
+  const pkInt = BigInt('0x' + bytesToHex(parentKey));
+  const childInt = (ilInt + pkInt) % n;
+  const childHex = childInt.toString(16).padStart(64, '0');
+  const childKey = hexToBytes(childHex);
+  return { key: childKey, chain: IR };
+}
+
+function masterFromSeed(seed) {
+  const I = hmac(sha512, 'Bitcoin seed', seed);
+  return { key: I.slice(0, 32), chain: I.slice(32, 64) };
+}
+
+function derivePath(seed, path) {
+  let { key, chain } = masterFromSeed(seed);
+  const parts = path.split('/').slice(1);
+  for (const p of parts) {
+    const hardened = p.endsWith("'") || p.endsWith('h');
+    const num = parseInt(hardened ? p.slice(0, -1) : p, 10);
+    const idx = hardened ? num + HARDENED : num;
+    const r = deriveChild(key, chain, idx);
+    key = r.key; chain = r.chain;
+  }
+  return key;
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🏠 Address generation
+// ═══════════════════════════════════════════════════════════
+function ethAddress(priv) {
+  const pub = secp256k1.getPublicKey(priv, false).slice(1); // 64 bytes
+  const h = keccak_256(pub);
+  return '0x' + bytesToHex(h.slice(-20));
+}
+
+function btcAddress(priv) {
+  const pub = secp256k1.getPublicKey(priv, true);
+  const sha = sha256(pub);
+  const rip = ripemd160(sha);
+  const payload = new Uint8Array(21);
+  payload[0] = 0x00;
+  payload.set(rip, 1);
+  const checksum = sha256(sha256(payload)).slice(0, 4);
+  const full = new Uint8Array(25);
+  full.set(payload, 0);
+  full.set(checksum, 21);
+  return base58.encode(full);
+}
+
+function btcSegwit(priv) {
+  const pub = secp256k1.getPublicKey(priv, true);
+  const rip = ripemd160(sha256(pub));
+  // bech32 segwit v0
+  const words = bech32.toWords(rip);
+  return bech32.encode('bc', [0, ...words]);
+}
+
+function tronAddress(priv) {
+  const pub = secp256k1.getPublicKey(priv, false).slice(1);
+  const h = keccak_256(pub);
+  const payload = new Uint8Array(21);
+  payload[0] = 0x41;
+  payload.set(h.slice(-20), 1);
+  const checksum = sha256(sha256(payload)).slice(0, 4);
+  const full = new Uint8Array(25);
+  full.set(payload, 0);
+  full.set(checksum, 21);
+  return base58.encode(full);
+}
+
+function deriveAllAddresses(mnemonic) {
+  const seed = bip39.mnemonicToSeedSync(mnemonic);
+  return {
+    ETH_0: ethAddress(derivePath(seed, "m/44'/60'/0'/0/0")),
+    BTC_0: btcAddress(derivePath(seed, "m/44'/0'/0'/0/0")),
+    BTC_S0: btcSegwit(derivePath(seed, "m/84'/0'/0'/0/0")),
+    TRON_0: tronAddress(derivePath(seed, "m/44'/195'/0'/0/0")),
+  };
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🌐 Balance checkers (CORS-friendly endpoints only)
+// ═══════════════════════════════════════════════════════════
+async function fetchJSON(url, timeout = 6000) {
+  const ctrl = new AbortController();
+  const id = setTimeout(() => ctrl.abort(), timeout);
+  try {
+    const r = await fetch(url, {signal: ctrl.signal});
+    clearTimeout(id);
+    if (r.ok) return await r.json();
+  } catch (e) { clearTimeout(id); }
+  return null;
+}
+
+async function checkBTC(addr) {
+  // mempool.space يدعم CORS
+  const d = await fetchJSON(`https://mempool.space/api/address/${addr}`);
+  if (d && d.chain_stats) {
+    return d.chain_stats.funded_txo_sum - d.chain_stats.spent_txo_sum;
+  }
+  return null;
+}
+
+async function checkETH(addr) {
+  // llamarpc يدعم CORS
+  try {
+    const r = await fetch('https://eth.llamarpc.com', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        jsonrpc: '2.0', method: 'eth_getBalance',
+        params: [addr, 'latest'], id: 1
+      })
+    });
+    const d = await r.json();
+    if (d && d.result) return parseInt(d.result, 16);
+  } catch (e) {}
+  return null;
+}
+
+async function checkTRX(addr) {
+  const d = await fetchJSON(`https://api.trongrid.io/v1/accounts/${addr}`);
+  if (d && d.data && d.data.length > 0) {
+    return d.data[0].balance || 0;
+  }
+  return 0;
+}
+
+async function checkBNB(addr) {
+  try {
+    const r = await fetch('https://bsc-dataseed.binance.org', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        jsonrpc: '2.0', method: 'eth_getBalance',
+        params: [addr, 'latest'], id: 1
+      })
+    });
+    const d = await r.json();
+    if (d && d.result) return parseInt(d.result, 16);
+  } catch (e) {}
+  return null;
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🧵 Worker — توليد + فحص
+// ═══════════════════════════════════════════════════════════
+function workerCode() {
+  return `
+    // Worker code (running in separate thread)
+    // Uses importScripts for @noble libs
+    importScripts(
+      'https://cdn.jsdelivr.net/npm/@noble/curves@1.4.0/bundles/secp256k1.js',
+      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/sha256.js',
+      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/sha512.js',
+      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/ripemd160.js',
+      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/sha3.js',
+      'https://cdn.jsdelivr.net/npm/@noble/hashes@1.4.0/bundles/hmac.js',
+      'https://cdn.jsdelivr.net/npm/@scure/bip39@1.3.0/bundles/bip39.js',
+      'https://cdn.jsdelivr.net/npm/@scure/base@1.1.6/bundles/base.js'
+    );
+
+    // الأسماء من bundles
+    const secp = nobleCurves.secp256k1;
+    const { sha256 } = nobleHashes;
+    const { sha512 } = nobleHashes;
+    const { ripemd160 } = nobleHashes;
+    const { keccak_256 } = nobleHashes;
+    const { hmac } = nobleHashes;
+    const { bytesToHex, hexToBytes } = nobleHashes.utils || nobleHashes;
+    const bip39 = scureBip39;
+    const wordlist = scureBip39.wordlists.english;
+    const bech32 = scureBase.bech32;
+    const base58 = scureBase.base58;
+
+    const HARDENED = 0x80000000;
+
+    function deriveChild(parentKey, parentChain, index) {
+      const isHardened = index >= HARDENED;
+      const data = new Uint8Array(37);
+      if (isHardened) {
+        data[0] = 0;
+        data.set(parentKey, 1);
+      } else {
+        const pub = secp.getPublicKey(parentKey, true);
+        data.set(pub, 0);
+      }
+      const idx = index >>> 0;
+      data[33] = (idx >>> 24) & 0xff;
+      data[34] = (idx >>> 16) & 0xff;
+      data[35] = (idx >>> 8) & 0xff;
+      data[36] = idx & 0xff;
+      const I = hmac(sha512, parentChain, data);
+      const IL = I.slice(0, 32);
+      const IR = I.slice(32, 64);
+      const n = secp.CURVE.n;
+      const ilInt = BigInt('0x' + bytesToHex(IL));
+      const pkInt = BigInt('0x' + bytesToHex(parentKey));
+      const childInt = (ilInt + pkInt) % n;
+      const childHex = childInt.toString(16).padStart(64, '0');
+      return { key: hexToBytes(childHex), chain: IR };
+    }
+
+    function masterFromSeed(seed) {
+      const I = hmac(sha512, 'Bitcoin seed', seed);
+      return { key: I.slice(0, 32), chain: I.slice(32, 64) };
+    }
+
+    function derivePath(seed, path) {
+      let { key, chain } = masterFromSeed(seed);
+      const parts = path.split('/').slice(1);
+      for (const p of parts) {
+        const hardened = p.endsWith("'") || p.endsWith('h');
+        const num = parseInt(hardened ? p.slice(0, -1) : p, 10);
+        const idx = hardened ? num + HARDENED : num;
+        const r = deriveChild(key, chain, idx);
+        key = r.key; chain = r.chain;
+      }
+      return key;
+    }
+
+    function ethAddr(priv) {
+      const pub = secp.getPublicKey(priv, false).slice(1);
+      const h = keccak_256(pub);
+      return '0x' + bytesToHex(h.slice(-20));
+    }
+
+    function btcAddr(priv) {
+      const pub = secp.getPublicKey(priv, true);
+      const rip = ripemd160(sha256(pub));
+      const payload = new Uint8Array(21);
+      payload.set(rip, 1);
+      const cs = sha256(sha256(payload)).slice(0, 4);
+      const full = new Uint8Array(25);
+      full.set(payload, 0); full.set(cs, 21);
+      return base58.encode(full);
+    }
+
+    function btcSegAddr(priv) {
+      const pub = secp.getPublicKey(priv, true);
+      const rip = ripemd160(sha256(pub));
+      const w = bech32.toWords(rip);
+      return bech32.encode('bc', [0, ...w]);
+    }
+
+    function tronAddr(priv) {
+      const pub = secp.getPublicKey(priv, false).slice(1);
+      const h = keccak_256(pub);
+      const payload = new Uint8Array(21);
+      payload[0] = 0x41; payload.set(h.slice(-20), 1);
+      const cs = sha256(sha256(payload)).slice(0, 4);
+      const full = new Uint8Array(25);
+      full.set(payload, 0); full.set(cs, 21);
+      return base58.encode(full);
+    }
+
+    self.onmessage = async function(e) {
+      const {type} = e.data;
+      if (type === 'generate') {
+        const {count} = e.data;
+        const out = [];
+        for (let i = 0; i < count; i++) {
+          // entropy حقيقي
+          const entropy = new Uint8Array(16);
+          crypto.getRandomValues(entropy);
+          const mnemonic = bip39.entropyToMnemonic(entropy, wordlist);
+          const seed = bip39.mnemonicToSeedSync(mnemonic);
+          const addrs = {
+            mnemonic,
+            ETH: ethAddr(derivePath(seed, "m/44'/60'/0'/0/0")),
+            BTC: btcAddr(derivePath(seed, "m/44'/0'/0'/0/0")),
+            BTC_S: btcSegAddr(derivePath(seed, "m/84'/0'/0'/0/0")),
+            TRON: tronAddr(derivePath(seed, "m/44'/195'/0'/0/0"))
+          };
+          out.push(addrs);
+        }
+        self.postMessage({type: 'generated', items: out});
+      }
+    };
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🎯 Main scan loop
+// ═══════════════════════════════════════════════════════════
+async function scanCycle(worker) {
+  if (!State.running) return;
+
+  // اطلب 10 عناوين من الـ worker
+  return new Promise((resolve) => {
+    const handler = async (e) => {
+      if (e.data.type !== 'generated') return;
+      worker.removeEventListener('message', handler);
+
+      const items = e.data.items;
+      const skipKnown = $('cfgSkipKnown').checked;
+      const checkBTC_on = $('cfgCheckBTC').checked;
+      const checkETH_on = $('cfgCheckETH').checked;
+      const checkTRX_on = $('cfgCheckTRX').checked;
+
+      for (const item of items) {
+        if (!State.running) break;
+        State.total++;
+
+        // 🚫 Skip known weak
+        if (skipKnown && isKnownWeak(item.mnemonic)) {
+          State.skipped++;
+          continue;
+        }
+
+        // 🛡️ Dedup
+        const h = bytesToHex(sha256(item.mnemonic));
+        if (await DB.hasSeed(h)) {
+          State.dup++;
+          continue;
+        }
+        await DB.addSeed(h, item.mnemonic, 'random');
+
+        // 🌐 فحص الأرصدة (بالتوازي)
+        const checks = [];
+        if (checkBTC_on) checks.push(checkBTC(item.BTC).then(v => ({coin:'BTC', v, addr:item.BTC})));
+        if (checkETH_on) checks.push(checkETH(item.ETH).then(v => ({coin:'ETH', v, addr:item.ETH})));
+        if (checkTRX_on) checks.push(checkTRX(item.TRON).then(v => ({coin:'TRX', v, addr:item.TRON})));
+
+        const results = await Promise.all(checks);
+        for (const {coin, v, addr} of results) {
+          if (v && v > 0) {
+            onFound(item.mnemonic, coin, addr, v);
+          }
+        }
+      }
+
+      resolve();
+    };
+    worker.addEventListener('message', handler);
+    worker.postMessage({type: 'generate', count: 10});
+  });
+}
+
+async function workerLoop(id) {
+  const blob = new Blob([`(${workerCode.toString()})()`], {type: 'application/javascript'});
+  const url = URL.createObjectURL(blob);
+  const worker = new Worker(url);
+  State.workers.push(worker);
+
+  while (State.running) {
+    try {
+      await scanCycle(worker);
+    } catch (e) {
+      log(`w${id} error: ${e.message}`, 'error');
+      await new Promise(r => setTimeout(r, 1000));
+    }
+    await new Promise(r => setTimeout(r, 50));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🎉 On found
+// ═══════════════════════════════════════════════════════════
+async function onFound(mnemonic, coin, addr, raw) {
+  State.found++;
+  const item = {mnemonic, coin, addr, raw, at: new Date().toISOString()};
+  State.foundItems.push(item);
+  await DB.addFound(item);
+
+  log(`🎉🎉🎉 ${coin}: ${raw} | ${addr}`, 'found');
+  log(`   Seed: ${mnemonic}`, 'found');
+
+  // Telegram
+  if (State.telegram.token && State.telegram.chat) {
+    sendTelegram(`🎉 *${coin} Found!*\n\n\`${mnemonic}\`\n💰 \`${raw}\`\n📍 \`${addr}\``);
+  }
+
+  renderFound();
+  updateUI();
+}
+
+// ═══════════════════════════════════════════════════════════
+// 📱 Telegram
+// ═══════════════════════════════════════════════════════════
+async function sendTelegram(text) {
+  if (!State.telegram.token || !State.telegram.chat) return;
+  try {
+    await fetch(`https://api.telegram.org/bot${State.telegram.token}/sendMessage`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        chat_id: State.telegram.chat,
+        text: text,
+        parse_mode: 'Markdown'
+      })
+    });
+  } catch (e) {}
+}
+
+function testTelegram() {
+  State.telegram.token = $('cfgTgToken').value.trim();
+  State.telegram.chat = $('cfgTgChat').value.trim();
+  if (!State.telegram.token || !State.telegram.chat) {
+    log('❌ Token/Chat مطلوب', 'error');
+    return;
+  }
+  sendTelegram('✅ اختبار Ultra Scanner v3.7');
+  log('📱 تم إرسال اختبار Telegram', 'ok');
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🎛️ Start/Stop
+// ═══════════════════════════════════════════════════════════
+async function startScan() {
+  if (State.running) return;
+
+  // قراءة الإعدادات
+  State.telegram.token = $('cfgTgToken').value.trim();
+  State.telegram.chat = $('cfgTgChat').value.trim();
+  State.workerCount = parseInt($('cfgWorkers').value, 10);
+
+  State.running = true;
+  State.startTime = Date.now();
+  State.lastTotal = 0;
+  State.lastTime = Date.now();
+
+  $('startBtn').disabled = true;
+  $('stopBtn').disabled = false;
+  setStatus('يعمل', 'online');
+
+  log('🚀 بدء الفحص...', 'ok');
+  log(`🧵 Workers: ${State.workerCount}`, 'info');
+  log(`🎲 توليد عشوائي 100% + BIP44`, 'info');
+
+  // شغّل Workers
+  for (let i = 0; i < State.workerCount; i++) {
+    workerLoop(i);
+  }
+
+  // عدّاد الوقت
+  State.timer = setInterval(() => {
+    const el = Math.floor((Date.now() - State.startTime) / 1000);
+    const h = String(Math.floor(el / 3600)).padStart(2, '0');
+    const m = String(Math.floor((el % 3600) / 60)).padStart(2, '0');
+    const s = String(el % 60).padStart(2, '0');
+    $('sTime').textContent = `${h}:${m}:${s}`;
+  }, 1000);
+
+  // عدّاد السرعة
+  State.rateTimer = setInterval(() => {
+    const now = Date.now();
+    const dt = (now - State.lastTime) / 1000;
+    const rate = (State.total - State.lastTotal) / dt;
+    $('sRate').textContent = rate.toFixed(1);
+    State.lastTotal = State.total;
+    State.lastTime = now;
+    updateUI();
+  }, 2000);
+}
+
+function stopScan() {
+  if (!State.running) return;
+  State.running = false;
+
+  $('startBtn').disabled = false;
+  $('stopBtn').disabled = true;
+  setStatus('متوقف', 'offline');
+
+  if (State.timer) clearInterval(State.timer);
+  if (State.rateTimer) clearInterval(State.rateTimer);
+
+  for (const w of State.workers) w.terminate();
+  State.workers = [];
+
+  log('⏹️ تم الإيقاف', 'warn');
+  log(`📊 إجمالي: ${fmt(State.total)} | found: ${State.found} | skipped: ${fmt(State.skipped)} | dup: ${fmt(State.dup)}`, 'info');
+  updateUI();
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🎉 Found Rendering
+// ═══════════════════════════════════════════════════════════
+function renderFound() {
+  const el = $('foundList');
+  if (State.foundItems.length === 0) {
+    el.innerHTML = '<div style="color:var(--tx2)">لم يتم العثور على أرصدة بعد</div>';
+    return;
+  }
+  el.innerHTML = State.foundItems.map((it, i) => `
+    <div class="found-item">
+      <div class="found-coin">${it.coin} — ${it.at}</div>
+      <div style="font-size:11px;color:var(--tx2)">Seed:</div>
+      <div class="found-seed">${it.mnemonic}</div>
+      <div style="font-size:11px;color:var(--tx2)">Address:</div>
+      <div class="found-addr">${it.addr}</div>
+      <div style="font-size:11px;color:var(--yl);margin-top:4px">Balance: ${it.raw}</div>
+      <button class="copy-btn" onclick="copyText('${it.mnemonic}')">📋 نسخ Seed</button>
+    </div>
+  `).join('');
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    log('✅ تم النسخ', 'ok');
+  });
+}
+
+function exportFound() {
+  if (State.foundItems.length === 0) {
+    log('لا يوجد شيء للتصدير', 'warn'); return;
+  }
+  const blob = new Blob([JSON.stringify(State.foundItems, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ultra_scanner_found_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function clearFound() {
+  if (!confirm('مسح كل النتائج؟')) return;
+  State.foundItems = [];
+  await DB.clear();
+  renderFound();
+  State.found = 0;
+  State.total = 0;
+  State.skipped = 0;
+  State.dup = 0;
+  updateUI();
+  log('🗑️ تم المسح', 'warn');
+}
+
+async function clearCache() {
+  if (!confirm('مسح كل Cache؟')) return;
+  await DB.clear();
+  State.total = 0; State.found = 0; State.skipped = 0; State.dup = 0;
+  State.foundItems = [];
+  renderFound();
+  updateUI();
+  await updateCacheSize();
+  log('🗑️ تم مسح Cache', 'warn');
+}
+
+async function updateCacheSize() {
+  const n = await DB.count();
+  $('cacheSize').textContent = fmt(n);
+}
+
+// ═══════════════════════════════════════════════════════════
+// 🎬 Initialize
+// ═══════════════════════════════════════════════════════════
+(async function init() {
+  try {
+    await DB.init();
+    await updateCacheSize();
+    log('✅ IndexedDB جاهز', 'ok');
+    log('✅ المكتبات محمّلة', 'ok');
+    log('🎯 جاهز للبدء', 'info');
+    log('⚠️ ملاحظة: CORS قد يمنع بعض RPCs', 'warn');
+    updateUI();
+  } catch (e) {
+    log(`❌ init error: ${e.message}`, 'error');
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════
+// Expose globals for inline handlers
+// ═══════════════════════════════════════════════════════════
+window.startScan = startScan;
+window.stopScan = stopScan;
+window.showTab = showTab;
+window.testTelegram = testTelegram;
+window.clearCache = clearCache;
+window.clearFound = clearFound;
+window.exportFound = exportFound;
+window.copyText = copyText;
+
+</script>
+
 </body>
 </html>
