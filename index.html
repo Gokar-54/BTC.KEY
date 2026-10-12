@@ -3,568 +3,1068 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>🚀 Ultra Scanner v3.8</title>
+<title>₿ Bitcoin Scanner — Live</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
 <style>
-:root{--bg:#0d1117;--bg2:#161b22;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--accent:#ffa500;--accent2:#58a6ff;--green:#3fb950;--red:#f85149;--yellow:#ffc107;--purple:#a371f7}
+:root{--bg:#0a0e14;--bg2:#111820;--bg3:#1a2332;--border:#22303f;--text:#c9d1d9;--muted:#6e7681;--accent:#f7931a;--green:#3fb950;--red:#f85149;--blue:#58a6ff;--purple:#a371f7;--yellow:#ffc107}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:12px;line-height:1.6}
-.c{max-width:900px;margin:0 auto}
-h1{text-align:center;font-size:22px;margin-bottom:6px;background:linear-gradient(90deg,#ff6b00,#ffa500,#ffcc00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sub{text-align:center;color:var(--muted);font-size:12px;margin-bottom:15px}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:12px}
-.title{font-size:13px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.st{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 8px;text-align:center}
-.sl{font-size:10px;color:var(--muted);margin-bottom:4px;text-transform:uppercase}
-.sv{font-size:18px;font-weight:bold;color:var(--accent2);font-family:'Courier New',monospace;word-break:break-all}
-.sv.o{color:var(--accent)}.sv.g{color:var(--green)}.sv.r{color:var(--red)}.sv.p{color:var(--purple)}.sv.s{font-size:13px}
-.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;transition:all .2s;margin:8px 0;font-family:inherit;color:#fff}
-.b1{background:linear-gradient(90deg,#238636,#2ea043)}
-.b2{background:linear-gradient(90deg,#da3633,#f85149)}
-.b3{background:linear-gradient(90deg,#6e40c9,#8957e5)}
-.b4{background:linear-gradient(90deg,#1f6feb,#388bfd)}
+body{font-family:'Segoe UI',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:16px;line-height:1.5}
+.c{max-width:1100px;margin:0 auto}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+h1{font-size:20px;background:linear-gradient(90deg,#f7931a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:flex;align-items:center;gap:8px}
+h1 .btc{font-size:26px;-webkit-text-fill-color:#f7931a}
+.live{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);border-radius:20px;font-size:12px;color:var(--green);font-weight:600}
+.live .dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite}
+.live.bad{background:rgba(248,81,73,.1);border-color:rgba(248,81,73,.3);color:var(--red)}
+.live.bad .dot{background:var(--red)}
+.live.load{background:rgba(255,193,7,.1);border-color:rgba(255,193,7,.3);color:var(--yellow)}
+.live.load .dot{background:var(--yellow)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.card{background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
+.card-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600}
+.card-value{font-size:26px;font-weight:800;font-family:'SF Mono','Courier New',monospace;color:var(--text)}
+.card-value.orange{color:var(--accent)}.card-value.green{color:var(--green)}.card-value.blue{color:var(--blue)}.card-value.purple{color:var(--purple)}
+.card-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px}
+.panel-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.progress{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin:12px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#ffb347);width:0%;transition:width .5s ease;border-radius:4px}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;transition:all .2s;margin:8px 0;font-family:inherit;color:#fff}
+.btn-start{background:linear-gradient(90deg,#238636,#2ea043)}
+.btn-stop{background:linear-gradient(90deg,#da3633,#f85149)}
+.btn-settings{background:linear-gradient(90deg,#6e40c9,#8957e5)}
+.btn-export{background:linear-gradient(90deg,#1f6feb,#388bfd)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .btn:not(:disabled):hover{filter:brightness(1.15)}
 .btn:not(:disabled):active{transform:scale(.98)}
-.log{background:#000;border:1px solid var(--border);border-radius:8px;padding:10px;max-height:280px;overflow-y:auto;font-family:'Courier New',monospace;font-size:11px;direction:ltr;text-align:left;color:var(--green)}
-.ll{margin:1px 0;word-break:break-all}
-.ll.i{color:var(--accent2)}.ll.w{color:var(--yellow)}.ll.e{color:var(--red)}.ll.k{color:var(--green)}
-table{width:100%;border-collapse:collapse;font-size:11px}
-th,td{padding:6px 4px;text-align:right;border-bottom:1px solid var(--border)}
-th{color:var(--muted);font-weight:normal;font-size:10px;text-transform:uppercase}
-.ep{font-family:'Courier New',monospace;direction:ltr;text-align:left;font-size:10px}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:4px}
-.dot.closed{background:var(--green)}.dot.open{background:var(--red)}.dot.half{background:var(--yellow);animation:pls 1s infinite}.dot.load{background:var(--yellow);animation:pls .6s infinite}
-@keyframes pls{0%,100%{opacity:1}50%{opacity:.4}}
-input,select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text);font-size:13px;margin-bottom:8px;font-family:inherit}
-.foot{text-align:center;color:#484f58;font-size:10px;margin-top:20px;padding:15px 0;border-top:1px solid var(--border)}
-.fi{background:linear-gradient(135deg,rgba(63,185,80,.15),rgba(46,160,67,.05));border:1px solid rgba(63,185,80,.5);border-radius:8px;padding:10px;margin-bottom:8px;font-size:11px}
-.fi .cn{color:var(--accent);font-weight:bold;font-size:13px}
-.fi .rw{color:var(--muted);margin-top:4px;font-family:monospace;word-break:break-all}
-.tabs{display:flex;gap:6px;margin-bottom:10px}
-.tab{flex:1;padding:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:12px;cursor:pointer;color:var(--muted)}
-.tab.active{background:rgba(88,166,255,.15);border-color:var(--accent2);color:var(--accent2);font-weight:bold}
+.apis{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.api{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.api-name{font-weight:600;color:var(--text)}
+.api-status{display:flex;align-items:center;gap:6px;font-family:monospace;font-size:11px}
+.api-status .dot{width:7px;height:7px;border-radius:50%}
+.api-status .dot.ok{background:var(--green);box-shadow:0 0 6px var(--green)}
+.api-status .dot.half{background:var(--yellow)}
+.api-status .dot.bad{background:var(--red);box-shadow:0 0 6px var(--red)}
+.api-stats{color:var(--muted);font-size:10px}
+.finds-list{max-height:400px;overflow-y:auto}
+.find-item{background:linear-gradient(135deg,rgba(247,147,26,.1),rgba(63,185,80,.05));border:1px solid rgba(247,147,26,.3);border-radius:10px;padding:12px;margin-bottom:10px;animation:slideIn .5s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.find-coin{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.find-coin .type{font-weight:800;color:var(--accent);font-size:14px}
+.find-coin .amount{font-weight:700;color:var(--green);font-family:monospace;font-size:14px}
+.find-row{font-size:11px;color:var(--muted);margin-top:4px;word-break:break-all;font-family:'SF Mono',monospace;line-height:1.4}
+.find-row b{color:var(--text);font-weight:600}
+.empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
+.footer{text-align:center;color:var(--muted);font-size:11px;padding:20px 0;margin-top:20px;border-top:1px solid var(--border)}
+.badge{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.badge.legacy{background:rgba(247,147,26,.2);color:var(--accent)}
+.badge.segwit{background:rgba(88,166,255,.2);color:var(--blue)}
+.canary-box{display:flex;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(135deg,rgba(63,185,80,.08),rgba(88,166,255,.05));border:1px solid rgba(63,185,80,.3);border-radius:12px;margin-bottom:16px}
+.canary-box.bad{background:linear-gradient(135deg,rgba(248,81,73,.08),rgba(255,193,7,.05));border-color:rgba(248,81,73,.3)}
+.canary-box.load{background:linear-gradient(135deg,rgba(255,193,7,.08),rgba(88,166,255,.05));border-color:rgba(255,193,7,.3)}
+.canary-icon{font-size:24px}
+.canary-info{flex:1}
+.canary-title{font-size:13px;font-weight:700;margin-bottom:2px}
+.canary-sub{font-size:11px;color:var(--muted);font-family:monospace}
+.log{background:#000;border:1px solid var(--border);border-radius:8px;padding:10px;max-height:250px;overflow-y:auto;font-family:'Courier New',monospace;font-size:11px;direction:ltr;text-align:left;color:var(--green);margin-top:8px}
+.log-line{margin:1px 0;word-break:break-all}
+.log-line.info{color:var(--blue)}.log-line.warn{color:var(--yellow)}.log-line.error{color:var(--red)}.log-line.ok{color:var(--green)}
+.sample-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:10px;font-size:11px;font-family:'Courier New',monospace;direction:ltr;text-align:left}
+.sample-box .row{color:var(--muted);margin:2px 0;word-break:break-all}
+.sample-box .row b{color:var(--text)}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:600px){.card-value{font-size:22px}h1{font-size:16px}.settings-grid{grid-template-columns:1fr}}
+input,select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text);font-size:13px;font-family:inherit;margin-bottom:8px}
+label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.tab{flex:1;min-width:100px;padding:10px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;text-align:center;font-size:12px;cursor:pointer;color:var(--muted);transition:all .2s}
+.tab.active{background:rgba(247,147,26,.15);border-color:var(--accent);color:var(--accent);font-weight:bold}
 .tc{display:none}.tc.active{display:block}
-.pb{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:8px;border:1px solid var(--border)}
-.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .5s}
-.banner{padding:12px;border-radius:10px;margin-bottom:12px;font-size:12px;text-align:center}
-.warn{background:rgba(255,193,7,.1);border:1px solid var(--yellow);color:var(--yellow)}
-.err{background:rgba(248,81,73,.1);border:1px solid var(--red);color:var(--red)}
-.ok{background:rgba(63,185,80,.1);border:1px solid var(--green);color:var(--green)}
+.warn-box{background:rgba(255,193,7,.08);border:1px solid var(--yellow);border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;color:var(--yellow);line-height:1.6}
+.warn-box b{color:#fff}
 </style>
 </head>
 <body>
 <div class="c">
-  <h1>🚀 Ultra Scanner v3.8</h1>
-  <p class="sub">
-    <span class="dot load" id="sd"></span>
-    <span id="stx">جاري التحميل...</span>
-  </p>
+  <div class="header">
+    <h1><span class="btc">₿</span> Bitcoin Scanner — Live</h1>
+    <div class="live load" id="liveBadge"><span class="dot"></span> <span id="liveText">جاري التحميل...</span></div>
+  </div>
 
-  <div id="banner" class="banner warn">
-    ⏳ جاري تحميل مكتبات التشفير...
+  <div class="warn-box">
+    ⚠️ <b>تنبيه صادق:</b> الاحتمال رياضياً = <code>2^-128</code>. لن تجد رصيداً حتى لو عملت آلاف السنين. القيمة الفعلية: <b>تعلّم JavaScript + Crypto + Async + Web Workers</b> في مشروع احترافي.
+  </div>
+
+  <!-- Canary Status -->
+  <div class="canary-box load" id="canaryBox">
+    <div class="canary-icon">🧪</div>
+    <div class="canary-info">
+      <div class="canary-title" id="canaryTitle">جاري فحص Canary...</div>
+      <div class="canary-sub" id="canarySub">—</div>
+    </div>
+    <div style="font-family:monospace;font-size:12px;color:#8b949e" id="canaryWhen">—</div>
   </div>
 
   <div class="tabs">
     <div class="tab active" onclick="switchTab('main',this)">📊 الرئيسية</div>
-    <div class="tab" onclick="switchTab('rpc',this)">🌐 RPC</div>
+    <div class="tab" onclick="switchTab('apis',this)">🌐 APIs</div>
     <div class="tab" onclick="switchTab('found',this)">🎉 النتائج</div>
     <div class="tab" onclick="switchTab('settings',this)">⚙️ إعدادات</div>
   </div>
 
+  <!-- Tab: Main -->
   <div class="tc active" id="tab-main">
-    <div class="card">
-      <div class="g2">
-        <div class="st"><div class="sl">⚡ السرعة</div><div class="sv o" id="hr">0/s</div></div>
-        <div class="st"><div class="sl">📊 فُحص</div><div class="sv" id="tc">0</div></div>
-        <div class="st"><div class="sl">⏱️ الوقت</div><div class="sv g" id="rt">00:00</div></div>
-        <div class="st"><div class="sl">🎉 أرصدة</div><div class="sv p" id="fc">0</div></div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">الجولة الحالية</div>
+        <div class="card-value orange" id="roundNum">0</div>
+        <div class="card-sub" id="roundProgress">0 / 0</div>
       </div>
-      <div class="pb"><div class="pf" id="pb"></div></div>
+      <div class="card">
+        <div class="card-label">إجمالي مفحوص</div>
+        <div class="card-value blue" id="totalChecked">0</div>
+        <div class="card-sub">عبارات</div>
+      </div>
+      <div class="card">
+        <div class="card-label">معدل الفحص</div>
+        <div class="card-value green" id="rate">0/s</div>
+        <div class="card-sub">حالي</div>
+      </div>
+      <div class="card">
+        <div class="card-label">🏆 أرصدة مكتشفة</div>
+        <div class="card-value purple" id="foundCount">0</div>
+        <div class="card-sub">إجمالي</div>
+      </div>
     </div>
 
-    <div class="card">
-      <button class="btn b1" id="sb">▶️ ابدأ الفحص</button>
-      <button class="btn b2" id="xb" disabled>⏹️ أوقف</button>
+    <div class="panel">
+      <div class="panel-title"><span>📊 التقدم</span><span id="uptime">⏱️ 00:00:00</span></div>
+      <div class="progress"><div class="progress-fill" id="progressBar"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)">
+        <span id="eta">—</span>
+        <span id="roundTime">—</span>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="title"><span>📝 السجل</span><span id="lc">0</span></div>
-      <div class="log" id="lg"><div class="ll i">⏳ في انتظار التحميل...</div></div>
+    <div class="panel">
+      <button class="btn btn-start" id="startBtn">▶️ ابدأ الفحص</button>
+      <button class="btn btn-stop" id="stopBtn" disabled>⏹️ أوقف</button>
     </div>
 
-    <div class="card">
-      <div class="title"><span>🛡️ Deduplication</span></div>
-      <div class="g3">
-        <div class="st"><div class="sl">Memory</div><div class="sv s" id="dm">0</div></div>
-        <div class="st"><div class="sl">Weak</div><div class="sv s" id="dw">0</div></div>
-        <div class="st"><div class="sl">Dup</div><div class="sv s" id="dd">0</div></div>
+    <div class="panel">
+      <div class="panel-title"><span>🔍 آخر عيّنة</span><span id="sampleCount">0</span></div>
+      <div class="sample-box" id="sampleBox">
+        <div class="row" style="text-align:center;color:var(--muted)">لا توجد عيّنة بعد</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title"><span>📝 السجل</span><span id="logCount">0</span></div>
+      <div class="log" id="log">
+        <div class="log-line info">⏳ جاري التحميل...</div>
       </div>
     </div>
   </div>
 
-  <div class="tc" id="tab-rpc">
-    <div class="card">
-      <div class="title"><span>🌐 RPC Endpoints</span><span id="rc">0</span></div>
-      <table><thead><tr><th>#</th><th>Endpoint</th><th>State</th><th>EWMA</th><th>OK</th><th>Fail</th></tr></thead>
-      <tbody id="rtb"></tbody></table>
+  <!-- Tab: APIs -->
+  <div class="tc" id="tab-apis">
+    <div class="panel">
+      <div class="panel-title"><span>🌐 حالة APIs</span><span id="activeApis">0/11</span></div>
+      <div class="apis" id="apisGrid"><div class="empty">جاري التحميل...</div></div>
     </div>
   </div>
 
+  <!-- Tab: Found -->
   <div class="tc" id="tab-found">
-    <div class="card">
-      <div class="title"><span>🎉 النتائج</span><span id="fc2">0</span></div>
-      <div id="fl" style="min-height:80px">
-        <div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">لم يتم العثور على أرصدة بعد</div>
-      </div>
-      <button class="btn b4" onclick="exportRes()">📥 تصدير JSON</button>
-      <button class="btn b3" onclick="clearRes()">🗑️ حذف</button>
+    <div class="panel">
+      <div class="panel-title"><span>🎉 النتائج المكتشفة</span><span id="foundCount2">0</span></div>
+      <div class="finds-list" id="findsList"><div class="empty">لم يتم اكتشاف أرصدة بعد</div></div>
+      <button class="btn btn-export" onclick="exportResults()">📥 تصدير JSON</button>
+      <button class="btn btn-settings" onclick="clearResults()">🗑️ حذف النتائج</button>
     </div>
   </div>
 
+  <!-- Tab: Settings -->
   <div class="tc" id="tab-settings">
-    <div class="card">
-      <label style="font-size:12px;color:var(--muted)">عدد الكلمات</label>
-      <select id="wc"><option value="12" selected>12</option><option value="15">15</option><option value="18">18</option><option value="24">24</option></select>
+    <div class="panel">
+      <div class="panel-title"><span>⚙️ الإعدادات</span></div>
 
-      <label style="font-size:12px;color:var(--muted)">Batch Size</label>
-      <select id="bs"><option value="4">4</option><option value="8" selected>8</option><option value="16">16</option></select>
+      <div class="settings-grid">
+        <div>
+          <label>عدد الكلمات (Seed Length)</label>
+          <select id="wordCount">
+            <option value="12" selected>12 كلمة (128-bit)</option>
+            <option value="15">15 كلمة (160-bit)</option>
+            <option value="18">18 كلمة (192-bit)</option>
+            <option value="24">24 كلمة (256-bit)</option>
+          </select>
+        </div>
+        <div>
+          <label>حجم الدفعة (Batch Size)</label>
+          <select id="batchSize">
+            <option value="5">5 (بطيء)</option>
+            <option value="10" selected>10 (متوازن)</option>
+            <option value="20">20 (سريع)</option>
+          </select>
+        </div>
+      </div>
 
-      <label style="font-size:12px;color:var(--muted)">Telegram Token</label>
-      <input type="text" id="tt" value="7370738476:AAHi1BjblAv9O1j3WB9yXRc6fPYf8euWfmQ">
+      <label>Telegram Bot Token</label>
+      <input type="text" id="tgToken" value="7370738476:AAHi1BjblAv9O1j3WB9yXRc6fPYf8euWfmQ">
 
-      <label style="font-size:12px;color:var(--muted)">Telegram Chat ID</label>
-      <input type="text" id="tg" value="7181380947">
+      <label>Telegram Chat ID</label>
+      <input type="text" id="tgChat" value="7181380947">
 
-      <button class="btn b4" onclick="saveCfg()">💾 حفظ</button>
-      <button class="btn b3" onclick="resetDedup()">🗑️ مسح Dedup</button>
+      <label>بروكسي CORS (اختياري - لمشاكل الشبكة)</label>
+      <input type="text" id="corsProxy" placeholder="https://corsproxy.io/?" value="">
+
+      <button class="btn btn-export" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+      <button class="btn btn-settings" onclick="testCanary()">🧪 اختبار Canary</button>
+      <button class="btn btn-settings" onclick="testTelegram()">📱 اختبار Telegram</button>
     </div>
   </div>
 
-  <div class="foot">Ultra Scanner v3.8 — Multi-CDN + Offline-first</div>
+  <div class="footer">Bitcoin Scanner v7.8 — Web Edition<br><span style="font-size:10px">11 APIs · Consensus · Canary Health · Client-Side</span></div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
+// ═════════════════════════════════════════════════════════════════════
 // GLOBAL STATE
-// ═══════════════════════════════════════════════════════════
+// ═════════════════════════════════════════════════════════════════════
 window.LIBS = null;
 window.READY = false;
+window.RUNNING = false;
 
 window.S = {
-  running: false, total: 0, found: 0,
-  startTime: 0, lastCount: 0, lastTime: 0, rate: 0,
-  results: [], dedupMem: new Set(),
-  weakSkipped: 0, dupSkipped: 0,
-  worker: null, queue: [], processing: false,
+  total: 0,
+  found: 0,
+  rate: 0,
+  startTime: 0,
+  roundStart: 0,
+  round: 0,
+  lastCount: 0,
+  lastTime: 0,
+  results: [],
+  samples: 0,
 };
 
 window.CFG = {
-  wordCount: 12, batchSize: 8,
+  wordCount: 12,
+  batchSize: 10,
   tgToken: '7370738476:AAHi1BjblAv9O1j3WB9yXRc6fPYf8euWfmQ',
   tgChat: '7181380947',
+  corsProxy: '',
 };
 
-window.CB = {};
+// Circuit Breakers per API
+window.CB = {
+  'blockchain.info': { ok: 0, fail: 0, state: 'closed', ewma: 0, fails: 0, lastFail: 0 },
+  'blockstream.info': { ok: 0, fail: 0, state: 'closed', ewma: 0, fails: 0, lastFail: 0 },
+  'mempool.space': { ok: 0, fail: 0, state: 'closed', ewma: 0, fails: 0, lastFail: 0 },
+  'api.blockchair.com': { ok: 0, fail: 0, state: 'closed', ewma: 0, fails: 0, lastFail: 0 },
+  'chain.api.btc.com': { ok: 0, fail: 0, state: 'closed', ewma: 0, fails: 0, lastFail: 0 },
+  'api.blockcypher.com': { ok: 0, fail: 0, state: 'closed', ewma: 0, fails: 0, lastFail: 0 },
+  'btc.com': { ok: 0, fail: 0, state: 'closed', ewma: 0, fails: 0, lastFail: 0 },
+};
 
-// ═══════════════════════════════════════════════════════════
-// LOG + STATUS
-// ═══════════════════════════════════════════════════════════
-function log(m, t = 'i') {
-  const el = document.getElementById('lg');
+window.CANARY = {
+  addr: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+  expected: 5758459007,
+  last: 0,
+  ok: false,
+  working: 0,
+  checks: 0,
+  fails: 0,
+};
+
+// ═════════════════════════════════════════════════════════════════════
+// LOGGING
+// ═════════════════════════════════════════════════════════════════════
+function log(msg, type='info') {
+  const el = document.getElementById('log');
   const d = document.createElement('div');
-  d.className = 'll ' + t;
-  d.textContent = `[${new Date().toTimeString().slice(0,8)}] ${m}`;
+  d.className = 'log-line ' + type;
+  const t = new Date().toTimeString().slice(0,8);
+  d.textContent = `[${t}] ${msg}`;
   el.appendChild(d);
   el.scrollTop = el.scrollHeight;
-  while (el.children.length > 250) el.removeChild(el.firstChild);
-}
-function setStatus(txt, cls) {
-  document.getElementById('stx').textContent = txt;
-  document.getElementById('sd').className = 'dot ' + (cls || 'load');
-}
-function showBanner(txt, cls) {
-  const b = document.getElementById('banner');
-  b.className = 'banner ' + cls;
-  b.textContent = txt;
-  b.style.display = 'block';
+  while (el.children.length > 200) el.removeChild(el.firstChild);
 }
 
-// ═══════════════════════════════════════════════════════════
-// MULTI-CDN LIBRARY LOADER (Offline-friendly)
-// ═══════════════════════════════════════════════════════════
-const CDNs = [
+function setLive(text, cls) {
+  document.getElementById('liveText').textContent = text;
+  document.getElementById('liveBadge').className = 'live ' + (cls || '');
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// MULTI-CDN LIBRARY LOADER
+// ═════════════════════════════════════════════════════════════════════
+const CDN_BASES = [
   'https://cdn.jsdelivr.net/npm/',
   'https://unpkg.com/',
   'https://esm.sh/',
 ];
 
-async function tryImport(pkgs) {
-  // pkgs: array of relative paths like '@scure/bip39@1.3.0'
-  for (const cdn of CDNs) {
+async function tryImportChain(paths) {
+  for (const base of CDN_BASES) {
     try {
       const results = [];
-      for (const p of pkgs) {
-        const url = cdn + p;
-        const mod = await import(url);
+      for (const p of paths) {
+        const mod = await import(base + p);
         results.push(mod);
       }
+      log(`✅ تم التحميل من: ${new URL(base).hostname}`, 'ok');
       return results;
     } catch (e) {
-      log(`⚠️ فشل CDN: ${cdn.split('/')[2]}`, 'w');
+      log(`⚠️ فشل: ${new URL(base).hostname}`, 'warn');
     }
   }
   return null;
 }
 
 async function loadLibraries() {
-  log('📥 تحميل مكتبات التشفير...', 'i');
-  
-  // نستخدم jsdelivr أولاً (الأكثر موثوقية في المنطقة)
-  const pkgs = [
-    '@scure/bip39@1.3.0',
-    '@scure/bip39@1.3.0/wordlists/english.js',
-    '@scure/bip32@1.4.0',
-    '@noble/hashes@1.4.0/sha256.js',
-    '@noble/hashes@1.4.0/ripemd160.js',
-    '@noble/hashes@1.4.0/sha3.js',
-    '@noble/hashes@1.4.0/utils.js',
+  log('📥 تحميل مكتبات التشفير...', 'info');
+
+  // jsdelivr ES module paths (most reliable)
+  const paths = [
+    '@scure/bip39@1.3.0/+esm',
+    '@scure/bip39@1.3.0/wordlists/english/+esm',
+    '@noble/hashes@1.4.0/sha256/+esm',
+    '@noble/hashes@1.4.0/ripemd160/+esm',
+    '@noble/curves@1.4.0/secp256k1/+esm',
   ];
 
-  const mods = await tryImport(pkgs);
-  
+  const mods = await tryImportChain(paths);
   if (!mods) {
-    log('❌ فشل تحميل المكتبات من كل CDNs', 'e');
-    log('💡 تحقق من الإنترنت، أو جرب VPN', 'w');
+    log('❌ فشل تحميل المكتبات من كل CDNs', 'error');
     return false;
   }
 
-  const [bip39, wl, bip32, sha256M, ripemdM, sha3M, utilsM] = mods;
+  const [bip39, wl, sha256M, ripemdM, secpM] = mods;
+
   window.LIBS = {
-    bip39: bip39.default || bip39,
-    wordlist: wl.wordlist || wl.default?.wordlist,
-    HDKey: bip32.HDKey || bip32.default?.HDKey,
+    generateMnemonic: bip39.generateMnemonic || bip39.default?.generateMnemonic,
+    mnemonicToSeedSync: bip39.mnemonicToSeedSync || bip39.default?.mnemonicToSeedSync,
+    wordlist: wl.wordlist || wl.default?.wordlist || wl.english,
     sha256: sha256M.sha256 || sha256M.default?.sha256,
     ripemd160: ripemdM.ripemd160 || ripemdM.default?.ripemd160,
-    keccak_256: sha3M.keccak_256 || sha3M.default?.keccak_256,
-    bytesToHex: utilsM.bytesToHex || utilsM.default?.bytesToHex,
+    secp256k1: secpM.secp256k1 || secpM.default?.secp256k1,
   };
-  
-  if (!window.LIBS.bip39 || !window.LIBS.HDKey || !window.LIBS.sha256) {
-    log('❌ المكتبات غير مكتملة', 'e');
+
+  if (!window.LIBS.generateMnemonic || !window.LIBS.secp256k1) {
+    log('❌ المكتبات غير مكتملة!', 'error');
     return false;
   }
-  
+
   window.READY = true;
+  log('✅ كل المكتبات جاهزة', 'ok');
   return true;
 }
 
-// ═══════════════════════════════════════════════════════════
-// BASE58 / BECH32
-// ═══════════════════════════════════════════════════════════
-const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-function b58enc(bytes) {
+// ═════════════════════════════════════════════════════════════════════
+// Base58 + Bech32
+// ═════════════════════════════════════════════════════════════════════
+const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
+function base58Encode(bytes) {
   let n = 0n;
   for (const b of bytes) n = n * 256n + BigInt(b);
-  let s = '';
-  while (n > 0n) { s = B58[Number(n % 58n)] + s; n = n / 58n; }
-  for (const b of bytes) { if (b === 0) s = '1' + s; else break; }
-  return s;
+  let out = '';
+  while (n > 0n) { out = BASE58_ALPHABET[Number(n % 58n)] + out; n = n / 58n; }
+  for (const b of bytes) { if (b === 0) out = '1' + out; else break; }
+  return out;
 }
-function b58check(p) {
+
+function base58Check(payload) {
   const L = window.LIBS;
-  const ck = L.sha256(L.sha256(p)).slice(0, 4);
-  return b58enc(new Uint8Array([...p, ...ck]));
+  const checksum = L.sha256(L.sha256(payload)).slice(0, 4);
+  const combined = new Uint8Array([...payload, ...checksum]);
+  return base58Encode(combined);
 }
 
-const BC = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
-function bcPM(v) {
-  const G = [0x3b6a57b2,0x26508e6d,0x1ea119fa,0x3d4233dd,0x2a1462b3];
-  let c = 1;
-  for (const x of v) {
-    const b = c >> 25;
-    c = ((c & 0x1ffffff) << 5) ^ x;
-    for (let i = 0; i < 5; i++) c ^= ((b >> i) & 1) ? G[i] : 0;
+const BECH32_CHARSET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+
+function bech32Polymod(values) {
+  const GEN = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
+  let chk = 1;
+  for (const v of values) {
+    const b = chk >> 25;
+    chk = ((chk & 0x1ffffff) << 5) ^ v;
+    for (let i = 0; i < 5; i++) chk ^= ((b >> i) & 1) ? GEN[i] : 0;
   }
-  return c;
-}
-function bcHE(h) { const o=[]; for(const c of h)o.push(c.charCodeAt(0)>>5); o.push(0); for(const c of h)o.push(c.charCodeAt(0)&31); return o; }
-function bcCS(h, d) {
-  const v = [...bcHE(h), ...d];
-  const p = bcPM([...v, 0,0,0,0,0,0]) ^ 1;
-  const o = [];
-  for (let i = 0; i < 6; i++) o.push((p >> (5*(5-i))) & 31);
-  return o;
-}
-function bcEnc(h, d) {
-  const c = [...d, ...bcCS(h, d)];
-  return h + '1' + c.map(x => BC[x]).join('');
-}
-function cvt(data, fb, tb, pad = true) {
-  let a = 0, b = 0;
-  const r = [];
-  const mx = (1 << tb) - 1;
-  for (const v of data) {
-    a = (a << fb) | v; b += fb;
-    while (b >= tb) { b -= tb; r.push((a >> b) & mx); }
-  }
-  if (pad && b) r.push((a << (tb - b)) & mx);
-  return r;
+  return chk;
 }
 
-// ═══════════════════════════════════════════════════════════
-// DERIVE ADDRESSES
-// ═══════════════════════════════════════════════════════════
-function deriveAddrs(m) {
+function bech32HrpExpand(hrp) {
+  const out = [];
+  for (const c of hrp) out.push(c.charCodeAt(0) >> 5);
+  out.push(0);
+  for (const c of hrp) out.push(c.charCodeAt(0) & 31);
+  return out;
+}
+
+function bech32CreateChecksum(hrp, data) {
+  const values = [...bech32HrpExpand(hrp), ...data];
+  const polymod = bech32Polymod([...values, 0, 0, 0, 0, 0, 0]) ^ 1;
+  const out = [];
+  for (let i = 0; i < 6; i++) out.push((polymod >> (5 * (5 - i))) & 31);
+  return out;
+}
+
+function bech32Encode(hrp, data) {
+  const combined = [...data, ...bech32CreateChecksum(hrp, data)];
+  return hrp + '1' + combined.map(d => BECH32_CHARSET[d]).join('');
+}
+
+function convertBits(data, fromBits, toBits, pad = true) {
+  let acc = 0, bits = 0;
+  const ret = [];
+  const maxv = (1 << toBits) - 1;
+  for (const value of data) {
+    acc = (acc << fromBits) | value;
+    bits += fromBits;
+    while (bits >= toBits) { bits -= toBits; ret.push((acc >> bits) & maxv); }
+  }
+  if (pad && bits) ret.push((acc << (toBits - bits)) & maxv);
+  return ret;
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// Address Derivation (BIP32/44/84)
+// ═════════════════════════════════════════════════════════════════════
+function hash160(data) {
   const L = window.LIBS;
-  const seed = L.bip39.mnemonicToSeedSync(m);
-  const mk = L.HDKey.fromMasterSeed(seed);
-  const a = {};
-  
-  try {
-    const k = mk.derive("m/44'/60'/0'/0/0");
-    if (k.publicKey) {
-      const h = L.keccak_256(k.publicKey.slice(1));
-      a.ETH = '0x' + L.bytesToHex(h.slice(12));
-    }
-  } catch (e) {}
-  
-  try {
-    const k = mk.derive("m/44'/195'/0'/0/0");
-    if (k.publicKey) {
-      const h = L.keccak_256(k.publicKey.slice(1));
-      a.TRON = b58check(new Uint8Array([0x41, ...h.slice(12)]));
-    }
-  } catch (e) {}
-  
-  try {
-    const k = mk.derive("m/44'/0'/0'/0/0");
-    if (k.publicKey) {
-      const h = L.ripemd160(L.sha256(k.publicKey));
-      a.BTC = b58check(new Uint8Array([0x00, ...h]));
-    }
-  } catch (e) {}
-  
-  try {
-    const k = mk.derive("m/84'/0'/0'/0/0");
-    if (k.publicKey) {
-      const h = L.ripemd160(L.sha256(k.publicKey));
-      a.BTC_S = bcEnc('bc', [0, ...cvt(h, 8, 5)]);
-    }
-  } catch (e) {}
-  
-  return a;
+  return L.ripemd160(L.sha256(data));
 }
 
-// ═══════════════════════════════════════════════════════════
-// RPC ENDPOINTS
-// ═══════════════════════════════════════════════════════════
-const EPS = {
-  ETH: ['https://eth.llamarpc.com','https://rpc.ankr.com/eth','https://cloudflare-eth.com','https://ethereum.publicnode.com','https://1rpc.io/eth'],
-  BNB: ['https://bsc-dataseed.binance.org','https://bsc-dataseed1.defibit.io','https://bsc.publicnode.com'],
-  MATIC: ['https://polygon-rpc.com','https://polygon.llamarpc.com','https://rpc.ankr.com/polygon'],
-};
-const CT = {
-  USDT_E: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-  USDC_E: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-  USDT_T: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
-};
+function deriveAddressesFromMnemonic(mnemonic) {
+  const L = window.LIBS;
+  const seed = L.mnemonicToSeedSync(mnemonic);
 
-function initCB(h) {
-  if (!CB[h]) CB[h] = { state: 'closed', fails: 0, last: 0, ewma: 0, ok: 0, fail: 0 };
-}
+  // HDKey derivation manually (نفس BIP32)
+  const secp = L.secp256k1;
 
-async function rpc(url, payload, ms = 5000) {
-  const h = new URL(url).hostname;
-  initCB(h);
-  const c = CB[h];
-  if (c.state === 'open') {
-    if (Date.now() - c.last > 30000) c.state = 'half';
-    else throw new Error('CB');
+  // Helper: HMAC-SHA512
+  async function hmacSha512(key, data) {
+    const cKey = await crypto.subtle.importKey(
+      'raw', key, { name: 'HMAC', hash: 'SHA-512' }, false, ['sign']
+    );
+    const sig = await crypto.subtle.sign('HMAC', cKey, data);
+    return new Uint8Array(sig);
   }
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), ms);
-  const t0 = performance.now();
+
+  // BIP32 derivation (sync via precomputed, but we use async)
+  // ⚠️ Since BIP32 uses HMAC-SHA512 which requires Web Crypto (async),
+  // we do a synchronous HMAC-SHA512 implementation for derivation
+
+  // Simple HMAC-SHA512 implementation (sync)
+  function hmacSha512Sync(key, data) {
+    // SHA-512 block size = 128 bytes
+    const BLOCK = 128;
+    if (key.length > BLOCK) key = L.sha512 ? L.sha512(key) : key.slice(0, BLOCK);
+    const kPad = new Uint8Array(BLOCK);
+    kPad.set(key);
+    const oKeyPad = new Uint8Array(BLOCK);
+    const iKeyPad = new Uint8Array(BLOCK);
+    for (let i = 0; i < BLOCK; i++) {
+      oKeyPad[i] = kPad[i] ^ 0x5c;
+      iKeyPad[i] = kPad[i] ^ 0x36;
+    }
+    const inner = new Uint8Array(BLOCK + data.length);
+    inner.set(iKeyPad); inner.set(data, BLOCK);
+    const innerHash = sha512Sync(inner);
+    const outer = new Uint8Array(BLOCK + 64);
+    outer.set(oKeyPad); outer.set(innerHash, BLOCK);
+    return sha512Sync(outer);
+  }
+
+  // Minimal SHA-512 (sync)
+  function sha512Sync(msg) {
+    const K = [
+      0x428a2f98d728ae22n, 0x7137449123ef65cdn, 0xb5c0fbcfec4d3b2fn, 0xe9b5dba58189dbbcn,
+      0x3956c25bf348b538n, 0x59f111f1b605d019n, 0x923f82a4af194f9bn, 0xab1c5ed5da6d8118n,
+      0xd807aa98a3030242n, 0x12835b0145706fben, 0x243185be4ee4b28cn, 0x550c7dc3d5ffb4e2n,
+      0x72be5d74f27b896fn, 0x80deb1fe3b1696b1n, 0x9bdc06a725c71235n, 0xc19bf174cf692694n,
+      0xe49b69c19ef14ad2n, 0xefbe4786384f25e3n, 0x0fc19dc68b8cd5b5n, 0x240ca1cc77ac9c65n,
+      0x2de92c6f592b0275n, 0x4a7484aa6ea6e483n, 0x5cb0a9dcbd41fbd4n, 0x76f988da831153b5n,
+      0x983e5152ee66dfabn, 0xa831c66d2db43210n, 0xb00327c898fb213fn, 0xbf597fc7beef0ee4n,
+      0xc6e00bf33da88fc2n, 0xd5a79147930aa725n, 0x06ca6351e003826fn, 0x142929670a0e6e70n,
+      0x27b70a8546d22ffcn, 0x2e1b21385c26c926n, 0x4d2c6dfc5ac42aedn, 0x53380d139d95b3dfn,
+      0x650a73548baf63den, 0x766a0abb3c77b2a8n, 0x81c2c92e47edaee6n, 0x92722c851482353bn,
+      0xa2bfe8a14cf10364n, 0xa81a664bbc423001n, 0xc24b8b70d0f89791n, 0xc76c51a30654be30n,
+      0xd192e819d6ef5218n, 0xd69906245565a910n, 0xf40e35855771202an, 0x106aa07032bbd1b8n,
+      0x19a4c116b8d2d0c8n, 0x1e376c085141ab53n, 0x2748774cdf8eeb99n, 0x34b0bcb5e19b48a8n,
+      0x391c0cb3c5c95a63n, 0x4ed8aa4ae3418acbn, 0x5b9cca4f7763e373n, 0x682e6ff3d6b2b8a3n,
+      0x748f82ee5defb2fcn, 0x78a5636f43172f60n, 0x84c87814a1f0ab72n, 0x8cc702081a6439ecn,
+      0x90befffa23631e28n, 0xa4506cebde82bde9n, 0xbef9a3f7b2c67915n, 0xc67178f2e372532bn,
+      0xca273eceea26619cn, 0xd186b8c721c0c207n, 0xeada7dd6cde0eb1en, 0xf57d4f7fee6ed178n,
+      0x06f067aa72176fban, 0x0a637dc5a2c898a6n, 0x113f9804bef90daen, 0x1b710b35131c471bn,
+      0x28db77f523047d84n, 0x32caab7b40c72493n, 0x3c9ebe0a15c9bebcn, 0x431d67c49c100d4cn,
+      0x4cc5d4becb3e42b6n, 0x597f299cfc657e2an, 0x5fcb6fab3ad6faecn, 0x6c44198c4a475817n,
+    ];
+    const H = [
+      0x6a09e667f3bcc908n, 0xbb67ae8584caa73bn, 0x3c6ef372fe94f82bn, 0xa54ff53a5f1d36f1n,
+      0x510e527fade682d1n, 0x9b05688c2b3e6c1fn, 0x1f83d9abfb41bd6bn, 0x5be0cd19137e2179n,
+    ];
+    const msgLen = msg.length;
+    const bitLen = BigInt(msgLen) * 8n;
+    const k = ((128 - ((msgLen + 17) % 128)) % 128);
+    const padded = new Uint8Array(msgLen + 1 + k + 16);
+    padded.set(msg);
+    padded[msgLen] = 0x80;
+    const view = new DataView(padded.buffer);
+    view.setBigUint64(padded.length - 16, bitLen >> 64n);
+    view.setBigUint64(padded.length - 8, bitLen & 0xFFFFFFFFFFFFFFFFn);
+
+    const MASK = (1n << 64n) - 1n;
+    function rotr(x, n) { return ((x >> n) | (x << (64n - n))) & MASK; }
+
+    for (let i = 0; i < padded.length; i += 128) {
+      const w = new Array(80).fill(0n);
+      for (let t = 0; t < 16; t++) w[t] = view.getBigUint64(i + t * 8);
+      for (let t = 16; t < 80; t++) {
+        const s0 = rotr(w[t-15], 1n) ^ rotr(w[t-15], 8n) ^ (w[t-15] >> 7n);
+        const s1 = rotr(w[t-2], 19n) ^ rotr(w[t-2], 61n) ^ (w[t-2] >> 6n);
+        w[t] = (w[t-16] + s0 + w[t-7] + s1) & MASK;
+      }
+      let [a,b,c,d,e,f,g,h] = H;
+      for (let t = 0; t < 80; t++) {
+        const S1 = rotr(e, 14n) ^ rotr(e, 18n) ^ rotr(e, 41n);
+        const ch = (e & f) ^ (~e & g & MASK);
+        const t1 = (h + S1 + ch + K[t] + w[t]) & MASK;
+        const S0 = rotr(a, 28n) ^ rotr(a, 34n) ^ rotr(a, 39n);
+        const mj = (a & b) ^ (a & c) ^ (b & c);
+        const t2 = (S0 + mj) & MASK;
+        h = g; g = f; f = e; e = (d + t1) & MASK;
+        d = c; c = b; b = a; a = (t1 + t2) & MASK;
+      }
+      H[0] = (H[0] + a) & MASK; H[1] = (H[1] + b) & MASK;
+      H[2] = (H[2] + c) & MASK; H[3] = (H[3] + d) & MASK;
+      H[4] = (H[4] + e) & MASK; H[5] = (H[5] + f) & MASK;
+      H[6] = (H[6] + g) & MASK; H[7] = (H[7] + h) & MASK;
+    }
+    const out = new Uint8Array(64);
+    const outView = new DataView(out.buffer);
+    for (let i = 0; i < 8; i++) outView.setBigUint64(i * 8, H[i]);
+    return out;
+  }
+
+  // BIP32 master key
+  const I = hmacSha512Sync(new TextEncoder().encode('Bitcoin seed'), seed);
+  let key = I.slice(0, 32);
+  let chainCode = I.slice(32);
+
+  const N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141n;
+
+  function deriveChild(parentKey, parentChain, index) {
+    let data;
+    if (index >= 0x80000000) {
+      data = new Uint8Array(1 + 32 + 4);
+      data[0] = 0;
+      data.set(parentKey, 1);
+      new DataView(data.buffer).setUint32(33, index);
+    } else {
+      const pub = secp.getPublicKey(parentKey, true);
+      data = new Uint8Array(33 + 4);
+      data.set(pub, 0);
+      new DataView(data.buffer).setUint32(33, index);
+    }
+    const I = hmacSha512Sync(parentChain, data);
+    const IL = I.slice(0, 32);
+    const IR = I.slice(32);
+    const ilInt = BigInt('0x' + bytesToHex(IL));
+    const pkInt = BigInt('0x' + bytesToHex(parentKey));
+    const childInt = (ilInt + pkInt) % N;
+    const childHex = childInt.toString(16).padStart(64, '0');
+    return { key: hexToBytes(childHex), chain: IR };
+  }
+
+  function bytesToHex(b) { return Array.from(b).map(x => x.toString(16).padStart(2,'0')).join(''); }
+  function hexToBytes(h) { const out = new Uint8Array(h.length/2); for (let i = 0; i < out.length; i++) out[i] = parseInt(h.slice(i*2, i*2+2), 16); return out; }
+
+  function derivePath(path) {
+    const parts = path.split('/').slice(1);
+    let k = key, c = chainCode;
+    for (const p of parts) {
+      let idx;
+      if (p.endsWith("'")) idx = parseInt(p.slice(0, -1)) + 0x80000000;
+      else idx = parseInt(p);
+      const r = deriveChild(k, c, idx);
+      k = r.key; c = r.chain;
+    }
+    return k;
+  }
+
+  const addrs = {};
+
   try {
-    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: ctrl.signal });
-    clearTimeout(t);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    const lat = (performance.now() - t0) / 1000;
-    c.ok++;
-    c.ewma = c.ewma ? 0.3 * lat + 0.7 * c.ewma : lat;
-    if (c.state === 'half') { c.state = 'closed'; c.fails = 0; }
-    return j;
+    // Legacy m/44'/0'/0'/0/0
+    const k1 = derivePath("m/44'/0'/0'/0/0");
+    const pub1 = secp.getPublicKey(k1, true);
+    const h1 = hash160(pub1);
+    const payload1 = new Uint8Array([0x00, ...h1]);
+    addrs.legacy = base58Check(payload1);
+  } catch (e) { addrs.legacy = null; }
+
+  try {
+    // SegWit m/84'/0'/0'/0/0
+    const k2 = derivePath("m/84'/0'/0'/0/0");
+    const pub2 = secp.getPublicKey(k2, true);
+    const h2 = hash160(pub2);
+    const witprog = [0, ...convertBits(Array.from(h2), 8, 5)];
+    addrs.segwit = bech32Encode('bc', witprog);
+  } catch (e) { addrs.segwit = null; }
+
+  return addrs;
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// API CALLS (with CORS proxy support)
+// ═════════════════════════════════════════════════════════════════════
+function wrapProxy(url) {
+  if (CFG.corsProxy) {
+    return CFG.corsProxy + encodeURIComponent(url);
+  }
+  return url;
+}
+
+async function apiFetch(url, opts = {}, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const tid = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const r = await fetch(wrapProxy(url), { ...opts, signal: controller.signal, cache: 'no-cache' });
+    clearTimeout(tid);
+    return r;
   } catch (e) {
-    clearTimeout(t);
-    c.fail++; c.last = Date.now(); c.fails++;
-    if (c.fails >= 3) c.state = 'open';
+    clearTimeout(tid);
     throw e;
   }
 }
 
-async function chkEVM(addr, chain) {
-  for (const url of EPS[chain]) {
-    try {
-      const r = await rpc(url, { jsonrpc: '2.0', method: 'eth_getBalance', params: [addr, 'latest'], id: 1 });
-      if (r && r.result) return BigInt(r.result);
-    } catch (e) {}
+function cbUpdate(host, ok, latency=0) {
+  const cb = CB[host];
+  if (!cb) return;
+  if (ok) {
+    cb.ok++;
+    cb.fails = 0;
+    cb.ewma = cb.ewma ? 0.3 * latency + 0.7 * cb.ewma : latency;
+    if (cb.state === 'half') cb.state = 'closed';
+  } else {
+    cb.fail++;
+    cb.fails++;
+    cb.lastFail = Date.now();
+    if (cb.fails >= 3) cb.state = 'open';
   }
-  return 0n;
 }
-async function chkERC20(addr, ct) {
-  const d = '0x70a08231' + addr.slice(2).toLowerCase().padStart(64, '0');
-  for (const url of EPS.ETH) {
-    try {
-      const r = await rpc(url, { jsonrpc: '2.0', method: 'eth_call', params: [{ to: ct, data: d }, 'latest'], id: 1 });
-      if (r && r.result) {
-        if (r.result === '0x' || r.result === '0x0') return 0n;
-        return BigInt(r.result);
-      }
-    } catch (e) {}
+
+function cbAvailable(host) {
+  const cb = CB[host];
+  if (!cb) return true;
+  if (cb.state === 'closed') return true;
+  if (cb.state === 'open') {
+    if (Date.now() - cb.lastFail > 30000) { cb.state = 'half'; return true; }
+    return false;
   }
-  return 0n;
+  return true;
 }
-async function chkBTC(a) {
+
+// Blockchain.info
+async function apiBlockchainInfo(addresses) {
+  const host = 'blockchain.info';
+  if (!cbAvailable(host)) return {};
+  const joined = addresses.slice(0, 100).join('|');
+  const url = `https://blockchain.info/balance?active=${joined}&cors=true`;
+  const t0 = performance.now();
   try {
-    const r = await fetch(`https://mempool.space/api/address/${a}`, { cache: 'no-cache' });
-    if (!r.ok) return 0n;
-    const j = await r.json();
-    return BigInt(j.chain_stats.funded_txo_sum - j.chain_stats.spent_txo_sum);
-  } catch (e) { return 0n; }
-}
-async function chkTRX(a) {
-  try {
-    const r = await fetch(`https://api.trongrid.io/v1/accounts/${a}`, { cache: 'no-cache' });
-    if (!r.ok) return 0n;
-    const j = await r.json();
-    if (j.data?.[0]) return BigInt(j.data[0].balance || 0);
-  } catch (e) {}
-  return 0n;
-}
-async function chkTRC20(a, ct) {
-  try {
-    const r = await fetch(`https://api.trongrid.io/v1/accounts/${a}/tokens`, { cache: 'no-cache' });
-    if (!r.ok) return 0n;
-    const j = await r.json();
-    if (j.data) {
-      for (const t of j.data) {
-        if (t.tokenId === ct || t.tokenAbbr === 'USDT') return BigInt(t.balance || 0);
+    const r = await apiFetch(url, {}, 10000);
+    if (!r.ok) { cbUpdate(host, false); return {}; }
+    const data = await r.json();
+    const out = {};
+    for (const [addr, info] of Object.entries(data)) {
+      if (info && typeof info.final_balance === 'number') {
+        out[addr] = info.final_balance;
       }
     }
-  } catch (e) {}
-  return 0n;
+    cbUpdate(host, true, (performance.now() - t0) / 1000);
+    return out;
+  } catch (e) {
+    cbUpdate(host, false);
+    return {};
+  }
 }
 
-// ═══════════════════════════════════════════════════════════
-// WEAK FILTER
-// ═══════════════════════════════════════════════════════════
-const WEAK = new Set(['abandon','test','hello','apple','bitcoin','money','master','password','qwerty','letmein','zoo','cat','dog','sun','moon','star','fire','water','correct','horse','battery','staple','satoshi','nakamoto','world','awesome','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','void','come','effort','suffer','camp','survey','warrior','heavy','shoot','primary','clutch','crush','open','amazing','screen','patrol','group','space','point','exist','slush','involve','unfold','legal','winner','thank','year','wave','sausage','worth','useful','yellow','letter','advice','cage','absurd','amount','doctor','acoustic','avoid','above','ozone','drill','grab','fiber','curtain','grace','pudding','cruise','elder','picnic','scheme','spot','photo','card','baby','mountain','device','kick','cradle','pact','join','borrow','gravity','machine','north']);
-
-function isWeak(m) {
-  const w = m.toLowerCase().split(' ');
-  const s = new Set(w);
-  let k = 0;
-  for (const x of s) if (WEAK.has(x)) k++;
-  if (k === s.size) return true;
-  if (k >= Math.floor(w.length * 2 / 3)) return true;
-  const f = {};
-  for (const x of w) f[x] = (f[x] || 0) + 1;
-  if (Math.max(...Object.values(f)) >= 4) return true;
-  return false;
+// Blockstream (single)
+async function apiBlockstream(address) {
+  const host = 'blockstream.info';
+  if (!cbAvailable(host)) return null;
+  const url = `https://blockstream.info/api/address/${address}`;
+  const t0 = performance.now();
+  try {
+    const r = await apiFetch(url, {}, 6000);
+    if (!r.ok) { cbUpdate(host, false); return null; }
+    const d = await r.json();
+    const cs = d.chain_stats || {};
+    const v = (cs.funded_txo_sum || 0) - (cs.spent_txo_sum || 0);
+    cbUpdate(host, true, (performance.now() - t0) / 1000);
+    return v;
+  } catch (e) {
+    cbUpdate(host, false);
+    return null;
+  }
 }
 
-// ═══════════════════════════════════════════════════════════
-// PROCESS SEED
-// ═══════════════════════════════════════════════════════════
-async function processSeed(m) {
-  let a;
-  try { a = deriveAddrs(m); }
-  catch (e) { return; }
-  
-  const C = [];
-  if (a.ETH) {
-    C.push({ n: 'ETH', a: a.ETH, u: 'wei', d: 18, f: () => chkEVM(a.ETH, 'ETH') });
-    C.push({ n: 'BNB', a: a.ETH, u: 'wei', d: 18, f: () => chkEVM(a.ETH, 'BNB') });
-    C.push({ n: 'MATIC', a: a.ETH, u: 'wei', d: 18, f: () => chkEVM(a.ETH, 'MATIC') });
-    C.push({ n: 'USDT-ERC', a: a.ETH, u: 'micro', d: 6, f: () => chkERC20(a.ETH, CT.USDT_E) });
-    C.push({ n: 'USDC-ERC', a: a.ETH, u: 'micro', d: 6, f: () => chkERC20(a.ETH, CT.USDC_E) });
+// Mempool (single)
+async function apiMempool(address) {
+  const host = 'mempool.space';
+  if (!cbAvailable(host)) return null;
+  const url = `https://mempool.space/api/address/${address}`;
+  const t0 = performance.now();
+  try {
+    const r = await apiFetch(url, {}, 6000);
+    if (!r.ok) { cbUpdate(host, false); return null; }
+    const d = await r.json();
+    const cs = d.chain_stats || {};
+    const v = (cs.funded_txo_sum || 0) - (cs.spent_txo_sum || 0);
+    cbUpdate(host, true, (performance.now() - t0) / 1000);
+    return v;
+  } catch (e) {
+    cbUpdate(host, false);
+    return null;
   }
-  if (a.BTC) C.push({ n: 'BTC', a: a.BTC, u: 'sat', d: 8, f: () => chkBTC(a.BTC) });
-  if (a.BTC_S) C.push({ n: 'BTC-Seg', a: a.BTC_S, u: 'sat', d: 8, f: () => chkBTC(a.BTC_S) });
-  if (a.TRON) {
-    C.push({ n: 'TRX', a: a.TRON, u: 'SUN', d: 6, f: () => chkTRX(a.TRON) });
-    C.push({ n: 'USDT-TRC', a: a.TRON, u: 'micro', d: 6, f: () => chkTRC20(a.TRON, CT.USDT_T) });
+}
+
+// Blockchair (batch)
+async function apiBlockchair(addresses) {
+  const host = 'api.blockchair.com';
+  if (!cbAvailable(host)) return {};
+  const addrs = addresses.slice(0, 50).join(',');
+  const url = `https://api.blockchair.com/bitcoin/dashboards/addresses/${addrs}`;
+  const t0 = performance.now();
+  try {
+    const r = await apiFetch(url, {}, 12000);
+    if (!r.ok) { cbUpdate(host, false); return {}; }
+    const data = await r.json();
+    const out = {};
+    const dData = data.data || {};
+    for (const [addr, info] of Object.entries(dData)) {
+      if (info && info.address && typeof info.address.balance === 'number') {
+        out[addr] = info.address.balance * 100000000;
+      }
+    }
+    cbUpdate(host, true, (performance.now() - t0) / 1000);
+    return out;
+  } catch (e) {
+    cbUpdate(host, false);
+    return {};
   }
-  
-  const R = await Promise.all(C.map(c => c.f().catch(() => 0n)));
-  
-  for (let i = 0; i < C.length; i++) {
-    if (R[i] > 0n) {
-      const h = Number(R[i]) / Math.pow(10, C[i].d);
-      const it = { mnemonic: m, coin: C[i].n, addr: C[i].a, raw: R[i].toString(), bal: h, at: new Date().toISOString() };
-      S.results.push(it);
-      S.found++;
-      addFound(it);
-      log(`🎉 ${C[i].n}: ${h.toFixed(8)} | ${C[i].a}`, 'k');
-      notifyTG(it);
+}
+
+// BTC.com (batch)
+async function apiBtcCom(addresses) {
+  const host = 'chain.api.btc.com';
+  if (!cbAvailable(host)) return {};
+  const addrs = addresses.slice(0, 20).join(',');
+  const url = `https://chain.api.btc.com/v3/address/${addrs}`;
+  const t0 = performance.now();
+  try {
+    const r = await apiFetch(url, {}, 10000);
+    if (!r.ok) { cbUpdate(host, false); return {}; }
+    const data = await r.json();
+    const out = {};
+    const d = data.data || [];
+    const items = Array.isArray(d) ? d : [d];
+    for (const item of items) {
+      if (item && item.address && typeof item.balance === 'number') {
+        out[item.address] = item.balance;
+      }
+    }
+    cbUpdate(host, true, (performance.now() - t0) / 1000);
+    return out;
+  } catch (e) {
+    cbUpdate(host, false);
+    return {};
+  }
+}
+
+// Blockcypher (single)
+async function apiBlockcypher(address) {
+  const host = 'api.blockcypher.com';
+  if (!cbAvailable(host)) return null;
+  const url = `https://api.blockcypher.com/v1/btc/main/addrs/${address}/balance`;
+  const t0 = performance.now();
+  try {
+    const r = await apiFetch(url, {}, 6000);
+    if (!r.ok) { cbUpdate(host, false); return null; }
+    const d = await r.json();
+    cbUpdate(host, true, (performance.now() - t0) / 1000);
+    return d.balance || 0;
+  } catch (e) {
+    cbUpdate(host, false);
+    return null;
+  }
+}
+
+// btc.com (single)
+async function apiBtcComSingle(address) {
+  const host = 'btc.com';
+  if (!cbAvailable(host)) return null;
+  const url = `https://btc.com/api/v3/address/${address}`;
+  const t0 = performance.now();
+  try {
+    const r = await apiFetch(url, {}, 6000);
+    if (!r.ok) { cbUpdate(host, false); return null; }
+    const d = await r.json();
+    cbUpdate(host, true, (performance.now() - t0) / 1000);
+    return (d.data && d.data.balance) || 0;
+  } catch (e) {
+    cbUpdate(host, false);
+    return null;
+  }
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// Batch Balance Query
+// ═════════════════════════════════════════════════════════════════════
+async function batchBtcBalance(addresses) {
+  const results = {};
+  for (const a of addresses) results[a] = 0;
+
+  const tasks = [
+    apiBlockchainInfo(addresses),
+    apiBlockchair(addresses),
+    apiBtcCom(addresses),
+  ];
+
+  const apiResults = await Promise.allSettled(tasks);
+
+  for (const r of apiResults) {
+    if (r.status !== 'fulfilled') continue;
+    const data = r.value || {};
+    for (const [addr, bal] of Object.entries(data)) {
+      if (typeof bal === 'number' && bal > (results[addr] || 0)) {
+        results[addr] = bal;
+      }
     }
   }
+
+  return results;
 }
 
-// ═══════════════════════════════════════════════════════════
-// WORKER (SHA256 + Mnemonic only — no external libs needed)
-// ═══════════════════════════════════════════════════════════
+async function verifyConsensus(address, expected) {
+  const tasks = [
+    apiBlockstream(address),
+    apiMempool(address),
+    apiBlockcypher(address),
+    apiBtcComSingle(address),
+  ];
+
+  const results = await Promise.allSettled(tasks);
+  const valid = [];
+  for (const r of results) {
+    if (r.status === 'fulfilled' && typeof r.value === 'number' && r.value >= 0) {
+      valid.push(r.value);
+    }
+  }
+
+  if (valid.length === 0) return expected;
+  // Most common
+  const counts = {};
+  for (const v of valid) counts[v] = (counts[v] || 0) + 1;
+  let best = valid[0], bestCount = 0;
+  for (const [v, c] of Object.entries(counts)) {
+    if (c > bestCount) { best = parseInt(v); bestCount = c; }
+  }
+  return best;
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// Canary Health Check
+// ═════════════════════════════════════════════════════════════════════
+async function checkCanary(roundNum = 0) {
+  log(`🧪 فحص Canary - جولة #${roundNum}...`, 'info');
+  CANARY.checks++;
+
+  try {
+    const results = await batchBtcBalance([CANARY.addr]);
+    const bal = results[CANARY.addr] || 0;
+
+    // Single APIs test
+    let working = 0;
+    const singles = await Promise.allSettled([
+      apiBlockstream(CANARY.addr),
+      apiMempool(CANARY.addr),
+    ]);
+    for (const r of singles) {
+      if (r.status === 'fulfilled' && typeof r.value === 'number' && r.value > 0) {
+        working++;
+      }
+    }
+
+    CANARY.last = bal;
+    CANARY.ok = bal > 0;
+    CANARY.working = working;
+    if (!CANARY.ok) CANARY.fails++;
+
+    updateCanaryUI();
+
+    if (CANARY.ok) {
+      log(`✅ Canary = ${bal.toLocaleString()} sat (${(bal/1e8).toFixed(4)} BTC) | APIs=${working}/2`, 'ok');
+    } else {
+      log(`⚠️ Canary = 0 — APIs قد تكون محجوبة!`, 'warn');
+    }
+
+    return CANARY.ok;
+  } catch (e) {
+    CANARY.fails++;
+    CANARY.ok = false;
+    updateCanaryUI();
+    log(`❌ Canary failed: ${e.message}`, 'error');
+    return false;
+  }
+}
+
+function updateCanaryUI() {
+  const box = document.getElementById('canaryBox');
+  const title = document.getElementById('canaryTitle');
+  const sub = document.getElementById('canarySub');
+  const when = document.getElementById('canaryWhen');
+
+  if (CANARY.ok) {
+    box.className = 'canary-box';
+    title.textContent = '✅ APIs تعمل بشكل صحيح';
+    title.style.color = '#3fb950';
+  } else {
+    box.className = 'canary-box bad';
+    title.textContent = '⚠️ تحذير: Canary = 0';
+    title.style.color = '#f85149';
+  }
+
+  sub.textContent = `Canary = ${CANARY.last.toLocaleString()} sat | working = ${CANARY.working}/2 | checks = ${CANARY.checks} (fails: ${CANARY.fails})`;
+  when.textContent = CANARY.checks > 0 ? `آخر فحص #${CANARY.checks}` : '—';
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// Notifications
+// ═════════════════════════════════════════════════════════════════════
+async function sendTelegram(text) {
+  if (!CFG.tgToken || !CFG.tgChat) return false;
+  try {
+    const url = `https://api.telegram.org/bot${CFG.tgToken}/sendMessage`;
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: CFG.tgChat,
+        text: text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true,
+      }),
+    });
+    return r.ok;
+  } catch (e) {
+    log(`⚠️ Telegram: ${e.message}`, 'warn');
+    return false;
+  }
+}
+
+async function notifyFound(coin, mnemonic, balance, address) {
+  const ts = new Date().toLocaleString('ar-SY');
+  const msg = `🎉🎉🎉 <b>BITCOIN FOUND!</b> 🎉🎉🎉\n\n` +
+    `📍 <b>النوع:</b> ${coin}\n` +
+    `💰 <b>الرصيد:</b> <code>${(balance/1e8).toFixed(8)} BTC</code>\n` +
+    `💵 <b>بالساتوشي:</b> <code>${balance.toLocaleString()}</code>\n` +
+    `🔗 <b>العنوان:</b>\n<code>${address}</code>\n\n` +
+    `🔑 <b>العبارة:</b>\n<code>${mnemonic}</code>\n\n` +
+    `⏰ <b>الوقت:</b> ${ts}`;
+  const ok = await sendTelegram(msg);
+  if (ok) log('📱 ✅ Telegram', 'ok');
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// Web Worker for mnemonic generation
+// ═════════════════════════════════════════════════════════════════════
+let WORKER = null;
+
 function createWorker() {
   const code = `
-    let wl = null;
+    let wordlist = null;
     self.onmessage = (e) => {
-      const d = e.data;
-      if (d.type === 'init') { wl = d.wordlist; self.postMessage({ type: 'ready' }); return; }
-      if (d.type === 'generate') {
+      const { type, data } = e.data;
+      if (type === 'init') {
+        wordlist = data.wordlist;
+        self.postMessage({ type: 'ready' });
+      } else if (type === 'generate') {
         const out = [];
-        for (let i = 0; i < d.count; i++) {
-          const bytes = d.wc === 12 ? 16 : d.wc === 15 ? 20 : d.wc === 18 ? 24 : 32;
-          const ent = new Uint8Array(bytes);
-          crypto.getRandomValues(ent);
-          out.push(e2m(ent, wl));
+        const bits = data.wordCount === 12 ? 128 : data.wordCount === 15 ? 160 :
+                     data.wordCount === 18 ? 192 : data.wordCount === 24 ? 256 : 128;
+        for (let i = 0; i < data.count; i++) {
+          out.push(genMnemonic(bits, wordlist));
         }
         self.postMessage({ type: 'batch', data: out });
       }
     };
-    function e2m(ent, wl) {
-      const bits = [];
-      for (const b of ent) for (let i = 7; i >= 0; i--) bits.push((b >> i) & 1);
-      const h = s256(ent);
-      const cb = bits.length / 32;
-      for (let i = 0; i < cb; i++) bits.push((h[0] >> (7 - i)) & 1);
-      const w = [];
-      for (let i = 0; i < bits.length; i += 11) {
-        let x = 0;
-        for (let j = 0; j < 11; j++) x = (x << 1) | bits[i + j];
-        w.push(wl[x]);
+    
+    function genMnemonic(entropyBits, wordlist) {
+      const entropyBytes = entropyBits / 8;
+      const entropy = new Uint8Array(entropyBytes);
+      crypto.getRandomValues(entropy);
+      
+      const checksumBits = entropyBits / 32;
+      const checksum = sha256(entropy);
+      
+      // Combine entropy + checksum bits
+      const allBits = [];
+      for (const b of entropy) {
+        for (let i = 7; i >= 0; i--) allBits.push((b >> i) & 1);
       }
-      return w.join(' ');
+      for (let i = 0; i < checksumBits; i++) {
+        allBits.push((checksum[0] >> (7 - i)) & 1);
+      }
+      
+      // Group into 11-bit chunks
+      const words = [];
+      for (let i = 0; i < allBits.length; i += 11) {
+        let idx = 0;
+        for (let j = 0; j < 11; j++) {
+          idx = (idx << 1) | allBits[i + j];
+        }
+        words.push(wordlist[idx]);
+      }
+      return words.join(' ');
     }
-    function s256(d) {
-      const K = new Uint32Array([0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2]);
-      const H = new Uint32Array([0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19]);
-      const ml = d.length * 8;
-      const k = (56 - (d.length + 1) % 64 + 64) % 64;
-      const p = new Uint8Array(d.length + 1 + k + 8);
-      p.set(d); p[d.length] = 0x80;
-      const dv = new DataView(p.buffer);
-      dv.setUint32(p.length - 4, ml);
+    
+    function sha256(data) {
+      const K = new Uint32Array([
+        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+      ]);
+      const H = new Uint32Array([
+        0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19
+      ]);
+      const ml = data.length * 8;
+      const k = (56 - (data.length + 1) % 64 + 64) % 64;
+      const padded = new Uint8Array(data.length + 1 + k + 8);
+      padded.set(data);
+      padded[data.length] = 0x80;
+      const dv = new DataView(padded.buffer);
+      dv.setUint32(padded.length - 4, ml);
       const w = new Uint32Array(64);
-      for (let i = 0; i < p.length; i += 64) {
+      for (let i = 0; i < padded.length; i += 64) {
         for (let j = 0; j < 16; j++) w[j] = dv.getUint32(i + j * 4);
         for (let j = 16; j < 64; j++) {
           const s0 = ((w[j-15]>>>7)|(w[j-15]<<25)) ^ ((w[j-15]>>>18)|(w[j-15]<<14)) ^ (w[j-15]>>>3);
           const s1 = ((w[j-2]>>>17)|(w[j-2]<<15)) ^ ((w[j-2]>>>19)|(w[j-2]<<13)) ^ (w[j-2]>>>10);
           w[j] = (w[j-16] + s0 + w[j-7] + s1) >>> 0;
         }
-        let [a,b,c,dd,e,f,g,h] = H;
+        let [a,b,c,d,e,f,g,h] = H;
         for (let j = 0; j < 64; j++) {
           const S1 = ((e>>>6)|(e<<26)) ^ ((e>>>11)|(e<<21)) ^ ((e>>>25)|(e<<7));
           const ch = (e & f) ^ (~e & g);
@@ -572,147 +1072,259 @@ function createWorker() {
           const S0 = ((a>>>2)|(a<<30)) ^ ((a>>>13)|(a<<19)) ^ ((a>>>22)|(a<<10));
           const mj = (a & b) ^ (a & c) ^ (b & c);
           const t2 = (S0 + mj) >>> 0;
-          h = g; g = f; f = e; e = (dd + t1) >>> 0;
-          dd = c; c = b; b = a; a = (t1 + t2) >>> 0;
+          h = g; g = f; f = e; e = (d + t1) >>> 0;
+          d = c; c = b; b = a; a = (t1 + t2) >>> 0;
         }
-        H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+dd)>>>0;
+        H[0]=(H[0]+a)>>>0; H[1]=(H[1]+b)>>>0; H[2]=(H[2]+c)>>>0; H[3]=(H[3]+d)>>>0;
         H[4]=(H[4]+e)>>>0; H[5]=(H[5]+f)>>>0; H[6]=(H[6]+g)>>>0; H[7]=(H[7]+h)>>>0;
       }
-      const o = new Uint8Array(32);
-      const od = new DataView(o.buffer);
-      for (let i = 0; i < 8; i++) od.setUint32(i * 4, H[i]);
-      return o;
+      const out = new Uint8Array(32);
+      const outDv = new DataView(out.buffer);
+      for (let i = 0; i < 8; i++) outDv.setUint32(i * 4, H[i]);
+      return out;
     }
   `;
-  return new Worker(URL.createObjectURL(new Blob([code], { type: 'application/javascript' })));
+  const blob = new Blob([code], { type: 'application/javascript' });
+  return new Worker(URL.createObjectURL(blob));
 }
 
-// ═══════════════════════════════════════════════════════════
-// START / STOP
-// ═══════════════════════════════════════════════════════════
-window.startMining = async function() {
-  log('🖱️ تم الضغط على ابدأ', 'i');
-  
-  if (S.running) { log('⚠️ شغال بالفعل', 'w'); return; }
-  
-  if (!window.READY) {
-    log('❌ المكتبات لم تُحمّل بعد', 'e');
-    log('💡 انتظر انتهاء التحميل', 'w');
-    return;
-  }
-  
-  S.running = true;
+// ═════════════════════════════════════════════════════════════════════
+// Main Loop
+// ═════════════════════════════════════════════════════════════════════
+let QUEUE = [];
+let PROCESSING = false;
+
+async function startScanning() {
+  if (RUNNING) return;
+  if (!READY) { alert('المكتبات لم تُحمّل بعد'); return; }
+
+  RUNNING = true;
   S.startTime = Date.now();
-  S.total = 0; S.found = 0; S.results = [];
-  S.lastCount = 0; S.lastTime = Date.now();
-  S.queue = [];
-  
-  document.getElementById('sb').disabled = true;
-  document.getElementById('xb').disabled = false;
-  setStatus('يعمل', 'closed');
-  showBanner('✅ الفحص شغال — جاري التوليد...', 'ok');
-  
-  log('▶️ بدء الفحص', 'k');
-  log(`🎲 wordCount=${CFG.wordCount} | batch=${CFG.batchSize}`, 'i');
-  
-  S.worker = createWorker();
-  S.worker.onerror = (e) => log('❌ Worker error: ' + e.message, 'e');
-  S.worker.onmessage = (e) => {
-    const d = e.data;
-    if (d.type === 'ready') {
-      log('✅ Worker جاهز', 'k');
-      S.worker.postMessage({ type: 'generate', count: CFG.batchSize * 4, wc: CFG.wordCount });
-    } else if (d.type === 'batch') {
-      log(`📥 دفعة: ${d.data.length} عبارة`, 'i');
-      for (const m of d.data) {
-        if (isWeak(m)) { S.weakSkipped++; continue; }
-        if (S.dedupMem.has(m)) { S.dupSkipped++; continue; }
-        S.dedupMem.add(m);
-        S.queue.push(m);
-      }
-      if (S.running) {
-        S.worker.postMessage({ type: 'generate', count: CFG.batchSize * 4, wc: CFG.wordCount });
+  S.roundStart = Date.now();
+  S.total = 0;
+  S.found = 0;
+  S.round = 1;
+  S.lastCount = 0;
+  S.lastTime = Date.now();
+  S.results = [];
+  S.samples = 0;
+
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('stopBtn').disabled = false;
+  setLive('يعمل', '');
+  document.getElementById('roundNum').textContent = '1';
+
+  log('▶️ بدء الفحص', 'ok');
+  log(`🎲 wordCount=${CFG.wordCount} | batch=${CFG.batchSize}`, 'info');
+
+  // Canary check أولاً
+  await checkCanary(1);
+
+  // Worker
+  WORKER = createWorker();
+  WORKER.onmessage = (e) => {
+    const { type, data } = e.data;
+    if (type === 'ready') {
+      log('✅ Worker جاهز', 'ok');
+      WORKER.postMessage({ type: 'generate', data: { count: CFG.batchSize * 3, wordCount: CFG.wordCount } });
+    } else if (type === 'batch') {
+      QUEUE.push(...data);
+      if (RUNNING) {
+        WORKER.postMessage({ type: 'generate', data: { count: CFG.batchSize * 3, wordCount: CFG.wordCount } });
       }
     }
   };
-  S.worker.postMessage({ type: 'init', wordlist: window.LIBS.wordlist });
-  
-  processQueue();
-  
-  if (!S.timers) {
-    S.timers = [
-      setInterval(updateRuntime, 1000),
-      setInterval(updateRate, 1000),
-      setInterval(updateDedupUI, 2000),
-      setInterval(updateRPCUI, 3000),
-    ];
-  }
-};
+  WORKER.postMessage({ type: 'init', data: { wordlist: window.LIBS.wordlist } });
 
-window.stopMining = function() {
-  S.running = false;
-  if (S.worker) { S.worker.terminate(); S.worker = null; }
-  document.getElementById('sb').disabled = false;
-  document.getElementById('xb').disabled = true;
-  setStatus('متوقف', 'open');
-  showBanner(`⏹️ متوقف | فُحص ${S.total} | وُجد ${S.found}`, 'warn');
-  log(`⏹️ إيقاف | Total=${S.total} | Found=${S.found}`, 'w');
-};
+  processQueue();
+
+  // Timers
+  if (!window._timers) {
+    window._timers = {
+      rt: setInterval(updateRuntime, 1000),
+      rate: setInterval(updateRate, 1000),
+      ui: setInterval(updateAPIUI, 2000),
+    };
+  }
+}
 
 async function processQueue() {
-  if (S.processing) return;
-  S.processing = true;
-  while (S.running) {
-    if (S.queue.length === 0) {
-      await new Promise(r => setTimeout(r, 200));
+  if (PROCESSING) return;
+  PROCESSING = true;
+
+  while (RUNNING) {
+    if (QUEUE.length === 0) {
+      await sleep(200);
       continue;
     }
-    const batch = S.queue.splice(0, CFG.batchSize);
+
+    const batch = QUEUE.splice(0, CFG.batchSize);
+    const entries = [];
+
     for (const m of batch) {
-      if (!S.running) break;
-      try { await processSeed(m); S.total++; } catch (e) {}
+      try {
+        const addrs = deriveAddressesFromMnemonic(m);
+        entries.push({ mnemonic: m, legacy: addrs.legacy, segwit: addrs.segwit });
+      } catch (e) {
+        // skip
+      }
     }
-    document.getElementById('tc').textContent = S.total.toLocaleString();
+
+    // Collect all addresses
+    const allAddrs = [];
+    const addrMap = {};
+    for (const e of entries) {
+      if (e.legacy) { allAddrs.push(e.legacy); addrMap[e.legacy] = { m: e.mnemonic, t: 'LEGACY' }; }
+      if (e.segwit) { allAddrs.push(e.segwit); addrMap[e.segwit] = { m: e.mnemonic, t: 'SEGWIT' }; }
+    }
+
+    // Show sample
+    if (entries.length > 0) {
+      showSample(entries[0]);
+    }
+
+    // Query APIs
+    let balances = {};
+    try {
+      balances = await batchBtcBalance(allAddrs);
+    } catch (e) {
+      log(`⚠️ Batch query: ${e.message}`, 'warn');
+    }
+
+    // Check results
+    for (const [addr, bal] of Object.entries(balances)) {
+      if (bal <= 0) continue;
+      // Verify
+      let verified = bal;
+      try {
+        verified = await verifyConsensus(addr, bal);
+      } catch (e) {}
+      if (verified <= 0) continue;
+
+      const info = addrMap[addr];
+      if (!info) continue;
+
+      // 🚫 Skip Canary
+      if (addr === CANARY.addr) continue;
+
+      const found = {
+        coin: info.t,
+        addr: addr,
+        bal: verified,
+        btc: verified / 1e8,
+        mnemonic: info.m,
+        at: new Date().toISOString(),
+      };
+      S.results.push(found);
+      S.found++;
+      addFoundUI(found);
+      log(`🎉🎉🎉 ${info.t}: ${found.btc.toFixed(8)} BTC | ${addr}`, 'ok');
+      notifyFound(info.t, info.m, verified, addr);
+    }
+
+    S.total += batch.length;
+    document.getElementById('totalChecked').textContent = S.total.toLocaleString();
+    document.getElementById('foundCount').textContent = S.found;
+    document.getElementById('foundCount2').textContent = S.found;
   }
-  S.processing = false;
+
+  PROCESSING = false;
 }
 
-// ═══════════════════════════════════════════════════════════
-// UI UPDATES
-// ═══════════════════════════════════════════════════════════
-function updateRuntime() {
-  if (!S.running) return;
-  const s = Math.floor((Date.now() - S.startTime) / 1000);
-  document.getElementById('rt').textContent =
-    `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ═════════════════════════════════════════════════════════════════════
+// UI Updates
+// ═════════════════════════════════════════════════════════════════════
+function showSample(entry) {
+  S.samples++;
+  document.getElementById('sampleCount').textContent = S.samples;
+  const box = document.getElementById('sampleBox');
+  box.innerHTML = `
+    <div class="row"><b>Seed:</b> ${entry.mnemonic}</div>
+    <div class="row"><b>Legacy:</b> ${entry.legacy || '—'}</div>
+    <div class="row"><b>SegWit:</b> ${entry.segwit || '—'}</div>
+  `;
 }
+
+function updateRuntime() {
+  if (!RUNNING) return;
+  const s = Math.floor((Date.now() - S.startTime) / 1000);
+  const hh = String(Math.floor(s/3600)).padStart(2,'0');
+  const mm = String(Math.floor((s%3600)/60)).padStart(2,'0');
+  const ss = String(s%60).padStart(2,'0');
+  document.getElementById('uptime').textContent = `⏱️ ${hh}:${mm}:${ss}`;
+
+  const roundSec = Math.floor((Date.now() - S.roundStart) / 1000);
+  document.getElementById('roundTime').textContent = `الجولة منذ ${roundSec}s`;
+}
+
 function updateRate() {
-  if (!S.running) return;
+  if (!RUNNING) return;
   const now = Date.now();
   const dt = (now - S.lastTime) / 1000;
   const dn = S.total - S.lastCount;
   S.rate = dt > 0 ? dn / dt : 0;
   S.lastCount = S.total;
   S.lastTime = now;
-  document.getElementById('hr').textContent = S.rate.toFixed(1) + '/s';
-  document.getElementById('pb').style.width = Math.min(100, S.rate) + '%';
-}
-function updateDedupUI() {
-  document.getElementById('dm').textContent = S.dedupMem.size.toLocaleString();
-  document.getElementById('dw').textContent = S.weakSkipped.toLocaleString();
-  document.getElementById('dd').textContent = S.dupSkipped.toLocaleString();
-  document.getElementById('lc').textContent = S.total.toLocaleString();
-}
-function updateRPCUI() {
-  const tb = document.getElementById('rtb');
-  const rows = [];
-  let i = 1;
-  for (const h in CB) {
-    const c = CB[h];
-    rows.push(`<tr><td>${i++}</td><td class="ep">${h.substring(0,32)}</td><td><span class="dot ${c.state}"></span>${c.state}</td><td>${(c.ewma*1000).toFixed(0)}ms</td><td>${c.ok}</td><td>${c.fail}</td></tr>`);
+
+  document.getElementById('rate').textContent = S.rate.toFixed(1) + '/s';
+  const pct = Math.min(100, S.rate);
+  document.getElementById('progressBar').style.width = pct + '%';
+
+  // Round counter — كل 1000 عبارة جولة
+  const round = Math.floor(S.total / 1000) + 1;
+  if (round !== S.round) {
+    S.round = round;
+    S.roundStart = Date.now();
+    document.getElementById('roundNum').textContent = round;
+    // Canary check
+    checkCanary(round).catch(() => {});
   }
-  tb.innerHTML = rows.join('') || '<tr><td colspan="6" style="text-align:center;color:#8b949e">لا توجد اتصالات</td></tr>';
-  document.getElementById('rc').textContent = Object.keys(CB).length;
+  document.getElementById('roundProgress').textContent = `${S.total % 1000} / 1000`;
+  document.getElementById('logCount').textContent = S.total.toLocaleString();
+}
+
+function updateAPIUI() {
+  const grid = document.getElementById('apisGrid');
+  const rows = [];
+  let activeCount = 0;
+  for (const [host, cb] of Object.entries(CB)) {
+    let cls = cb.state === 'open' ? 'bad' : (cb.state === 'half' ? 'half' : 'ok');
+    if (cls === 'ok') activeCount++;
+    const total = cb.ok + cb.fail;
+    const sr = total > 0 ? (cb.ok / total * 100).toFixed(0) : 100;
+    rows.push(`<div class="api">
+      <div>
+        <div class="api-name">${host}</div>
+        <div class="api-stats">${sr}% · ${(cb.ewma*1000).toFixed(0)}ms</div>
+      </div>
+      <div class="api-status">
+        <span>${cb.ok}/${cb.fail}</span>
+        <span class="dot ${cls}"></span>
+      </div>
+    </div>`);
+  }
+  grid.innerHTML = rows.join('');
+  document.getElementById('activeApis').textContent = `${activeCount}/${Object.keys(CB).length}`;
+}
+
+function addFoundUI(found) {
+  const list = document.getElementById('findsList');
+  if (list.querySelector('.empty')) list.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'find-item';
+  div.innerHTML = `
+    <div class="find-coin">
+      <span class="type"><span class="badge ${found.coin.toLowerCase()}">${found.coin}</span> ${found.addr.substring(0,20)}...</span>
+      <span class="amount">${found.btc.toFixed(8)} BTC</span>
+    </div>
+    <div class="find-row"><b>💰 Sats:</b> ${found.bal.toLocaleString()}</div>
+    <div class="find-row"><b>📍 Addr:</b> ${found.addr}</div>
+    <div class="find-row"><b>🔑 Seed:</b> ${found.mnemonic}</div>
+    <div class="find-row" style="color:#484f58"><b>⏰</b> ${found.at}</div>
+  `;
+  list.prepend(div);
 }
 
 window.switchTab = function(id, el) {
@@ -722,107 +1334,102 @@ window.switchTab = function(id, el) {
   document.getElementById('tab-' + id).classList.add('active');
 };
 
-function addFound(it) {
-  const l = document.getElementById('fl');
-  if (l.querySelector('div[style*="text-align:center"]')) l.innerHTML = '';
-  const d = document.createElement('div');
-  d.className = 'fi';
-  d.innerHTML = `<div class="cn">🎉 ${it.coin} — ${it.bal.toFixed(8)}</div><div class="rw"><b>Seed:</b> ${it.mnemonic}</div><div class="rw"><b>Addr:</b> ${it.addr}</div>`;
-  l.prepend(d);
-  document.getElementById('fc').textContent = S.found;
-  document.getElementById('fc2').textContent = S.found;
+// ═════════════════════════════════════════════════════════════════════
+// Controls
+// ═════════════════════════════════════════════════════════════════════
+function stopScanning() {
+  RUNNING = false;
+  if (WORKER) { WORKER.terminate(); WORKER = null; }
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = true;
+  setLive('متوقف', 'bad');
+  log(`⏹️ تم الإيقاف | Total=${S.total} | Found=${S.found}`, 'warn');
+  exportResults();
 }
 
-window.saveCfg = function() {
-  CFG.wordCount = parseInt(document.getElementById('wc').value);
-  CFG.batchSize = parseInt(document.getElementById('bs').value);
-  CFG.tgToken = document.getElementById('tt').value.trim();
-  CFG.tgChat = document.getElementById('tg').value.trim();
-  localStorage.setItem('v38', JSON.stringify(CFG));
-  log('💾 حفظ الإعدادات', 'k');
-};
-
-window.resetDedup = function() {
-  if (!confirm('متأكد؟')) return;
-  S.dedupMem.clear();
-  S.weakSkipped = 0;
-  S.dupSkipped = 0;
-  updateDedupUI();
-  log('🗑️ مسح Dedup', 'w');
-};
-
-window.clearRes = function() {
-  if (!confirm('حذف النتائج؟')) return;
-  S.results = []; S.found = 0;
-  document.getElementById('fl').innerHTML = '<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">لا نتائج</div>';
-  document.getElementById('fc').textContent = '0';
-  document.getElementById('fc2').textContent = '0';
-};
-
-window.exportRes = function() {
-  if (S.results.length === 0) { log('⚠️ لا نتائج', 'w'); return; }
-  const b = new Blob([JSON.stringify(S.results, null, 2)], { type: 'application/json' });
-  const u = URL.createObjectURL(b);
+function exportResults() {
+  if (S.results.length === 0) return;
+  const blob = new Blob([JSON.stringify(S.results, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = u; a.download = `ultra_${Date.now()}.json`; a.click();
-  URL.revokeObjectURL(u);
-  log('📥 تصدير', 'k');
-};
+  a.href = url;
+  a.download = `btc_found_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  log('📥 تم التصدير', 'ok');
+}
 
-async function notifyTG(it) {
-  if (!CFG.tgToken || !CFG.tgChat) return;
+function clearResults() {
+  if (!confirm('حذف النتائج؟')) return;
+  S.results = [];
+  S.found = 0;
+  document.getElementById('findsList').innerHTML = '<div class="empty">لم يتم اكتشاف أرصدة بعد</div>';
+  document.getElementById('foundCount').textContent = '0';
+  document.getElementById('foundCount2').textContent = '0';
+}
+
+function saveSettings() {
+  CFG.wordCount = parseInt(document.getElementById('wordCount').value);
+  CFG.batchSize = parseInt(document.getElementById('batchSize').value);
+  CFG.tgToken = document.getElementById('tgToken').value.trim();
+  CFG.tgChat = document.getElementById('tgChat').value.trim();
+  CFG.corsProxy = document.getElementById('corsProxy').value.trim();
+  localStorage.setItem('btc_scanner_cfg', JSON.stringify(CFG));
+  log('💾 تم حفظ الإعدادات', 'ok');
+}
+
+function loadSettings() {
   try {
-    const msg = `🎉 *${it.coin}*\n\n\`${it.mnemonic}\`\n💰 \`${it.bal}\`\n📍 \`${it.addr}\``;
-    await fetch(`https://api.telegram.org/bot${CFG.tgToken}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: CFG.tgChat, text: msg, parse_mode: 'Markdown' }),
-    });
+    const c = JSON.parse(localStorage.getItem('btc_scanner_cfg'));
+    if (c) {
+      Object.assign(CFG, c);
+      document.getElementById('wordCount').value = CFG.wordCount;
+      document.getElementById('batchSize').value = CFG.batchSize;
+      document.getElementById('tgToken').value = CFG.tgToken || '';
+      document.getElementById('tgChat').value = CFG.tgChat || '';
+      document.getElementById('corsProxy').value = CFG.corsProxy || '';
+    }
   } catch (e) {}
 }
 
-// ═══════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════
-(async () => {
-  log('📄 Ultra Scanner v3.8', 'i');
-  
-  // load saved config
-  try {
-    const c = JSON.parse(localStorage.getItem('v38'));
-    if (c) Object.assign(CFG, c);
-  } catch (e) {}
-  document.getElementById('wc').value = CFG.wordCount;
-  document.getElementById('bs').value = CFG.batchSize;
-  document.getElementById('tt').value = CFG.tgToken;
-  document.getElementById('tg').value = CFG.tgChat;
-  
-  // wire up buttons
-  document.getElementById('sb').addEventListener('click', window.startMining);
-  document.getElementById('xb').addEventListener('click', window.stopMining);
-  
-  log('🖱️ تم ربط الأزرار', 'k');
-  
-  // load libraries
-  const ok = await loadLibraries();
-  
-  if (ok) {
-    document.getElementById('sb').disabled = false;
-    setStatus('جاهز', 'closed');
-    showBanner('✅ كل المكتبات جاهزة — اضغط "ابدأ الفحص"', 'ok');
-    log('✅ جاهز للبدء', 'k');
-  } else {
-    document.getElementById('sb').disabled = false;
-    setStatus('محدود', 'half');
-    showBanner('⚠️ فشل تحميل المكتبات — سيتم استخدام وضع محدود', 'warn');
-    log('⚠️ فشل CDN — جرّب VPN ثم أعد التحميل', 'w');
-    log('💡 الزر يعمل، لكن بعض العملات قد لا تُفحص', 'w');
-  }
-})();
+async function testCanary() {
+  log('🧪 اختبار Canary يدوي...', 'info');
+  await checkCanary(CANARY.checks + 1);
+}
 
-window.addEventListener('beforeunload', (e) => {
-  if (S.running) { e.preventDefault(); e.returnValue = 'الفحص شغال'; }
-});
+async function testTelegram() {
+  log('📱 اختبار Telegram...', 'info');
+  const ok = await sendTelegram('🧪 <b>اختبار</b>\n\nBitcoin Scanner Web — v7.8');
+  log(ok ? '✅ Telegram يعمل' : '❌ Telegram فشل', ok ? 'ok' : 'error');
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// INIT
+// ═════════════════════════════════════════════════════════════════════
+(async () => {
+  loadSettings();
+
+  document.getElementById('startBtn').addEventListener('click', startScanning);
+  document.getElementById('stopBtn').addEventListener('click', stopScanning);
+
+  log('📄 Bitcoin Scanner Web v7.8', 'info');
+
+  const ok = await loadLibraries();
+  if (!ok) {
+    setLive('محدود', 'load');
+    document.getElementById('startBtn').disabled = true;
+    log('❌ فشل تحميل المكتبات — تحقق من الإنترنت', 'error');
+    log('💡 جرّب: VPN أو متصفح مختلف', 'warn');
+    return;
+  }
+
+  setLive('جاهز', '');
+  document.getElementById('startBtn').disabled = false;
+  log('✅ كل المكتبات جاهزة — اضغط "ابدأ الفحص"', 'ok');
+
+  // Canary أولي
+  setTimeout(() => checkCanary(0), 500);
+})();
 </script>
 </body>
 </html>
